@@ -3,7 +3,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/nav_graph"
-        app:startDestination="@id/cartFragment">
+        app:startDestination="@id/homeFragment">
 
     <fragment
             android:id="@+id/cartFragment"
@@ -21,17 +21,17 @@
             android:label="fragment_details"
             tools:layout="@layout/fragment_details" />
     <fragment
-            android:id="@+id/favoriteFragment2"
+            android:id="@+id/favoriteFragment"
             android:name="com.amircodeing.syntaxinstitut.unique_store.presentation.favorite.FavoriteFragment"
             android:label="fragment_favorite"
             tools:layout="@layout/fragment_favorite" />
     <fragment
-            android:id="@+id/homeFragment2"
+            android:id="@+id/homeFragment"
             android:name="com.amircodeing.syntaxinstitut.unique_store.presentation.home.HomeFragment"
             android:label="fragment_home"
             tools:layout="@layout/fragment_home" />
     <fragment
-            android:id="@+id/listItemsFragment2"
+            android:id="@+id/listItemsFragment"
             android:name="com.amircodeing.syntaxinstitut.unique_store.presentation.listitems.ListItemsFragment"
             android:label="fragment_list_items"
             tools:layout="@layout/fragment_list_items" />
@@ -46,7 +46,7 @@
             android:label="fragment_recovery_password"
             tools:layout="@layout/fragment_recovery_password" />
     <fragment
-            android:id="@+id/settingFragment2"
+            android:id="@+id/settingFragment"
             android:name="com.amircodeing.syntaxinstitut.unique_store.presentation.setting.SettingFragment"
             android:label="fragment_setting"
             tools:layout="@layout/fragment_setting" />
