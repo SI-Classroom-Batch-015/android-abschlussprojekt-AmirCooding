@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/homeFragment" android:title="@string/home" android:icon="@drawable/icon_home_fill"/>
+    <item android:id="@+id/favoriteFragment" android:title="@string/fvorite" android:icon="@drawable/icon_favorite_fill_white"/>
+    <item android:id="@+id/place_holder" android:title="" android:enabled="false" android:icon="@drawable/place_holder"/>
+    <item android:id="@+id/listItemsFragment" android:title="List" android:icon="@drawable/icon_list_fill"/>
+    <item android:id="@+id/settingFragment" android:title="Setting" android:icon="@drawable/icon_setting_fill"/>
+
+</menu>
