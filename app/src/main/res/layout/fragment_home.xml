@@ -1,13 +1,168 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_height="match_parent"
         tools:context=".presentation.home.HomeFragment">
 
-    <TextView
+    <LinearLayout
+            android:layout_marginTop="30dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Hello" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:id="@+id/linearLayout"
+            app:layout_constraintEnd_toEndOf="parent"
 
-</FrameLayout>
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.0">
+
+        <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="20dp"
+                android:src="@drawable/logo__cyrcle"
+                />
+        <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:src="@drawable/logo_write"
+                />
+
+        <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:src="@drawable/icon__profile_16"
+                android:background="@drawable/icon_place_holder" />
+
+    </LinearLayout>
+
+    <LinearLayout
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/category_items_RV"
+
+            app:layout_constraintStart_toStartOf="parent"
+            android:id="@+id/label_row"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:text="Category"
+                android:textSize="18sp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_height="wrap_content" />
+
+        <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+
+        <TextView
+                android:id="@+id/popular_seeAll_TV"
+                android:focusable="true"
+                android:clickable="true"
+                android:layout_width="wrap_content"
+                android:text="@string/see_all"
+                android:textSize="13sp"
+                android:textColor="@color/textButton"
+                android:layout_height="wrap_content"
+                tools:ignore="TouchTargetSizeCheck" />
+
+    </LinearLayout>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:layout_width="match_parent"
+            android:scrollbars="horizontal"
+            android:orientation="horizontal"
+            tools:listitem="@layout/item_category"
+            android:layout_height="wrap_content"
+            android:id="@+id/category_items_RV"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_row"
+            app:layout_constraintHorizontal_bias="0.0"
+            android:layout_marginTop="12dp" />
+
+    <LinearLayout
+            android:layout_margin="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/category_items_RV"
+            app:layout_constraintStart_toStartOf="parent"
+            android:id="@+id/label_row_1">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:text="Best Seller"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_height="match_parent" />
+
+        <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+
+        <TextView
+                android:id="@+id/news_seeAll_TV"
+                android:layout_width="wrap_content"
+                android:focusable="true"
+                android:clickable="true"
+                android:text="@string/see_all"
+                android:textSize="13sp"
+                android:textColor="@color/textButton"
+                android:layout_height="wrap_content"
+                tools:ignore="TouchTargetSizeCheck" />
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:layout_width="match_parent"
+            android:scrollbars="horizontal"
+            android:orientation="horizontal"
+tools:listitem="@layout/item_product"
+            android:layout_height="wrap_content"
+            android:id="@+id/best_seller_RV"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_row_1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintVertical_bias="0.15" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
