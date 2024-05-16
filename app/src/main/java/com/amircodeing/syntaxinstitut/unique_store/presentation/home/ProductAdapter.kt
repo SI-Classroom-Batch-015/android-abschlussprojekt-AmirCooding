@@ -4,16 +4,17 @@ import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import com.amircodeing.syntaxinstitut.unique_store.R
 import com.amircodeing.syntaxinstitut.unique_store.data.model.Product
 import com.amircodeing.syntaxinstitut.unique_store.databinding.ItemProductBinding
 
-class HomeAdapter(
+class ProductAdapter(
     private val dataset: List<Product>,
-) : RecyclerView.Adapter<HomeAdapter.ItemViewHolder>() {
+    private val viewModel: HomeViewModel
+) : RecyclerView.Adapter<ProductAdapter.ItemViewHolder>() {
 
     inner class ItemViewHolder(private val binding: ItemProductBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -22,18 +23,26 @@ class HomeAdapter(
             itemNameTV.text = product.title
             // set max 50 Char for Description and And it ends with three dots
             val description = product.description ?: ""
-            val truncatedDescription = if (description.length > 50) description.substring(0, 30) + "..." else ""
+            val truncatedDescription = if (description.length > 20) description.substring(0, 20) +"..."  else ""
             itemDescriptionTV.text = truncatedDescription
+
             val previousPriceTextView: TextView = itemUpvPriceTV
             previousPriceTextView.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
             itemCurrentPriceTV.text = String.format("%.2f €", product.price)
             val previousPrice = (product.price!! * 1.20)
             previousPriceTextView.text = String.format("%.2f €", previousPrice)
+            binding.root.setOnClickListener {
+                val navController = Navigation.findNavController(binding.root)
+                viewModel.setProduct(product)
+               navController.navigate(R.id.detailsFragment)
+
+            }
+
 
         }
 
     }
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeAdapter.ItemViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductAdapter.ItemViewHolder {
         val binding = ItemProductBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ItemViewHolder(binding)
     }

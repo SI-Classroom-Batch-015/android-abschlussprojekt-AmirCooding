@@ -7,5 +7,8 @@
     <color name="background">#F8F9FA</color>
     <color name="hint">#707B81</color>
     <color name="textButton">#5B9EE1</color>
+    <color name="error">#FF0000</color>
+    <color name="divider">#d3d3d3</color>
+    <color name="button_second_color">#D1CDCD</color>
     <color name="paypal_background">#FCBB32</color>
 </resources>

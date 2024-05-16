@@ -1,9 +1,10 @@
-package com.amircodeing.syntaxinstitut.unique_store
+package com.amircodeing.syntaxinstitut.unique_store.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.amircodeing.syntaxinstitut.unique_store.R
 import com.amircodeing.syntaxinstitut.unique_store.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity()

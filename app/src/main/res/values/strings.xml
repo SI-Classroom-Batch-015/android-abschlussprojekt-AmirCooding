@@ -35,4 +35,10 @@
     <string name="_49123456789">+49123456789</string>
     <string name="List">list</string>
     <string name="setting">setting</string>
+    <string name="deliverable_to_you_in_2_3_working_days">Deliverable to you in 2-3 working days</string>
+    <string name="our_expedition_delivers_to_the_desired_one">our expedition delivers to the desired one</string>
+    <string name="installation_location_in_your_home">installation location in your home.</string>
+    <string name="general_terms_data_privacy_policy_legal_notice">General terms | Data privacy policy | legal notice</string>
+    <string name="buy_on_account_or_in_installments">Buy on account or in installments</string>
+    <string name="_30_days_free_returns">30 days free returns</string>
 </resources>

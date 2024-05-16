@@ -12,5 +12,6 @@
         <!--change icons from status bar color -->
         <item name="android:windowLightStatusBar">false</item>
     </style>
+
     <style name="Theme.Unique_Store" parent="Base.Theme.Unique_Store" />
 </resources>
