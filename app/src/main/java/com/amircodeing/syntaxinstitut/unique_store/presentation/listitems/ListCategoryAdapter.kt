@@ -1,21 +1,19 @@
-package com.amircodeing.syntaxinstitut.unique_store.presentation.home
+package com.amircodeing.syntaxinstitut.unique_store.presentation.listitems
 
 import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import com.amircodeing.syntaxinstitut.unique_store.R
+import com.amircodeing.syntaxinstitut.unique_store.data.model.Category
 import com.amircodeing.syntaxinstitut.unique_store.data.model.Product
+import com.amircodeing.syntaxinstitut.unique_store.databinding.ItemCategoryBinding
 import com.amircodeing.syntaxinstitut.unique_store.databinding.ItemProductBinding
 
-class ProductAdapter(
+class ListCategoryAdapter(
     private val dataset: List<Product>,
-    private val viewModel: HomeViewModel
-) : RecyclerView.Adapter<ProductAdapter.ItemViewHolder>() {
-
+) : RecyclerView.Adapter<ListCategoryAdapter.ItemViewHolder>() {
     inner class ItemViewHolder(private val binding: ItemProductBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(product: Product) = with(binding) {
@@ -30,18 +28,11 @@ class ProductAdapter(
             itemCurrentPriceTV.text = String.format("%.2f €", product.price)
             val previousPrice = (product.price!! * 1.20)
             previousPriceTextView.text = String.format("%.2f €", previousPrice)
-            binding.root.setOnClickListener {
-                val navController = Navigation.findNavController(binding.root)
-                viewModel.setProduct(product)
-               navController.navigate(R.id.detailsFragment)
-
-            }
-
 
         }
 
     }
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductAdapter.ItemViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val binding = ItemProductBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ItemViewHolder(binding)
     }

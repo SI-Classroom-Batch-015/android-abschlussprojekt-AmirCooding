@@ -19,8 +19,8 @@ import com.amircodeing.syntaxinstitut.unique_store.utils.CustomToolbar.Companion
 import com.amircodeing.syntaxinstitut.unique_store.utils.ToolbarComponents
 
 class DetailsFragment : Fragment(R.layout.fragment_details) {
-   private lateinit var binding: FragmentDetailsBinding
-    private val viewModel : HomeViewModel by activityViewModels()
+    private lateinit var binding: FragmentDetailsBinding
+    private val viewModel: HomeViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -32,28 +32,35 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setToolbar(ToolbarComponents(view = binding.root, title = "Details" , visibility = false ,R.id.toolbar_details , null))
+        setToolbar(
+            ToolbarComponents(
+                view = binding.root,
+                title = "Details",
+                visibility = false,
+                R.id.toolbar_details,
+                null
+            )
+        )
         activity?.let { ChangeButtonNavVisibility.inVisibilityNavButton(it) }
         val product = viewModel.getProduct().value
-         with(binding){
-             if(product != null){
-             detailTitleTV.text = product.title
+        with(binding) {
+            if (product != null) {
+                detailTitleTV.text = product.title.toString()
                 imageDetailsIV.load(product.image)
-                 ratingBar.rating = product.rating?.rate!!.toFloat()
-                 ratingText.text = "(${product.rating?.count})"
+                ratingBar.rating = product.rating?.rate!!.toFloat()
+                ratingText.text = "(${product.rating?.count})"
                 detailDescriptionTV.text = product.description
-              detailPriceTV.text = String.format("%.2f €", product.price)
-                 val previousPriceTextView: TextView = previousPriceTV
-                 previousPriceTextView.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
-                 val previousPrice = (product.price!! * 1.20)
-                 previousPriceTextView.text = String.format("UPV %.2f €", previousPrice)
+                detailPriceTV.text = String.format("%.2f €", product.price)
+                val previousPriceTextView: TextView = previousPriceTV
+                previousPriceTextView.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+                val previousPrice = (product.price!! * 1.20)
+                previousPriceTextView.text = String.format("UPV %.2f €", previousPrice)
 
 
-             }
-         }
+            }
+        }
 
     }
-
 
 
 }

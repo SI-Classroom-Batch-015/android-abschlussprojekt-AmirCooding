@@ -7,6 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.PagerSnapHelper
+import androidx.recyclerview.widget.SnapHelper
 import com.amircodeing.syntaxinstitut.unique_store.databinding.FragmentHomeBinding
 import com.amircodeing.syntaxinstitut.unique_store.utils.ChangeButtonNavVisibility
 
@@ -20,8 +23,6 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
-       viewModel.loadData()
-        viewModel.loadCategory()
         return binding.root
     }
 
@@ -34,6 +35,8 @@ class HomeFragment : Fragment() {
         viewModel.category.observe(viewLifecycleOwner){
             category -> binding.categoryItemsRV.adapter = CategoryAdapter(category)
         }
+         val helper : SnapHelper = PagerSnapHelper()
+        helper.attachToRecyclerView(binding.categoryItemsRV)
     }
 
 

@@ -1,3 +1,10 @@
+import android.content.Context
+import androidx.room.Database
+import androidx.room.Room
+import androidx.room.RoomDatabase
+import com.amircodeing.syntaxinstitut.unique_store.data.local.dao.AppDao
+import com.amircodeing.syntaxinstitut.unique_store.data.model.Product
+
 /*
 package com.amircodeing.syntaxinstitut.unique_store.data.local.database
 
@@ -18,14 +25,11 @@ import com.amircodeing.syntaxinstitut.unique_store.data.model.User
 /**
  * @author Amir Lotfi
  * @Database : to declare the database schema; lists all entities and sets the database version.
- *//*
+ */
 
 
 
-@Database(
-    entities = [Product::class, Address::class, Cart::class, User::class, Rating::class],
-    version = 1
-)
+@Database(entities = [Product::class], version = 1)
 abstract class AppDataBase() : RoomDatabase() {
     abstract val appDao: AppDao
     companion object {
@@ -36,7 +40,7 @@ abstract class AppDataBase() : RoomDatabase() {
                     INSTANCE = Room.databaseBuilder(
                         context.applicationContext,
                         AppDataBase::class.java,
-                        "uniqueStore_database"
+                        "uniquestore_database"
                     ).build()
                 }
                 return INSTANCE
@@ -47,4 +51,4 @@ abstract class AppDataBase() : RoomDatabase() {
 
 }
 
-*/
+
