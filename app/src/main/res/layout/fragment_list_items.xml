@@ -15,7 +15,7 @@
     <View
             android:layout_marginTop="15dp"
             android:layout_width="0dp"
-            android:layout_height="1dp"
+            android:layout_height="0.3dp"
             android:background="@color/divider"
             android:id="@+id/view"
             app:layout_constraintEnd_toEndOf="parent"
@@ -40,9 +40,12 @@
                 android:layout_height="wrap_content">
 
             <TextView
+                    android:focusable="true"
+                    android:clickable="true"
                     android:id="@+id/category_men_TV"
                     android:layout_width="100dp"
                     android:padding="5dp"
+                    android:backgroundTint="@color/primaryDark"
                     android:textColor="@color/divider"
                     android:gravity="center"
                     android:background="@drawable/button_categroy_background"
@@ -51,6 +54,8 @@
                     android:layout_height="40dp" />
 
             <TextView
+                    android:focusable="true"
+                    android:clickable="true"
                     android:id="@+id/category_woman_TV"
                     android:layout_marginStart="20dp"
                     android:layout_width="100dp"
@@ -63,6 +68,8 @@
                     android:layout_height="40dp" />
 
             <TextView
+                    android:focusable="true"
+                    android:clickable="true"
                     android:id="@+id/category_jewelery_TV"
                     android:layout_marginStart="20dp"
                     android:padding="5dp"
@@ -75,6 +82,8 @@
                     android:layout_height="40dp" />
 
             <TextView
+                    android:focusable="true"
+                    android:clickable="true"
                     android:id="@+id/category_electronic_TV"
                     android:layout_marginStart="20dp"
                     android:padding="5dp"
@@ -86,13 +95,14 @@
                     android:textSize="15dp"
 
                     android:layout_height="40dp" />
+
         </LinearLayout>
 
     </HorizontalScrollView>
 
     <View
             android:layout_width="0dp"
-            android:layout_height="1dp"
+            android:layout_height="0.3dp"
             android:background="@color/divider"
             android:id="@+id/view1"
             app:layout_constraintEnd_toEndOf="parent"
@@ -100,19 +110,19 @@
             app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-            android:layout_marginTop="10dp"
-            android:layout_width="353dp"
-            android:layout_height="477dp"
+            android:layout_marginStart="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="629dp"
             tools:listitem="@layout/item_product"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:spanCount="2"
             android:id="@+id/recyclerView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.493"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintTop_toBottomOf="@+id/scrollView2"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintVertical_bias="0.08" />
+            app:layout_constraintVertical_bias="0.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -52,7 +52,7 @@
     </LinearLayout>
 
     <LinearLayout
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="60dp"
             android:layout_marginEnd="20dp"
             android:layout_marginStart="20dp"
             android:layout_width="match_parent"
@@ -80,7 +80,7 @@
 
 
         <TextView
-                android:id="@+id/popular_seeAll_TV"
+                android:id="@+id/category_seeAll_TV"
                 android:focusable="true"
                 android:clickable="true"
                 android:layout_width="wrap_content"
@@ -96,6 +96,7 @@
     <androidx.recyclerview.widget.RecyclerView
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
+            app:layout_goneMarginTop="10dp"
             android:scrollbars="none"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:layout_width="match_parent"
@@ -148,8 +149,7 @@
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
+
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:layout_width="match_parent"
             android:orientation="horizontal"

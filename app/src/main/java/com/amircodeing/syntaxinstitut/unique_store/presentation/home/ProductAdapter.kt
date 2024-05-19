@@ -33,6 +33,7 @@ class ProductAdapter(
             binding.root.setOnClickListener {
                 val navController = Navigation.findNavController(binding.root)
                 viewModel.setProduct(product)
+
                navController.navigate(R.id.detailsFragment)
 
             }

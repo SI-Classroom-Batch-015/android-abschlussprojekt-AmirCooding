@@ -17,10 +17,11 @@ class CustomToolbar {
             title.text = components.title
             if (components.visibility) {
                 selectedIcon.visibility = View.VISIBLE
+                selectedBackButton.visibility = View.VISIBLE
                 components.icon?.let { selectedIcon.setImageResource(it) }
-            } else {
-                //TODO change wight space between text and icon
-                // selectedIcon.visibility = View.GONE
+            } else if(components.backButtonVisibility) {
+                selectedBackButton.visibility = View.INVISIBLE
+                components.icon?.let { selectedBackButton.setImageResource(it) }
             }
             selectedBackButton.setOnClickListener {
                 components.view.findNavController().navigateUp()
@@ -29,5 +30,5 @@ class CustomToolbar {
     }
 }
 
-data class ToolbarComponents(val view: View, val title: String, val visibility: Boolean, val path: Int, val icon: Int?)
+data class ToolbarComponents( val backButtonVisibility : Boolean , val view: View, val title: String, val visibility: Boolean, val path: Int, val icon: Int?)
 

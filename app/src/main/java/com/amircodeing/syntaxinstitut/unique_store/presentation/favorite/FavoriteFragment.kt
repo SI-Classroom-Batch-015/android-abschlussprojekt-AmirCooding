@@ -6,27 +6,30 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import com.amircodeing.syntaxinstitut.unique_store.R
+import com.amircodeing.syntaxinstitut.unique_store.databinding.FragmentFavoriteBinding
+import com.amircodeing.syntaxinstitut.unique_store.utils.CustomToolbar
+import com.amircodeing.syntaxinstitut.unique_store.utils.ToolbarComponents
 
-class FavoriteFragment : Fragment() {
+class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
 
-    companion object {
-        fun newInstance() = FavoriteFragment()
-    }
-
-    private lateinit var viewModel: FavoriteViewModel
+    private lateinit var binding : FragmentFavoriteBinding
+    private  val viewModel: FavoriteViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_favorite, container, false)
+         binding = FragmentFavoriteBinding .inflate(inflater, container, false)
+        CustomToolbar.setToolbar(ToolbarComponents(view = binding.root, title = "Favorite", visibility = false,
+            backButtonVisibility = true,
+            path = R.id.toolbar_favorite,
+            icon = null
+        ))
+        return  binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(FavoriteViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
+
 
 }

@@ -37,8 +37,8 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                 view = binding.root,
                 title = "Details",
                 visibility = false,
-                R.id.toolbar_details,
-                null
+                backButtonVisibility = false, path = R.id.toolbar_details,
+                icon = null
             )
         )
         activity?.let { ChangeButtonNavVisibility.inVisibilityNavButton(it) }
@@ -56,11 +56,23 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                 val previousPrice = (product.price!! * 1.20)
                 previousPriceTextView.text = String.format("UPV %.2f €", previousPrice)
 
-
             }
+            var isFavorite = false
+            addToFavoriteB.setOnClickListener {
+                if (isFavorite) {
+                    // Set the drawable to the empty heart icon
+                    addToFavoriteB.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_heart_dark_empty, 0, 0, 0)
+                    addToFavoriteB.text = "to favorite"
+                } else {
+                    // Set the drawable to the filled heart icon
+                    addToFavoriteB.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_heart_fill, 0, 0, 0)
+                    addToFavoriteB.text = "added to favorite"
+                }
+                // Toggle the state
+                isFavorite = !isFavorite
+            }
+
         }
-
     }
-
 
 }
