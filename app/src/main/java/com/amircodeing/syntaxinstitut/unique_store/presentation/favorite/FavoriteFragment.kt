@@ -6,11 +6,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import com.amircodeing.syntaxinstitut.unique_store.R
+import com.amircodeing.syntaxinstitut.unique_store.data.model.Product
 import com.amircodeing.syntaxinstitut.unique_store.databinding.FragmentFavoriteBinding
 import com.amircodeing.syntaxinstitut.unique_store.utils.CustomToolbar
 import com.amircodeing.syntaxinstitut.unique_store.utils.ToolbarComponents
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
 
@@ -31,5 +38,20 @@ class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
     }
 
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+
+        viewModel.favoriteResult.observe(viewLifecycleOwner) { isSuccessful ->
+            val message = if (isSuccessful) "Operation successful" else "Operation failed"
+            Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+        }
+
+        val products = listOf<Product>()
+         binding.favoriteListRV.adapter = FavoriteAdapter(products, viewModel)
+    }
+
 
 }
+
+

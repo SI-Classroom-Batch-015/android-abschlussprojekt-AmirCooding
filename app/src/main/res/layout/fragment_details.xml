@@ -349,11 +349,11 @@ android:layout_marginStart="50dp"
                     <Button
                             android:id="@+id/add_to_cart_B"
                             android:layout_width="match_parent"
-                            android:backgroundTint="@color/primary"
+                            android:backgroundTint="@color/primaryDark"
                             android:drawableLeft="@drawable/icon_raphael_cart"
                             android:text="Add to Cart"
+                            android:textStyle="normal"
                             android:textSize="14sp"
-                            android:textStyle="bold"
                             android:layout_height="match_parent" />
 
                     <Button
@@ -361,6 +361,7 @@ android:layout_marginStart="50dp"
                             android:layout_width="match_parent"
                             android:backgroundTint="@color/button_second_color"
                             android:text="to favorite"
+                            android:textStyle="normal"
                             android:drawableLeft="@drawable/icon_heart_dark_empty"
                             android:textColor="@color/primaryDark"
                             android:layout_height="match_parent" />
@@ -368,6 +369,7 @@ android:layout_marginStart="50dp"
                     <Button
                             android:id="@+id/share_B"
                             android:layout_width="match_parent"
+                            android:textStyle="normal"
                             android:textColor="@color/primaryDark"
                             android:backgroundTint="@color/button_second_color"
                             android:drawableLeft="@drawable/icon_share_dark"
@@ -399,7 +401,7 @@ android:layout_marginStart="50dp"
                 </LinearLayout>
                 <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_marginTop="15dp"
+                        android:layout_marginTop="5dp"
                         android:layout_height="wrap_content"
                         android:id="@+id/linearLayout7"
                         app:layout_constraintEnd_toEndOf="parent"

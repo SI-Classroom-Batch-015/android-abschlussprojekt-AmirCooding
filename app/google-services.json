@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "847342918543",
+    "firebase_url": "https://unique-store-a87f8-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "unique-store-a87f8",
+    "storage_bucket": "unique-store-a87f8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:847342918543:android:893c3db3e9a085833ec9fa",
+        "android_client_info": {
+          "package_name": "com.amircodeing.syntaxinstitut.unique_store"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDB1ifB6da577_LK3xKH541Gbv43xVLeG0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

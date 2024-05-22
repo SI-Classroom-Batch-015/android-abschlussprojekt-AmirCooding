@@ -18,7 +18,7 @@ abstract class AppDatabase() : RoomDatabase() {
                     INSTANCE = Room.databaseBuilder(
                         context.applicationContext,
                         AppDatabase::class.java,
-                        "appdatabase_db"
+                        "app_database_db"
                     ).allowMainThreadQueries().build()
                 }
                 return INSTANCE

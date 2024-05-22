@@ -103,6 +103,16 @@ class Repository(private val api: ApiService, private val database: AppDatabase)
         }
     }
 
+    suspend fun deleteAll() {
+        try {
+           database.appDao.deleteAll()
+            Log.i(TAG, "success loading category")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error loading category $e")
+        }
+    }
+
+
 
 }
 

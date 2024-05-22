@@ -2,6 +2,7 @@ package com.amircodeing.syntaxinstitut.unique_store.utils
 
 
 import android.content.Context
+import android.text.InputType.TYPE_CLASS_NUMBER
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +13,10 @@ import com.amircodeing.syntaxinstitut.unique_store.R
 
 import com.google.android.material.textfield.TextInputEditText
 
-
+/**
+ *  @param JvmOverloads annotation generates multiple constructors in the Java bytecode,
+ *  making it easier to instantiate the class from Java code with default parameter values.
+ */
 class CustomInputField @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr) {
@@ -35,13 +39,31 @@ class CustomInputField @JvmOverloads constructor(
         }
     }
 
+    /**
+     *  Methods to set Label and hint the text to the TextInputEditText
+     */
     fun setLabelText(text: String) {
         labelTextView.text = text
     }
 
     fun setInputHint(hint: String) {
         inputEditText.hint = hint
+        if(labelTextView.text == "Mobile" || labelTextView.text =="Nr" || labelTextView.text =="Zip") {
+        inputEditText.inputType = TYPE_CLASS_NUMBER
+        }
     }
+    /**
+     *    Method to retrieve the text from the TextInputEditText
+     */
+
+    fun getText(): String {
+        return inputEditText.text.toString()
+    }
+
+    fun clearInputs(){
+        inputEditText.text?.clear()
+    }
+
 
     fun setPasswordMode(enabled: Boolean) {
         if (enabled) {

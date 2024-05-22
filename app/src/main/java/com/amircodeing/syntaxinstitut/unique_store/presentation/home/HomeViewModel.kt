@@ -12,9 +12,14 @@ import com.amircodeing.syntaxinstitut.unique_store.data.remote.apiservice.ApiSer
 import kotlinx.coroutines.launch
 
 class HomeViewModel(application: Application) : AndroidViewModel(application) {
-    private val repository = Repository(ApiService , AppDatabase.getAppDatabase(application))
+    private val repository = Repository(ApiService, AppDatabase.getAppDatabase(application))
     val products = repository.products
     val category = repository.category
+
+    init {
+        deleteAllProducts()
+        loadProducts()
+    }
 
     fun loadProducts() {
         viewModelScope.launch {
@@ -37,6 +42,13 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     fun getProduct(): LiveData<Product> {
         return repository.getProduct()
     }
+
+    fun deleteAllProducts() {
+        viewModelScope.launch {
+            repository.deleteAll()
+        }
+    }
+
 
 }
 

@@ -1,5 +1,6 @@
 package com.amircodeing.syntaxinstitut.unique_store.presentation.home
 
+
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,14 +12,12 @@ import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.SnapHelper
 import com.amircodeing.syntaxinstitut.unique_store.R
 import com.amircodeing.syntaxinstitut.unique_store.databinding.FragmentHomeBinding
-import com.amircodeing.syntaxinstitut.unique_store.databinding.FragmentListItemsBinding
 import com.amircodeing.syntaxinstitut.unique_store.presentation.listitems.ListItemsFragment
 import com.amircodeing.syntaxinstitut.unique_store.utils.ChangeButtonNavVisibility
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private val viewModel: HomeViewModel by activityViewModels()
-
         val listFragment =  ListItemsFragment()
 
     override fun onCreateView(
@@ -28,7 +27,7 @@ class HomeFragment : Fragment() {
     ): View {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         viewModel.loadCategory()
-        viewModel.loadProducts()
+       // viewModel.loadProducts()
         return binding.root
     }
 
@@ -40,7 +39,7 @@ class HomeFragment : Fragment() {
                // product,
                  product.filter { it.rating?.rate != null }
                 .sortedByDescending { it.rating?.rate ?: 0.0 }
-                .take(10),
+                .take(7),
                 viewModel
             )
         }
@@ -49,11 +48,12 @@ class HomeFragment : Fragment() {
         }
         val helper: SnapHelper = PagerSnapHelper()
         helper.attachToRecyclerView(binding.categoryItemsRV)
-
         binding.categorySeeAllTV.setOnClickListener {
-            val navController = Navigation.findNavController(binding.root)
-            navController.navigate(R.id.listItemsFragment)
+                val navController = Navigation.findNavController(binding.root)
+               navController.navigate(R.id.listItemsFragment)
         }
+//TODO add photo to home profile
+     //  Picasso.get().load()
 
     }
 

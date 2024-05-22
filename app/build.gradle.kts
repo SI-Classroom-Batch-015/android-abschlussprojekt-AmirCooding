@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("androidx.navigation.safeargs.kotlin")
     id("com.google.devtools.ksp")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -18,6 +19,7 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+
 
     buildTypes {
         release {
@@ -42,9 +44,18 @@ android {
 }
 
 dependencies {
+    //firebase
+    implementation (platform("com.google.firebase:firebase-bom:32.4.0"))
+    implementation ("com.google.firebase:firebase-analytics:17.2.1")
+    implementation("com.google.firebase:firebase-firestore:25.0.0")
+    implementation("com.google.firebase:firebase-storage")
+    implementation("com.google.firebase:firebase-auth")
+    implementation ("com.google.firebase:firebase-database:21.0.0")
+
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
+
     val retrofitVersion = "2.9.0"
     val roomVersion = "2.6.0"
     implementation("androidx.core:core-ktx:1.12.0")
@@ -66,6 +77,9 @@ dependencies {
 
     // Coil
     implementation("io.coil-kt:coil:2.5.0")
+
+    // Picasso
+    implementation("com.squareup.picasso:picasso:2.8")
 
     //Room
     implementation("androidx.room:room-runtime:$roomVersion")
