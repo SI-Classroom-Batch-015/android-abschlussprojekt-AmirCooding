@@ -45,4 +45,6 @@ class ListItemsViewModel(application: Application) : AndroidViewModel(applicatio
             "men" -> categoryM
         }
     }
+
+
 }

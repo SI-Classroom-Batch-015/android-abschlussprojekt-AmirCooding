@@ -57,7 +57,7 @@
                     android:focusable="true"
                     android:clickable="true"
                     android:id="@+id/category_woman_TV"
-                    android:layout_marginStart="20dp"
+                    android:layout_marginStart="8dp"
                     android:layout_width="100dp"
                     android:padding="5dp"
                     android:textColor="@color/hint"
@@ -71,7 +71,7 @@
                     android:focusable="true"
                     android:clickable="true"
                     android:id="@+id/category_jewelery_TV"
-                    android:layout_marginStart="20dp"
+                    android:layout_marginStart="8dp"
                     android:padding="5dp"
                     android:textColor="@color/hint"
                     android:layout_width="100dp"
@@ -85,7 +85,7 @@
                     android:focusable="true"
                     android:clickable="true"
                     android:id="@+id/category_electronic_TV"
-                    android:layout_marginStart="20dp"
+                    android:layout_marginStart="8dp"
                     android:padding="5dp"
                     android:textColor="@color/hint"
                     android:layout_width="110dp"
@@ -110,18 +110,18 @@
             app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-            android:layout_marginStart="20dp"
+            android:padding="20dp"
+            android:layout_marginBottom="70dp"
             android:layout_width="match_parent"
-            android:layout_height="629dp"
-            tools:listitem="@layout/item_product"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:spanCount="2"
+            android:layout_height="0dp"
+            tools:listitem="@layout/item_list_category"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:id="@+id/list_RV"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintTop_toBottomOf="@+id/scrollView2"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintVertical_bias="0.0" />
 
 

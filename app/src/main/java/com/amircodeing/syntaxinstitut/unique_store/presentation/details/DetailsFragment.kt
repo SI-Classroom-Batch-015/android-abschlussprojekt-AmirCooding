@@ -81,7 +81,7 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                     )
                     addToFavoriteB.text = "to favorite"
                     if (product != null) {
-                        viewModelFavorite.setProduct(product)
+
                     }
 
 

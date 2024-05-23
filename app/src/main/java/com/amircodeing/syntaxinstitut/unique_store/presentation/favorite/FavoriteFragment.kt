@@ -28,7 +28,7 @@ class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-         binding = FragmentFavoriteBinding .inflate(inflater, container, false)
+        binding = FragmentFavoriteBinding .inflate(inflater, container, false)
         CustomToolbar.setToolbar(ToolbarComponents(view = binding.root, title = "Favorite", visibility = false,
             backButtonVisibility = true,
             path = R.id.toolbar_favorite,
@@ -47,8 +47,8 @@ class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
             Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
         }
 
-        val products = listOf<Product>()
-         binding.favoriteListRV.adapter = FavoriteAdapter(products, viewModel)
+        val products = listOf<Product>() // Fetch or pass your product list here
+        binding.favoriteListRV.adapter = FavoriteAdapter(products)
     }
 
 

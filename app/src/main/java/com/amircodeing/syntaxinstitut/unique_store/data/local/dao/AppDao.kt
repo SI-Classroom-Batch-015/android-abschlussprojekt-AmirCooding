@@ -34,4 +34,11 @@ interface AppDao {
 
     @Query("DELETE FROM product_table")
     suspend fun deleteAll()
+
+/*     @Query("UPDATE product_table SET isLiked =:isLiked WHERE id=:id")
+    suspend fun  productUpdate(id : Int , isLiked : Boolean)
+
+
+    @Query("SELECT * FROM product_table WHERE isLiked=1")
+    suspend fun getAllLiked() : LiveData<List<Product>> */
 }

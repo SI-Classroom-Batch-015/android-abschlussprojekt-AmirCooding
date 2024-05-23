@@ -17,7 +17,6 @@ import com.google.firebase.database.FirebaseDatabase
 
 class FavoriteAdapter(
     private val dataset: List<Product>,
-    private val favoriteViewModel: FavoriteViewModel
 ) : RecyclerView.Adapter<FavoriteAdapter.ItemViewHolder>() {
 
     inner class ItemViewHolder(private val binding: ItemProductBinding) :

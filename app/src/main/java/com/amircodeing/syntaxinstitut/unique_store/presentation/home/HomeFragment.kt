@@ -6,19 +6,24 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.SnapHelper
+import coil.load
 import com.amircodeing.syntaxinstitut.unique_store.R
 import com.amircodeing.syntaxinstitut.unique_store.databinding.FragmentHomeBinding
-import com.amircodeing.syntaxinstitut.unique_store.presentation.listitems.ListItemsFragment
 import com.amircodeing.syntaxinstitut.unique_store.utils.ChangeButtonNavVisibility
+import com.amircodeing.syntaxinstitut.unique_store.utils.Constants
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.FirebaseStorage
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private val viewModel: HomeViewModel by activityViewModels()
-        val listFragment =  ListItemsFragment()
+    private lateinit var databaseReference : DatabaseReference
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,12 +32,16 @@ class HomeFragment : Fragment() {
     ): View {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         viewModel.loadCategory()
-       // viewModel.loadProducts()
         return binding.root
     }
 
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        callImageProfile()
+
         //navigateButton = view.findViewById(R.id.button_nav)
         viewModel.products.observe(viewLifecycleOwner) { product ->
             binding.bestSellerRV.adapter = ProductAdapter(
@@ -53,8 +62,26 @@ class HomeFragment : Fragment() {
                navController.navigate(R.id.listItemsFragment)
         }
 //TODO add photo to home profile
+        binding.imageProfileHome
      //  Picasso.get().load()
 
+    }
+
+    private fun callImageProfile() {
+        databaseReference = FirebaseDatabase.getInstance().reference.child("users")
+        Constants.currentUser?.let {
+            databaseReference.child(it.id).get().addOnSuccessListener {
+                if (it.exists()) {
+                    val image = it.child("image").value
+                    Toast.makeText(requireContext(), "Result Found", Toast.LENGTH_LONG).show()
+                    binding.imageProfileHome.load(image)
+                } else {
+                    Toast.makeText(requireContext(), "Result Not Found", Toast.LENGTH_LONG).show()
+                }
+            }.addOnFailureListener {
+                Toast.makeText(requireContext(), "Somthing", Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
 

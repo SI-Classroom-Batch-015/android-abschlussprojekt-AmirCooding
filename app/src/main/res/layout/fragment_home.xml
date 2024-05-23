@@ -41,14 +41,27 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_weight="1" />
-
-        <ImageView
-                android:id="@+id/image_profile_home"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+        <com.google.android.material.card.MaterialCardView
+                android:layout_width="40dp"
+                app:cardCornerRadius="40dp"
+                android:layout_height="40dp"
                 android:layout_marginEnd="20dp"
-                android:src="@drawable/icon__profile_16"
-                android:background="@drawable/icon_place_holder" />
+                android:layout_gravity="center_horizontal"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:id="@+id/materialCardView">
+            <ImageView
+                    android:id="@+id/image_profile_home"
+                    android:scaleType="centerCrop"
+                    android:layout_width="match_parent"
+                    android:src="@drawable/icon_iamge_picker"
+                    android:layout_height="match_parent"
+                    android:contentDescription="TODO" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+
 
     </LinearLayout>
 
@@ -154,7 +167,7 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:layout_width="match_parent"
             android:orientation="horizontal"
-tools:listitem="@layout/item_product"
+            tools:listitem="@layout/item_product"
             android:layout_height="wrap_content"
             android:id="@+id/best_seller_RV"
             android:scrollbars="none"

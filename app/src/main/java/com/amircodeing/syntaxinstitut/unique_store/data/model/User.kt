@@ -1,16 +1,21 @@
 package com.amircodeing.syntaxinstitut.unique_store.data.model
 
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import androidx.room.Embedded
 
 
 data class User(
-    val id : Long = 0 ,
-    val fullName : String,
-    val email : String,
-    val tel : String,
-    val password: String,
-    val cart : Cart,
-    val address : Address
+    val id: String = "",
+    val fullName: String = "",
+    val email: String = "",
+    val tel: String = "",
+    val password: String = "",
+    val image: String? = null,
+    @Embedded
+    val cart: Cart? = null,
+    @Embedded
+    val address: Address ? = null
 )
+
+
+

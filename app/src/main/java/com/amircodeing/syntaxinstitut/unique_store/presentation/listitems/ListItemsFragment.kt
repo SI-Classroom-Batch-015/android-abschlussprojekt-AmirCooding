@@ -49,7 +49,9 @@ class ListItemsFragment : Fragment(R.layout.fragment_list_items) {
 
         adapter = ListCategoryAdapter(homeViewModel)
         binding.listRV.adapter = adapter
-
+       viewModel.categoryMen.observe(viewLifecycleOwner){
+           adapter.submitList(it)
+       }
         setupCategoryClickListeners()
         observeCategories()
     }
@@ -112,7 +114,6 @@ class ListItemsFragment : Fragment(R.layout.fragment_list_items) {
         viewModel.selectedCategory.value?.let { category ->
             updateUIForCategory(category)
         }
-
         activity?.let { ChangeButtonNavVisibility.visibilityNavButton(it) }
     }
     /**

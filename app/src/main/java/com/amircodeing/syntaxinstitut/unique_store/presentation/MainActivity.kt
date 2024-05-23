@@ -7,6 +7,8 @@ import androidx.navigation.ui.setupWithNavController
 import com.amircodeing.syntaxinstitut.unique_store.R
 import com.amircodeing.syntaxinstitut.unique_store.databinding.ActivityMainBinding
 
+
+
 class MainActivity : AppCompatActivity()
 {
     private lateinit var binding: ActivityMainBinding

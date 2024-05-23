@@ -129,7 +129,7 @@
                         android:id="@+id/add_image_profile_IV"
                         android:scaleType="centerCrop"
                         android:layout_width="match_parent"
-                        android:src="@drawable/prfile"
+                        android:src="@drawable/icon_iamge_picker"
                         android:layout_height="match_parent"
                         android:contentDescription="TODO" />
 

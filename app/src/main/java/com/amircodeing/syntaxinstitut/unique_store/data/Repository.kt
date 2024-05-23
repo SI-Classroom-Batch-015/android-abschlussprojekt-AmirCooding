@@ -43,6 +43,16 @@ class Repository(private val api: ApiService, private val database: AppDatabase)
     private val _categoryJeweler: LiveData<List<Product>> = database.appDao.getListJewelery()
     val categoryJeweler: LiveData<List<Product>> get() = _categoryJeweler
 
+/*
+    suspend fun updateProduct(id: Int, isLiked: Boolean) {
+        database.appDao.productUpdate(id, isLiked)
+    }
+
+    suspend fun getLikedProducts(): LiveData<List<Product>> {
+      return   database.appDao.getAllLiked()
+    }
+*/
+
     /**
      *
      * @_category Declare a MutableLiveData to hold a list of Category objects
