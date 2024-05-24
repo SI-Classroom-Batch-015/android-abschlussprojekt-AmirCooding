@@ -25,6 +25,8 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
     ): View? {
         binding = FragmentSignInBinding.inflate(inflater, container, false)
         activity?.let { ChangeButtonNavVisibility.inVisibilityNavButton(it) }
+        viewModel.setupEmailInputField(binding.root)
+        viewModel.setupPasswordInputField(binding.root)
         firebaseDatabase = FirebaseDatabase.getInstance()
         return binding.root
     }
@@ -32,7 +34,6 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val databaseReference = firebaseDatabase.reference.child("users")
-
         binding.signUpFFTV.setOnClickListener {
             val navController = Navigation.findNavController(binding.root)
             navController.navigate(R.id.signUpFragment)

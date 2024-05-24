@@ -4,8 +4,10 @@ import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.amircodeing.syntaxinstitut.unique_store.R
 import com.amircodeing.syntaxinstitut.unique_store.data.model.User
 import com.amircodeing.syntaxinstitut.unique_store.utils.Constants
+import com.amircodeing.syntaxinstitut.unique_store.utils.CustomInputField
 import com.google.firebase.database.*
 
 class SignInViewModel : ViewModel() {
@@ -14,6 +16,20 @@ class SignInViewModel : ViewModel() {
     val signInResult: LiveData<SignInResult> get() = _signInResult
 
 
+     fun setupPasswordInputField(signInView: View) {
+        signInView.findViewById<CustomInputField>(R.id.signInPassword).apply {
+            setLabelText("Password")
+            setInputHint("*********")
+            setPasswordMode(true)
+        }
+    }
+
+     fun setupEmailInputField(signInView: View) {
+        signInView.findViewById<CustomInputField>(R.id.signInemail).apply {
+            setLabelText("Email Address")
+            setInputHint("example@gmail.com")
+        }
+    }
 
     fun userNameAndPasswordValidation(email: String, password: String, databaseReference: DatabaseReference) {
         databaseReference.orderByChild("email").equalTo(email)

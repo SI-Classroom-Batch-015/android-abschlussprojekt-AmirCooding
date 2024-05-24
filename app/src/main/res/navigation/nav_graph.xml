@@ -3,7 +3,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/nav_graph"
-        app:startDestination="@id/signUpFragment">
+        app:startDestination="@id/signInFragment">
 
     <fragment
             android:id="@+id/cartFragment"
@@ -49,7 +49,11 @@
             android:id="@+id/settingFragment"
             android:name="com.amircodeing.syntaxinstitut.unique_store.presentation.setting.SettingFragment"
             android:label="fragment_setting"
-            tools:layout="@layout/fragment_setting" />
+            tools:layout="@layout/fragment_setting" >
+        <action
+                android:id="@+id/action_settingFragment_to_signInFragment"
+                app:destination="@id/signInFragment" />
+    </fragment>
     <fragment
             android:id="@+id/signInFragment"
             android:name="com.amircodeing.syntaxinstitut.unique_store.presentation.signin.SignInFragment"

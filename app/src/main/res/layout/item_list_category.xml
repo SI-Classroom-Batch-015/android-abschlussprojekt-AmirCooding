@@ -52,7 +52,7 @@
                 android:text="AirMax"
                 android:maxLines="2"
                 android:textSize="12sp"
-                android:layout_margin="8dp"
+                android:layout_margin="5dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/item_name_TV" />
 
@@ -96,8 +96,6 @@
                 android:id="@+id/item_current_price_TV"
                 app:layout_constraintEnd_toEndOf="@+id/item_upv_price_TV"
                 app:layout_constraintTop_toBottomOf="@+id/item_upv_price_TV"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintHorizontal_bias="0.0" />
 
