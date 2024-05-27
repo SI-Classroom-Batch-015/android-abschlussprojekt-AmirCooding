@@ -4,10 +4,14 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.amircodeing.syntaxinstitut.unique_store.data.local.dao.AppDao
 import com.amircodeing.syntaxinstitut.unique_store.data.model.Product
+import com.amircodeing.syntaxinstitut.unique_store.data.model.User
+import com.amircodeing.syntaxinstitut.unique_store.presentation.cart.Converters
 
-@Database(entities = [Product::class], version = 1)
+@Database(entities = [Product::class, User::class], version = 1)
+@TypeConverters(Converters::class)
 abstract class AppDatabase() : RoomDatabase() {
     abstract val appDao: AppDao
     companion object {

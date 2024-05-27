@@ -2,33 +2,26 @@ package com.amircodeing.syntaxinstitut.unique_store.presentation.details
 
 import android.graphics.Paint
 import android.net.Uri
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RatingBar
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import coil.load
 import com.amircodeing.syntaxinstitut.unique_store.R
-import com.amircodeing.syntaxinstitut.unique_store.data.model.Address
+import com.amircodeing.syntaxinstitut.unique_store.data.model.Cart
 import com.amircodeing.syntaxinstitut.unique_store.data.model.Product
-import com.amircodeing.syntaxinstitut.unique_store.data.model.User
 import com.amircodeing.syntaxinstitut.unique_store.databinding.FragmentDetailsBinding
-import com.amircodeing.syntaxinstitut.unique_store.databinding.FragmentSignUpBinding
 import com.amircodeing.syntaxinstitut.unique_store.presentation.favorite.FavoriteViewModel
 import com.amircodeing.syntaxinstitut.unique_store.presentation.home.HomeViewModel
 import com.amircodeing.syntaxinstitut.unique_store.utils.ChangeButtonNavVisibility
 import com.amircodeing.syntaxinstitut.unique_store.utils.Constants
 import com.amircodeing.syntaxinstitut.unique_store.utils.CustomToolbar.Companion.setToolbar
 import com.amircodeing.syntaxinstitut.unique_store.utils.ToolbarComponents
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 
 class DetailsFragment : Fragment(R.layout.fragment_details) {
@@ -73,12 +66,20 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                 previousPriceTextView.text = String.format("UPV %.2f €", previousPrice)
 
             }
-            addToFavoriteB.setOnClickListener {
 
+            addToCartB.setOnClickListener {
+                if (product != null) {
+                    viewModel.updateCartForUser(Constants.currentUser!!.id,product)
+                }
+                    }
+
+
+            addToFavoriteB.setOnClickListener {
                     if (product != null) {
                         if (product.isLiked == true) {
                             viewModel.addProductToFavoriteList(product)
                             viewModel.updateProduct(product.id, !product.isLiked!!)
+                            Constants.currentUser?.let { it1 -> viewModel.addFavoriteToFBDB(it1.id, product.id.toString(), requireContext()) }
 
                             // Set the drawable to the empty heart icon
                             addToFavoriteB.setCompoundDrawablesWithIntrinsicBounds(
@@ -98,6 +99,7 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                 }
 
             }
+
 
 
 

@@ -6,8 +6,10 @@ import androidx.lifecycle.MutableLiveData
 import com.amircodeing.syntaxinstitut.unique_store.data.local.database.AppDatabase
 import com.amircodeing.syntaxinstitut.unique_store.data.local.datasource.DataSource
 import com.amircodeing.syntaxinstitut.unique_store.data.local.datasource.DataSourceImpl
+import com.amircodeing.syntaxinstitut.unique_store.data.model.Cart
 import com.amircodeing.syntaxinstitut.unique_store.data.model.Category
 import com.amircodeing.syntaxinstitut.unique_store.data.model.Product
+import com.amircodeing.syntaxinstitut.unique_store.data.model.User
 import com.amircodeing.syntaxinstitut.unique_store.data.remote.apiservice.ApiService
 
 
@@ -127,7 +129,6 @@ class Repository(private val api: ApiService, private val database: AppDatabase)
     }
 
 
-
     fun getAllFavorite() {
         try {
             database.appDao.getAllLiked()
@@ -136,26 +137,65 @@ class Repository(private val api: ApiService, private val database: AppDatabase)
             Log.e(TAG, "Error loading List of Favorite $e")
         }
     }
+
     fun addProductToFavorite(product: Product) {
         try {
             database.appDao.addProductToFavorites(product)
-            Log.i(TAG, "success loading List of Favorite")
+            Log.i(TAG, "success add Product of Favorite")
         } catch (e: Exception) {
-            Log.e(TAG, "Error loading List of Favorite $e")
+            Log.e(TAG, "Error remove Product of Favorite $e")
+        }
+    }
+
+    fun addUserTORoomDB(user: User) {
+        try {
+            database.appDao.addUserToDB(user)
+            Log.i(TAG, "success add user to DB")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error add user to DB $e")
         }
     }
 
     fun removeProductFromFavorite(product: Product) {
         try {
             database.appDao.removeProductFromFavorites(product)
-            Log.i(TAG, "success loading List of Favorite")
+            Log.i(TAG, "success remove List of Favorite")
         } catch (e: Exception) {
-            Log.e(TAG, "Error loading List of Favorite $e")
+            Log.e(TAG, "Error remove List of Favorite $e")
         }
     }
 
     fun updateProduct(id: Int, isLiked: Boolean) {
         database.appDao.productUpdate(id, isLiked)
+    }
+
+
+    fun updateCartForUser(userId: String, newProduct: Product) {
+        try {
+            val user = database.appDao.getUserById(userId)
+            user?.let {
+                val updatedCartItems = it.cart?.items?.toMutableList() ?: mutableListOf()
+                updatedCartItems.add(newProduct)
+                val subTotal = updatedCartItems.sumOf { product -> product.price ?: 0.0 }
+                val shippingPrice = 5.99
+                val totalCost = subTotal + shippingPrice
+
+                val updatedCart = Cart(
+                    items = updatedCartItems,
+                    subTotal = subTotal,
+                    shippingPrice = shippingPrice,
+                    totalCost = totalCost
+                )
+                val updatedUser = it.copy(cart = updatedCart)
+                database.appDao.updateUser(updatedUser)
+            }
+            Log.i(TAG, "success add Product to  Cart")
+
+        } catch (e: Exception) {
+            Log.e(TAG, "Error add Product to Cart $e")
+
+
+        }
     }
 
 

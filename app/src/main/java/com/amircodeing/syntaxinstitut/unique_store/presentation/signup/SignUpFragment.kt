@@ -54,14 +54,6 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val currentUser = FirebaseAuth.getInstance().currentUser
-        if (currentUser == null) {
-            // Redirect to sign-in screen
-            val navController = Navigation.findNavController(binding.root)
-            navController.navigate(R.id.signInFragment)
-            return
-        }
-
         binding.signInButtonInSignUp.setOnClickListener {
             val navController = Navigation.findNavController(binding.root)
             navController.navigate(R.id.signInFragment)

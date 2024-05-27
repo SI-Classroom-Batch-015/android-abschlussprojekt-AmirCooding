@@ -12,7 +12,9 @@ import androidx.lifecycle.viewModelScope
 import coil.load
 import com.amircodeing.syntaxinstitut.unique_store.data.Repository
 import com.amircodeing.syntaxinstitut.unique_store.data.local.database.AppDatabase
+import com.amircodeing.syntaxinstitut.unique_store.data.model.Cart
 import com.amircodeing.syntaxinstitut.unique_store.data.model.Product
+import com.amircodeing.syntaxinstitut.unique_store.data.model.User
 import com.amircodeing.syntaxinstitut.unique_store.data.remote.CrudFDataBase
 import com.amircodeing.syntaxinstitut.unique_store.data.remote.apiservice.ApiService
 import com.google.firebase.database.DatabaseReference
@@ -69,8 +71,18 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun updateCartForUser(userId: String, newCart : Product){
+        viewModelScope.launch {
+            repository.updateCartForUser(userId,newCart)
+        }
+    }
+
 
     //////////////////////////////////////TODO save product id To DB
+    fun addFavoriteToFBDB(userId: String, productId: String, context: Context){
+        CrudFDataBase.addFavoriteProductToDbFirebase(userId, productId, context)
+    }
+
 
 
 }

@@ -34,6 +34,7 @@ class FavoriteViewModel (application: Application) : AndroidViewModel(applicatio
 
     fun removeProductFromFavoriteList(product: Product){
         viewModelScope.launch {
+            repository.removeProductFromFavorite(product)
             repository.updateProduct(product.id , isLiked = false)
         }
     }

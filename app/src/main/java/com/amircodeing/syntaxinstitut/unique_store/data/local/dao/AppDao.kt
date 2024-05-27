@@ -6,7 +6,11 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
+import androidx.room.Update
+import com.amircodeing.syntaxinstitut.unique_store.data.model.Cart
 import com.amircodeing.syntaxinstitut.unique_store.data.model.Product
+import com.amircodeing.syntaxinstitut.unique_store.data.model.User
 
 @Dao
 interface AppDao {
@@ -45,4 +49,17 @@ interface AppDao {
     fun removeProductFromFavorites(product: Product)
     @Query("SELECT * FROM product_table WHERE isLiked=1")
     fun getAllLiked() : LiveData<List<Product>>
+
+
+
+    @Query("SELECT * FROM user_table WHERE id = :userId")
+    fun getUserById(userId: String): User?
+
+    @Update
+    fun updateUser(user: User)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun addUserToDB(user: User)
+
+
 }
