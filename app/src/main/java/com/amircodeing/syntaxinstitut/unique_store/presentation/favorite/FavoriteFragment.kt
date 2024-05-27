@@ -11,6 +11,8 @@ import androidx.fragment.app.viewModels
 import com.amircodeing.syntaxinstitut.unique_store.R
 import com.amircodeing.syntaxinstitut.unique_store.data.model.Product
 import com.amircodeing.syntaxinstitut.unique_store.databinding.FragmentFavoriteBinding
+import com.amircodeing.syntaxinstitut.unique_store.presentation.home.CategoryAdapter
+import com.amircodeing.syntaxinstitut.unique_store.utils.ChangeButtonNavVisibility
 import com.amircodeing.syntaxinstitut.unique_store.utils.CustomToolbar
 import com.amircodeing.syntaxinstitut.unique_store.utils.ToolbarComponents
 import com.google.firebase.auth.FirebaseAuth
@@ -23,6 +25,7 @@ class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
 
     private lateinit var binding : FragmentFavoriteBinding
     private  val viewModel: FavoriteViewModel by viewModels()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,17 +41,20 @@ class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
     }
 
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
-        viewModel.favoriteResult.observe(viewLifecycleOwner) { isSuccessful ->
-            val message = if (isSuccessful) "Operation successful" else "Operation failed"
-            Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+        viewModel.favorites.observe(viewLifecycleOwner){
+                favorites ->
+            binding.favoriteListRV.adapter = FavoriteAdapter(favorites , viewModel )
         }
 
-        val products = listOf<Product>() // Fetch or pass your product list here
-        binding.favoriteListRV.adapter = FavoriteAdapter(products)
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        activity?.let { ChangeButtonNavVisibility.visibilityNavButton(it) }
     }
 
 

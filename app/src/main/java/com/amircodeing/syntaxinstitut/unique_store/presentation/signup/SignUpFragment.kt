@@ -14,6 +14,7 @@ import com.amircodeing.syntaxinstitut.unique_store.R
 import com.amircodeing.syntaxinstitut.unique_store.data.model.User
 import com.amircodeing.syntaxinstitut.unique_store.databinding.FragmentSignUpBinding
 import com.amircodeing.syntaxinstitut.unique_store.utils.ChangeButtonNavVisibility
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -53,6 +54,14 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        if (currentUser == null) {
+            // Redirect to sign-in screen
+            val navController = Navigation.findNavController(binding.root)
+            navController.navigate(R.id.signInFragment)
+            return
+        }
+
         binding.signInButtonInSignUp.setOnClickListener {
             val navController = Navigation.findNavController(binding.root)
             navController.navigate(R.id.signInFragment)
@@ -88,4 +97,5 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
             } ?: Toast.makeText(requireContext(), "Please select an image", Toast.LENGTH_LONG).show()
         }
     }
+
 }

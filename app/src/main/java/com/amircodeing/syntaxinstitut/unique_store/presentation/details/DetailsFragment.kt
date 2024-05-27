@@ -22,6 +22,7 @@ import com.amircodeing.syntaxinstitut.unique_store.databinding.FragmentSignUpBin
 import com.amircodeing.syntaxinstitut.unique_store.presentation.favorite.FavoriteViewModel
 import com.amircodeing.syntaxinstitut.unique_store.presentation.home.HomeViewModel
 import com.amircodeing.syntaxinstitut.unique_store.utils.ChangeButtonNavVisibility
+import com.amircodeing.syntaxinstitut.unique_store.utils.Constants
 import com.amircodeing.syntaxinstitut.unique_store.utils.CustomToolbar.Companion.setToolbar
 import com.amircodeing.syntaxinstitut.unique_store.utils.ToolbarComponents
 import com.google.firebase.auth.FirebaseAuth
@@ -72,37 +73,32 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                 previousPriceTextView.text = String.format("UPV %.2f €", previousPrice)
 
             }
-            var isFavorite = false
             addToFavoriteB.setOnClickListener {
-                if (isFavorite) {
-                    // Set the drawable to the empty heart icon
-                    addToFavoriteB.setCompoundDrawablesWithIntrinsicBounds(
-                        R.drawable.icon_heart_dark_empty, 0, 0, 0
-                    )
-                    addToFavoriteB.text = "to favorite"
+
                     if (product != null) {
+                        if (product.isLiked == true) {
+                            viewModel.addProductToFavoriteList(product)
+                            viewModel.updateProduct(product.id, !product.isLiked!!)
 
+                            // Set the drawable to the empty heart icon
+                            addToFavoriteB.setCompoundDrawablesWithIntrinsicBounds(
+                                R.drawable.icon_heart_dark_empty, 0, 0, 0)
+                            addToFavoriteB.text = "to favorite"
+                        } else {
+                            viewModel.updateProduct(product.id, !product.isLiked!!)
+                            // Set the drawable to the filled heart icon
+                            addToFavoriteB.setCompoundDrawablesWithIntrinsicBounds(
+                                R.drawable.icon_heart_fill, 0, 0, 0)
+                            addToFavoriteB.text = "added to favorite"
+                        }
                     }
-
-
-                } else {
-                    // Set the drawable to the filled heart icon
-                    addToFavoriteB.setCompoundDrawablesWithIntrinsicBounds(
-                        R.drawable.icon_heart_fill,
-                        0,
-                        0,
-                        0
-                    )
-                    addToFavoriteB.text = "added to favorite"
-                    if (product != null) {
-                        viewModelFavorite.removeProductFromFavorites(product)
-                    }
+                    // Toggle the state
+                if (product != null) {
+                    product.isLiked = !product.isLiked!!
                 }
-                // Toggle the state
-                isFavorite = !isFavorite
-
 
             }
+
 
 
         }

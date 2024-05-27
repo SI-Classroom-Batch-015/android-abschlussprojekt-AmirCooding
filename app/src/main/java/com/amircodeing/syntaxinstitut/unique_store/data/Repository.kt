@@ -22,7 +22,7 @@ class Repository(private val api: ApiService, private val database: AppDatabase)
      */
 
     //private val _products = MutableLiveData<List<Product>>()
-   private val _products: LiveData<List<Product>> = database.appDao.getAllProducts()
+    private val _products: LiveData<List<Product>> = database.appDao.getAllProducts()
     val products: LiveData<List<Product>> get() = _products
 
     /**
@@ -43,15 +43,19 @@ class Repository(private val api: ApiService, private val database: AppDatabase)
     private val _categoryJeweler: LiveData<List<Product>> = database.appDao.getListJewelery()
     val categoryJeweler: LiveData<List<Product>> get() = _categoryJeweler
 
-/*
-    suspend fun updateProduct(id: Int, isLiked: Boolean) {
-        database.appDao.productUpdate(id, isLiked)
-    }
 
-    suspend fun getLikedProducts(): LiveData<List<Product>> {
-      return   database.appDao.getAllLiked()
-    }
-*/
+    private val _showFavorites: LiveData<List<Product>> = database.appDao.getAllLiked()
+    val showFavorites: LiveData<List<Product>> get() = _showFavorites
+
+    /*
+        suspend fun updateProduct(id: Int, isLiked: Boolean) {
+            database.appDao.productUpdate(id, isLiked)
+        }
+
+        suspend fun getLikedProducts(): LiveData<List<Product>> {
+          return   database.appDao.getAllLiked()
+        }
+    */
 
     /**
      *
@@ -82,7 +86,7 @@ class Repository(private val api: ApiService, private val database: AppDatabase)
      */
     suspend fun loadProduct() {
         try {
-           //   _products.postValue(api.retrofitService.getProducts())
+            //   _products.postValue(api.retrofitService.getProducts())
             val products: MutableList<Product> = mutableListOf()
             for (item in api.retrofitService.getProducts()) {
                 products.add(
@@ -97,7 +101,7 @@ class Repository(private val api: ApiService, private val database: AppDatabase)
                 )
             }
             database.appDao.insertProducts(products)
-        // _products.postValue(products)
+            // _products.postValue(products)
             Log.i(TAG, "success loading Products")
         } catch (e: Exception) {
             Log.e(TAG, "Error loading Products $e")
@@ -115,13 +119,44 @@ class Repository(private val api: ApiService, private val database: AppDatabase)
 
     suspend fun deleteAll() {
         try {
-           database.appDao.deleteAll()
+            database.appDao.deleteAll()
             Log.i(TAG, "success loading category")
         } catch (e: Exception) {
             Log.e(TAG, "Error loading category $e")
         }
     }
 
+
+
+    fun getAllFavorite() {
+        try {
+            database.appDao.getAllLiked()
+            Log.i(TAG, "success loading List of Favorite")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error loading List of Favorite $e")
+        }
+    }
+    fun addProductToFavorite(product: Product) {
+        try {
+            database.appDao.addProductToFavorites(product)
+            Log.i(TAG, "success loading List of Favorite")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error loading List of Favorite $e")
+        }
+    }
+
+    fun removeProductFromFavorite(product: Product) {
+        try {
+            database.appDao.removeProductFromFavorites(product)
+            Log.i(TAG, "success loading List of Favorite")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error loading List of Favorite $e")
+        }
+    }
+
+    fun updateProduct(id: Int, isLiked: Boolean) {
+        database.appDao.productUpdate(id, isLiked)
+    }
 
 
 }

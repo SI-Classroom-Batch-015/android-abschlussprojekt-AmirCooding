@@ -2,6 +2,7 @@ package com.amircodeing.syntaxinstitut.unique_store.data.local.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -35,10 +36,13 @@ interface AppDao {
     @Query("DELETE FROM product_table")
     suspend fun deleteAll()
 
-/*     @Query("UPDATE product_table SET isLiked =:isLiked WHERE id=:id")
-    suspend fun  productUpdate(id : Int , isLiked : Boolean)
+    @Query("UPDATE product_table SET isLiked =:isLiked WHERE id=:id")
+    fun  productUpdate(id : Int , isLiked : Boolean)
 
-
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun addProductToFavorites(product: Product)
+    @Delete
+    fun removeProductFromFavorites(product: Product)
     @Query("SELECT * FROM product_table WHERE isLiked=1")
-    suspend fun getAllLiked() : LiveData<List<Product>> */
+    fun getAllLiked() : LiveData<List<Product>>
 }

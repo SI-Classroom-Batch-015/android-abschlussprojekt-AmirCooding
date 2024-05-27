@@ -13,9 +13,11 @@ import coil.load
 import com.amircodeing.syntaxinstitut.unique_store.data.Repository
 import com.amircodeing.syntaxinstitut.unique_store.data.local.database.AppDatabase
 import com.amircodeing.syntaxinstitut.unique_store.data.model.Product
+import com.amircodeing.syntaxinstitut.unique_store.data.remote.CrudFDataBase
 import com.amircodeing.syntaxinstitut.unique_store.data.remote.apiservice.ApiService
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
 
 class HomeViewModel(application: Application) : AndroidViewModel(application) {
@@ -56,11 +58,26 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun addProductToFavoriteList(product: Product) {
+        viewModelScope.launch {
+            repository.addProductToFavorite(product)
+        }
+    }
+    fun updateProduct(id: Int, isLiked: Boolean) {
+        viewModelScope.launch {
+            repository.updateProduct(id, isLiked)
+        }
+    }
 
 
+    //////////////////////////////////////TODO save product id To DB
 
 
 }
+
+
+
+
 
 
 

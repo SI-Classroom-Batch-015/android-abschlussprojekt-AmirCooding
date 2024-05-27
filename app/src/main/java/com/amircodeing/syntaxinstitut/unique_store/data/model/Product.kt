@@ -14,6 +14,7 @@ data class Product(
     var description: String? = null,
     var category: String? = null,
     var image: String? = null,
+    var isLiked:Boolean? = false,
 
     @Embedded
    var rating: Rating? = Rating()
