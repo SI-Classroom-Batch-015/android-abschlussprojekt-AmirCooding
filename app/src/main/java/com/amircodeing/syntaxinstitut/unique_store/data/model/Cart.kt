@@ -7,7 +7,7 @@ data class Cart(
     val subTotal: Double? = 0.0,
     val totalCost: Double = 0.0,
     val shippingPrice: Double = 0.0,
-    val countProduct : Int = 1
+    val countProduct : Int? = 0
 )
 
 

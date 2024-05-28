@@ -174,14 +174,16 @@ class Repository(private val api: ApiService, private val database: AppDatabase)
                 val updatedCartItems = it.cart?.items?.toMutableList() ?: mutableListOf()
                 updatedCartItems.add(newProduct)
                 val subTotal = updatedCartItems.sumOf { product -> product.price ?: 0.0 }
-                val formattedSubTotal = String.format("%.2f", subTotal)
+                val countProduct = (user.cart?.countProduct ?: 0) +1
+              //  val formattedSubTotal = String.format("%.2f", subTotal)
                 val shippingPrice = 5.99
                 val totalCost = subTotal + shippingPrice
                 val updatedCart = Cart(
                     items = updatedCartItems,
-                    subTotal = formattedSubTotal.toDouble(),
+                    subTotal = subTotal,
                     shippingPrice = shippingPrice,
-                    totalCost = totalCost
+                    totalCost = totalCost,
+                    countProduct = countProduct
                 )
                 val updatedUser = it.copy(cart = updatedCart)
                 database.appDao.updateUser(updatedUser)
