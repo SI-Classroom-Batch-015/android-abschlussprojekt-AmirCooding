@@ -64,7 +64,8 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
 
             addToCartB.setOnClickListener {
                 if (product != null) {
-                    viewModel.updateCartForUser(Constants.currentUser!!.id,product)
+                    Constants.currentUser?.id?.let { it1 -> viewModel.updateCartForUser(it1,product) }
+                    addToCartB.visibility = View.INVISIBLE
                 }
                     }
 
