@@ -4,6 +4,7 @@ package com.amircodeing.syntaxinstitut.unique_store.data.model
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.security.MessageDigest
 
 @Entity(tableName = "user_table")
 data class User(
@@ -21,5 +22,10 @@ data class User(
 
 )
 
+
+fun hashPassword(password: String): String {
+    val bytes = MessageDigest.getInstance("SHA-256").digest(password.toByteArray())
+    return bytes.joinToString("") { "%02x".format(it) }
+}
 
 

@@ -3,7 +3,165 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_height="match_parent"
         tools:context=".presentation.cart.CartFragment">
+
+    <include
+            layout="@layout/toolbar"
+            android:id="@+id/toolbar_cart"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/constraintLayout" />
+
+    <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="419dp"
+            android:layout_height="328dp"
+            tools:listitem="@layout/item_to_cart"
+            android:id="@+id/cart_RV"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar_cart"
+            android:layout_marginTop="20dp"
+            app:layout_constraintHorizontal_bias="0.0">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="300dp"
+            android:id="@+id/constraintLayout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:backgroundTint="@color/white"
+
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintTop_toBottomOf="@+id/cart_RV"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="1.0">
+        <LinearLayout
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:background="@color/background"
+                android:orientation="vertical"
+                android:layout_height="match_parent">
+
+
+            <LinearLayout
+                    android:padding="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <TextView
+                        android:id="@+id/subtotal_cart_TV"
+                        android:layout_width="wrap_content"
+                        android:text="subtotal"
+                        android:textSize="16sp"
+                        android:textColor="@color/hint"
+                        android:layout_height="wrap_content"/>
+                <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+                <TextView
+                        android:id="@+id/subtotal_price_cart_TV"
+                        android:layout_width="wrap_content"
+                        android:text="234.99 €"
+                        android:textSize="16sp"
+                        android:textColor="@color/primaryDark"
+                        android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                    android:padding="20dp"
+
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <TextView
+                        android:id="@+id/shopping_transfer_cart_TV"
+                        android:layout_width="wrap_content"
+                        android:text="shopping"
+                        android:textSize="16sp"
+                        android:textColor="@color/hint"
+                        android:layout_height="wrap_content"/>
+                <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+                <TextView
+                        android:id="@+id/transfer_price_TV"
+                        android:layout_width="wrap_content"
+                        android:text="5.99 €"
+                        android:textSize="16sp"
+                        android:textColor="@color/primaryDark"
+                        android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                    android:padding="20dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <TextView
+                        android:id="@+id/total_cost_cart_TV"
+                        android:layout_width="wrap_content"
+                        android:text="Total Cost"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/hint"
+                        android:layout_height="wrap_content"/>
+                <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+                <TextView
+                        android:id="@+id/total_price_cart_TV"
+                        android:layout_width="wrap_content"
+                        android:text="241.01 €"
+                        android:textSize="16sp"
+                        android:textColor="@color/primaryDark"
+                        android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+            <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:backgroundTint="@color/primaryDark"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginTop="10dp"
+                    app:cardCornerRadius="30dp">
+
+                <Button
+                        android:id="@+id/custom_button_my_cart"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="?attr/selectableItemBackground"
+                        android:text="@string/check_out"
+                        android:textColor="@color/background"
+                        android:textAllCaps="false"
+                        android:gravity="center"
+                        android:textSize="18sp" />
+            </androidx.cardview.widget.CardView>
+
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

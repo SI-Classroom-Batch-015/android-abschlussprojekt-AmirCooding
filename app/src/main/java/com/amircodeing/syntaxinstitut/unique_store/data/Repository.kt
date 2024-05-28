@@ -49,15 +49,11 @@ class Repository(private val api: ApiService, private val database: AppDatabase)
     private val _showFavorites: LiveData<List<Product>> = database.appDao.getAllLiked()
     val showFavorites: LiveData<List<Product>> get() = _showFavorites
 
-    /*
-        suspend fun updateProduct(id: Int, isLiked: Boolean) {
-            database.appDao.productUpdate(id, isLiked)
-        }
+    private val _showProductsToCart: LiveData<List<User>> = database.appDao.getAllUser()
+    val showProductsToCart: LiveData<List<User>> get() = _showProductsToCart
 
-        suspend fun getLikedProducts(): LiveData<List<Product>> {
-          return   database.appDao.getAllLiked()
-        }
-    */
+
+
 
     /**
      *
@@ -170,6 +166,7 @@ class Repository(private val api: ApiService, private val database: AppDatabase)
     }
 
 
+
     fun updateCartForUser(userId: String, newProduct: Product) {
         try {
             val user = database.appDao.getUserById(userId)
@@ -177,12 +174,12 @@ class Repository(private val api: ApiService, private val database: AppDatabase)
                 val updatedCartItems = it.cart?.items?.toMutableList() ?: mutableListOf()
                 updatedCartItems.add(newProduct)
                 val subTotal = updatedCartItems.sumOf { product -> product.price ?: 0.0 }
+                val formattedSubTotal = String.format("%.2f", subTotal)
                 val shippingPrice = 5.99
                 val totalCost = subTotal + shippingPrice
-
                 val updatedCart = Cart(
                     items = updatedCartItems,
-                    subTotal = subTotal,
+                    subTotal = formattedSubTotal.toDouble(),
                     shippingPrice = shippingPrice,
                     totalCost = totalCost
                 )
@@ -190,10 +187,8 @@ class Repository(private val api: ApiService, private val database: AppDatabase)
                 database.appDao.updateUser(updatedUser)
             }
             Log.i(TAG, "success add Product to  Cart")
-
         } catch (e: Exception) {
             Log.e(TAG, "Error add Product to Cart $e")
-
 
         }
     }

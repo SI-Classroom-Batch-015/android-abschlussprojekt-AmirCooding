@@ -39,7 +39,6 @@ class FavoriteAdapter(
                 val navController = Navigation.findNavController(binding.root)
                 navController.navigate(R.id.detailsFragment)
             }
-
             removeProduct.setOnClickListener {
                 viewModel.removeProductFromFavoriteList(product)
             }

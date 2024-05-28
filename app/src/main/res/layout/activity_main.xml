@@ -52,6 +52,7 @@
             app:elevation="0dp"
             android:layout_height="wrap_content"
             android:src="@drawable/icon_cart_fill"
-            app:layout_anchor="@id/bottom_appBar" />
+            app:layout_anchor="@id/bottom_appBar"
+            android:contentDescription="TODO" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

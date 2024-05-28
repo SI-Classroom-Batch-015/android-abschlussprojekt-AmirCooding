@@ -61,5 +61,9 @@ interface AppDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addUserToDB(user: User)
 
+    @Query("SELECT * FROM user_table")
+    fun getAllUser() : LiveData<List<User>>
+
+
 
 }

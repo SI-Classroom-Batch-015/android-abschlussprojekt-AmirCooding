@@ -2,6 +2,8 @@ package com.amircodeing.syntaxinstitut.unique_store.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.amircodeing.syntaxinstitut.unique_store.R
@@ -16,12 +18,15 @@ class MainActivity : AppCompatActivity()
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater, null, false)
         setContentView(binding.root)
-        val navHost = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+        val navHost =
+            supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         val navController = navHost.navController
         binding.buttonNav.setupWithNavController(navController)
 
+        binding.floatActionButton.setOnClickListener {
+            navController.navigate(R.id.cartFragment)
+        }
     }
-
 
 
 

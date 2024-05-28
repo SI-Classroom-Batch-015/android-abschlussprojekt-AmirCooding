@@ -25,13 +25,8 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.StorageReference
 
 class DetailsFragment : Fragment(R.layout.fragment_details) {
-    private lateinit var firebaseDatabase: FirebaseDatabase
-    private lateinit var databaseReference: DatabaseReference
-    private lateinit var storageRef: StorageReference
     private lateinit var binding: FragmentDetailsBinding
-    private var uri: Uri? = null
     private val viewModel: HomeViewModel by activityViewModels()
-    private val viewModelFavorite: FavoriteViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
