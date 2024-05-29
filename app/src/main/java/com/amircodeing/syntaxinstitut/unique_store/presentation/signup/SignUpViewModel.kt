@@ -16,7 +16,21 @@ import com.google.firebase.storage.StorageReference
 
 class SignUpViewModel : ViewModel() {
 
-    fun setupUserNameInputField(signInView: View) {
+    /**
+     *
+     * Set up Custom FIeld for Inputs in Sign up screen
+     * @param signInView represents the basic building block for user interface components
+     * @see setupUserNameInputField
+     * @see setupEmailSignUpField
+     * @see setupPasswordInputField
+     * @see setupNumberInputField
+     * @see setupStreetInputField
+     * @see setupNumberInputField
+     * @see setupZipInputField
+     * @see setupCityInputField
+     * @see setupCountryInputField
+     */
+    private fun setupUserNameInputField(signInView: View) {
         signInView.findViewById<CustomInputField>(R.id.signUp_username).apply {
             setLabelText("Full Name")
             setInputHint("Allisson Becker")
@@ -24,7 +38,7 @@ class SignUpViewModel : ViewModel() {
     }
 
 
-    fun setupTelNumber(signInView: View) {
+    private fun setupTelNumber(signInView: View) {
         signInView.findViewById<CustomInputField>(R.id.signUpTel).apply {
             setLabelText("Mobile")
             setInputHint("00491157576789")
@@ -32,7 +46,7 @@ class SignUpViewModel : ViewModel() {
 
     }
 
-    fun setupEmailSignUpField(signInView: View) {
+    private fun setupEmailSignUpField(signInView: View) {
         signInView.findViewById<CustomInputField>(R.id.signUpEmail).apply {
             setLabelText("Email Address")
             setInputHint("example@gmail.com")
@@ -40,7 +54,7 @@ class SignUpViewModel : ViewModel() {
     }
 
 
-    fun setupPasswordInputField(signInView: View) {
+    private fun setupPasswordInputField(signInView: View) {
         signInView.findViewById<CustomInputField>(R.id.signUpPassword).apply {
             setLabelText("Password")
             setInputHint("*********")
@@ -48,35 +62,35 @@ class SignUpViewModel : ViewModel() {
         }
     }
 
-    fun setupStreetInputField(signInView: View) {
+    private fun setupStreetInputField(signInView: View) {
         signInView.findViewById<CustomInputField>(R.id.signUp_street_ET).apply {
             setLabelText("Street")
             setInputHint("Eduard-Bernstein-Straße")
         }
     }
 
-    fun setupNumberInputField(signInView: View) {
+    private fun setupNumberInputField(signInView: View) {
         signInView.findViewById<CustomInputField>(R.id.signUp_number_ET).apply {
             setLabelText("Nr")
             setInputHint("10")
         }
     }
 
-    fun setupZipInputField(signInView: View) {
+    private fun setupZipInputField(signInView: View) {
         signInView.findViewById<CustomInputField>(R.id.signUp_zip_ET).apply {
             setLabelText("Zip")
             setInputHint("28299")
         }
     }
 
-    fun setupCityInputField(signInView: View) {
+    private fun setupCityInputField(signInView: View) {
         signInView.findViewById<CustomInputField>(R.id.signUp_city_ET).apply {
             setLabelText("City")
             setInputHint("Bremen")
         }
     }
 
-    fun setupCountryInputField(signInView: View) {
+    private fun setupCountryInputField(signInView: View) {
         signInView.findViewById<CustomInputField>(R.id.signUp_country_ET).apply {
             setLabelText("Country")
             setInputHint("Deutschland")
@@ -96,6 +110,11 @@ class SignUpViewModel : ViewModel() {
        setupCountryInputField(signInView)
       setupNumberInputField(signInView)
     }
+
+
+
+
+
     fun getProfile(
         binding: FragmentSignUpBinding,
         callback: (User) -> Unit,
@@ -112,7 +131,11 @@ class SignUpViewModel : ViewModel() {
         val tel = binding.signUpTel.getText()
         val country = binding.signUpCountryET.getText().trim()
         val address = Address(street = street, number = number, zip = zip, city = city, country = country)
-
+        /**
+         *  Stored image Profile in Firebase Storage
+         *  @see provideParameters  Define a data class named ProvideParameters
+         *  that encapsulates parameters needed for certain operations.
+         */
         provideParameters.uri.let {
             provideParameters.storageRef.child(contactId).putFile(it).addOnSuccessListener { task ->
                 task.metadata?.reference?.downloadUrl?.addOnSuccessListener { url ->
@@ -147,7 +170,7 @@ class SignUpViewModel : ViewModel() {
         if (user.tel.isEmpty()) emptyFields.add("telephone")
         val password = user.password
         if (password.isEmpty() || password.length < 8) {
-            emptyFields.add("password (must be at least 8 characters long and contain at least one special character: !, @)")
+            emptyFields.add("password (must be at least 8 characters long and contain at least one special character")
         }
         if (user.address!!.street.isEmpty()) emptyFields.add("street")
         if (user.address.number.isEmpty()) emptyFields.add("number")
@@ -178,7 +201,6 @@ class SignUpViewModel : ViewModel() {
         signInView.findViewById<CustomInputField>(R.id.signUp_country_ET).clearInputs()
     }
 }
-
 data class ProvideParameters(
     val databaseReference: DatabaseReference,
     val storageRef: StorageReference,
