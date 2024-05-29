@@ -35,6 +35,13 @@ class ListItemsViewModel(application: Application) : AndroidViewModel(applicatio
     private val _selectedCategory = MutableLiveData<String>()
     val selectedCategory: LiveData<String> get() = _selectedCategory
 
+
+        // Set default category
+    init {
+        _selectedCategory.value = "men"
+        loadMenCategory()
+    }
+
     fun setSelectedCategory(category: String) {
         _selectedCategory.value = category
         when (category) {
