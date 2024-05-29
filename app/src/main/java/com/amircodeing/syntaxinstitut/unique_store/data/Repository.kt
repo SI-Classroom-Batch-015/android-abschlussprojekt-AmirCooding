@@ -165,7 +165,49 @@ class Repository(private val api: ApiService, private val database: AppDatabase)
         database.appDao.productUpdate(id, isLiked)
     }
 
+    suspend fun updateCartForUser(userId: String, updatedProduct: Product) {
+        val user = database.appDao.getUserById(userId)
+        user?.let {
+            val updatedCartItems = it.cart?.items?.toMutableList() ?: mutableListOf()
+            val existingProductIndex = updatedCartItems.indexOfFirst { product -> product.id == updatedProduct.id }
+            if (existingProductIndex != -1) {
+                updatedCartItems[existingProductIndex] = updatedProduct
+            } else {
+                updatedCartItems.add(updatedProduct)
+            }
+            updateCartPrices(userId, updatedCartItems)
+        }
+    }
 
+    suspend fun removeFromCart(userId: String, product: Product) {
+        val user = database.appDao.getUserById(userId)
+        user?.let {
+            val updatedCartItems = it.cart?.items?.filter { it.id != product.id } ?: listOf()
+            updateCartPrices(userId, updatedCartItems)
+        }
+    }
+
+    private suspend fun updateCartPrices(userId: String, updatedCartItems: List<Product>) {
+        val subTotal = updatedCartItems.sumOf { product -> (product.price ?: 0.0) * product.quantity }
+        val countProduct = updatedCartItems.sumOf { product -> product.quantity }
+        val shippingPrice = 5.99
+        val totalCost = subTotal + shippingPrice
+        val updatedCart = Cart(
+            items = updatedCartItems,
+            subTotal = subTotal,
+            shippingPrice = shippingPrice,
+            totalCost = totalCost,
+            countProduct = countProduct
+        )
+        val user = database.appDao.getUserById(userId)
+        user?.let {
+            val updatedUser = it.copy(cart = updatedCart)
+            database.appDao.updateUser(updatedUser)
+        }
+    }
+}
+
+/*
 
     fun updateCartForUser(userId: String, newProduct: Product) {
         try {
@@ -194,7 +236,8 @@ class Repository(private val api: ApiService, private val database: AppDatabase)
 
         }
     }
+*/
 
 
-}
+
 

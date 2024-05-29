@@ -1,4 +1,5 @@
 package com.amircodeing.syntaxinstitut.unique_store.presentation.cart
+
 import CartAdapter
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -40,17 +41,15 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-
-
         viewModel.users.observe(viewLifecycleOwner) { users ->
             if (users != null && users.isNotEmpty()) {
                 val currentUser = users[0]  // Assuming the first user for now
                 binding.subtotalPriceCartTV.text = currentUser.cart?.subTotal.toString()
                 binding.totalPriceCartTV.text = currentUser.cart?.totalCost.toString()
-                binding.cartRV.adapter = currentUser.cart?.items?.let { CartAdapter(it) }
+                binding.cartRV.adapter = currentUser.cart?.items?.let {
+                    CartAdapter(it, currentUser.id, viewModel)
+                }
             }
         }
     }
 }
-

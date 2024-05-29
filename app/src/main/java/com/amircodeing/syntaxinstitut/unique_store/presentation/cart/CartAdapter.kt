@@ -1,21 +1,15 @@
-import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.navigation.Navigation
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import com.amircodeing.syntaxinstitut.unique_store.R
 import com.amircodeing.syntaxinstitut.unique_store.data.model.Product
 import com.amircodeing.syntaxinstitut.unique_store.databinding.ItemToCartBinding
-import com.amircodeing.syntaxinstitut.unique_store.databinding.ItemToFavoriteBinding
-import com.amircodeing.syntaxinstitut.unique_store.presentation.favorite.FavoriteAdapter
-import com.amircodeing.syntaxinstitut.unique_store.presentation.favorite.FavoriteViewModel
+import com.amircodeing.syntaxinstitut.unique_store.presentation.cart.CartViewModel
 
 class CartAdapter(
     private val dataset: List<Product>,
+    private val userId: String,
+    private val viewModel: CartViewModel
 ) : RecyclerView.Adapter<CartAdapter.ItemViewHolder>() {
 
     inner class ItemViewHolder(private val binding: ItemToCartBinding) :
@@ -23,9 +17,20 @@ class CartAdapter(
         fun bind(product: Product) = with(binding) {
             imageCartIV.load(product.image)
             priceCartTV.text = product.price.toString()
+            countProduct.text = product.quantity.toString()
+
+            increaseItem.setOnClickListener {
+                viewModel.increaseItemQuantity(userId, product)
+            }
+
+            decreaseFromCart.setOnClickListener {
+                viewModel.decreaseItemQuantity(userId, product)
+            }
+
+            deleteFromCart.setOnClickListener {
+                viewModel.removeItemFromCart(userId, product)
+            }
         }
-
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CartAdapter.ItemViewHolder {
@@ -36,9 +41,7 @@ class CartAdapter(
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val product = dataset[position]
         holder.bind(product)
-
     }
-
 
     override fun getItemCount(): Int {
         return dataset.size
