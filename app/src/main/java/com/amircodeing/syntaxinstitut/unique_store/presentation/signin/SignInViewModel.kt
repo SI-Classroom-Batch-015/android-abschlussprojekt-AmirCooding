@@ -5,7 +5,6 @@ import android.view.View
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.amircodeing.syntaxinstitut.unique_store.R
 import com.amircodeing.syntaxinstitut.unique_store.data.Repository
 import com.amircodeing.syntaxinstitut.unique_store.data.local.database.AppDatabase
@@ -30,14 +29,14 @@ class SignInViewModel (application: Application) : AndroidViewModel(application)
     }
 
      fun setupEmailInputField(signInView: View) {
-        signInView.findViewById<CustomInputField>(R.id.signInemail).apply {
-            setLabelText("Email Address")
-            setInputHint("example@gmail.com")
+        signInView.findViewById<CustomInputField>(R.id.signIn_userName).apply {
+            setLabelText("Username")
+            setInputHint("Username")
         }
     }
 
-    fun userNameAndPasswordValidation(email: String, password: String, databaseReference: DatabaseReference) {
-        databaseReference.orderByChild("email").equalTo(email)
+    fun userNameAndPasswordValidation(userName: String, password: String, databaseReference: DatabaseReference) {
+        databaseReference.orderByChild("userName").equalTo(userName)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     if (dataSnapshot.exists()) {

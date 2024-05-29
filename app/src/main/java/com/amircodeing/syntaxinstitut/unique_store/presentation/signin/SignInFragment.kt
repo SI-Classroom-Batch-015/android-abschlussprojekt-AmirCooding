@@ -41,11 +41,11 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
 
         binding.customButtonSignIn.setOnClickListener {
             val password = binding.signInPassword.getText().trim()
-            val email = binding.signInemail.getText().trim()
-            if (email.isNotEmpty() && password.isNotEmpty()) {
-                viewModel.userNameAndPasswordValidation(email, password, databaseReference)
+            val userName = binding.signInUserName.getText().trim()
+            if (userName.isNotEmpty() && password.isNotEmpty()) {
+                viewModel.userNameAndPasswordValidation(userName, password, databaseReference)
             } else {
-                Toast.makeText(requireContext(), "Email or password is empty", Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), "Username or Password is empty", Toast.LENGTH_LONG).show()
             }
         }
 

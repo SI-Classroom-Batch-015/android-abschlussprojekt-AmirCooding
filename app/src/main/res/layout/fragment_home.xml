@@ -24,7 +24,7 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginStart="20dp"
-                android:src="@drawable/logo__cyrcle"
+                android:src="@drawable/logo"
                 />
         <View
                 android:layout_width="0dp"

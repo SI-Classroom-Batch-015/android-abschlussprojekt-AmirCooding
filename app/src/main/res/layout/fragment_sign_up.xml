@@ -153,7 +153,13 @@
                     android:layout_width="match_parent"
                     android:layout_marginBottom="10dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/signUp_username" />
+                    android:id="@+id/signUp_fullName" />
+
+            <com.amircodeing.syntaxinstitut.unique_store.utils.CustomInputField
+                    android:layout_width="match_parent"
+                    android:layout_marginBottom="10dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/signUp_userName" />
 
             <com.amircodeing.syntaxinstitut.unique_store.utils.CustomInputField
                     android:layout_width="match_parent"

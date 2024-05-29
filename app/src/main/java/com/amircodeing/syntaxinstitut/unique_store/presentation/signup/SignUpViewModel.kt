@@ -20,8 +20,9 @@ class SignUpViewModel : ViewModel() {
      *
      * Set up Custom FIeld for Inputs in Sign up screen
      * @param signInView represents the basic building block for user interface components
-     * @see setupUserNameInputField
+     * @see setupFullNameInputField
      * @see setupEmailSignUpField
+     * @see setupUserNameInputField
      * @see setupPasswordInputField
      * @see setupNumberInputField
      * @see setupStreetInputField
@@ -30,10 +31,17 @@ class SignUpViewModel : ViewModel() {
      * @see setupCityInputField
      * @see setupCountryInputField
      */
-    private fun setupUserNameInputField(signInView: View) {
-        signInView.findViewById<CustomInputField>(R.id.signUp_username).apply {
+    private fun setupFullNameInputField(signInView: View) {
+        signInView.findViewById<CustomInputField>(R.id.signUp_fullName).apply {
             setLabelText("Full Name")
             setInputHint("Allisson Becker")
+        }
+    }
+
+    private fun setupUserNameInputField(signInView: View) {
+        signInView.findViewById<CustomInputField>(R.id.signUp_userName).apply {
+            setLabelText("Username")
+            setInputHint("Username")
         }
     }
 
@@ -100,7 +108,8 @@ class SignUpViewModel : ViewModel() {
      * Set labels and hints for each input
      */
     fun callInputComponents(signInView: View) {
-      setupUserNameInputField(signInView)
+      setupFullNameInputField(signInView)
+        setupUserNameInputField(signInView)
         setupPasswordInputField(signInView)
      setupEmailSignUpField(signInView)
         setupTelNumber(signInView)
@@ -121,7 +130,8 @@ class SignUpViewModel : ViewModel() {
         provideParameters: ProvideParameters
     ) {
         val contactId = provideParameters.databaseReference.push().key!!
-        val fullName = binding.signUpUsername.getText()
+        val fullName = binding.signUpFullName.getText()
+        val userName = binding.signUpUserName.getText().trim()
         val email = binding.signUpEmail.getText().trim()
         val password = binding.signUpPassword.getText().trim()
         val street = binding.signUpStreetET.getText().trim()
@@ -143,6 +153,7 @@ class SignUpViewModel : ViewModel() {
                     val user = User(
                         id = contactId,
                         fullName = fullName,
+                        userName = userName,
                         email = email,
                         tel = tel,
                         password = password,
@@ -161,7 +172,8 @@ class SignUpViewModel : ViewModel() {
 
     fun checkEmptyField(user: User, context: Context): Boolean {
         val emptyFields = mutableListOf<String>()
-        if (user.fullName.isEmpty()) emptyFields.add("full name")
+        if (user.fullName.isEmpty()) emptyFields.add("Full Name")
+        if (user.userName.isEmpty()) emptyFields.add("Username")
         if (user.email.isEmpty()) emptyFields.add("email")
         val email = user.email
         if (email.isEmpty()) {
@@ -186,7 +198,7 @@ class SignUpViewModel : ViewModel() {
     }
 
     fun clearSignUpInputs(signInView: View) {
-        signInView.findViewById<CustomInputField>(R.id.signUp_username).clearInputs()
+        signInView.findViewById<CustomInputField>(R.id.signUp_fullName).clearInputs()
         // Clear the image view
         val signUpImageIV = signInView.findViewById<ImageView>(R.id.add_image_profile_IV)
         signUpImageIV.setImageDrawable(null) // Clear the image
