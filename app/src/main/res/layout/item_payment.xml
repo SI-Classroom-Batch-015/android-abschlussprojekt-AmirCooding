@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        >
+
+    <ImageView
+android:layout_margin="5dp"
+            android:id="@+id/imageView"
+            android:layout_width="108dp"
+            android:layout_height="148dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_launcher_background"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    <ImageView
+            android:id="@+id/removeImageView"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/clarity_remove_line"
+            android:contentDescription="Remove item"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.079"
+            app:layout_constraintHorizontal_bias="0.974"
+            app:layout_constraintStart_toEndOf="@+id/imageView" />
+
+    <TextView
+            android:id="@+id/quantity_product_TV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="5dp"
+            android:text="1"
+            app:layout_constraintStart_toEndOf="@+id/imageView"
+            app:layout_constraintTop_toTopOf="@+id/imageView"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView"
+            app:layout_constraintVertical_bias="0.169" />
+
+    <TextView
+            android:id="@+id/textView11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="X"
+            app:layout_constraintStart_toEndOf="@+id/quantity_product_TV"
+            app:layout_constraintTop_toTopOf="@+id/quantity_product_TV"
+            app:layout_constraintBottom_toBottomOf="@+id/quantity_product_TV"
+            app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+            android:id="@+id/title_product_TV"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="12dp"
+            android:maxWidth="200dp"
+            android:maxLines="7"
+            android:ellipsize="end"
+            android:text="sfdgfhgjhkjlkggggggggggggesruerherhrherherherherherherherherherherhgggggggggggggggggggggggggggggggggggggggggfssdgxfhgjklfsdghjk"
+            android:textColor="@color/primaryDark"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/textView11"
+            app:layout_constraintTop_toTopOf="@+id/textView11"
+            app:layout_constraintBottom_toBottomOf="@+id/textView11"
+            app:layout_constraintEnd_toStartOf="@+id/removeImageView"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="150.00 €"
+            android:textSize="10sp"
+            app:layout_constraintStart_toStartOf="@+id/title_product_TV"
+            app:layout_constraintTop_toBottomOf="@+id/title_product_TV" />
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="available for delivery in 4-5 working days"
+            android:textColor="@color/paypal_background"
+            android:textSize="10sp"
+            app:layout_constraintStart_toStartOf="@+id/quantity_product_TV"
+            app:layout_constraintTop_toTopOf="@+id/imageView"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView"
+            app:layout_constraintVertical_bias="0.918"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.227" />
+
+    <!-- Divider Line -->
+    <View
+            android:id="@+id/divider"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:background="@color/divider"
+            app:layout_constraintTop_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

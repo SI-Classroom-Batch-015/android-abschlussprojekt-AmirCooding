@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.Navigation
 import com.amircodeing.syntaxinstitut.unique_store.R
 import com.amircodeing.syntaxinstitut.unique_store.databinding.FragmentCartBinding
 import com.amircodeing.syntaxinstitut.unique_store.utils.ChangeButtonNavVisibility
@@ -40,7 +41,10 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        binding.customButtonMyCart.setOnClickListener {
+            val navController = Navigation.findNavController(binding.root)
+            navController.navigate(R.id.checkOutFragment)
+        }
         viewModel.users.observe(viewLifecycleOwner) { users ->
             if (users != null && users.isNotEmpty()) {
                 val currentUser = users[0]  // Assuming the first user for now

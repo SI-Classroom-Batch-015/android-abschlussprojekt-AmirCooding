@@ -6,27 +6,34 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import com.amircodeing.syntaxinstitut.unique_store.R
+import com.amircodeing.syntaxinstitut.unique_store.databinding.FragmentCheckOutBinding
+import com.amircodeing.syntaxinstitut.unique_store.utils.ChangeButtonNavVisibility
+import com.amircodeing.syntaxinstitut.unique_store.utils.CustomToolbar
+import com.amircodeing.syntaxinstitut.unique_store.utils.ToolbarComponents
 
 class CheckOutFragment : Fragment() {
-
-    companion object {
-        fun newInstance() = CheckOutFragment()
-    }
-
-    private lateinit var viewModel: CheckOutViewModel
+    private lateinit var binding: FragmentCheckOutBinding
+    private val viewModel: CheckOutViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_check_out, container, false)
-    }
+        binding =  FragmentCheckOutBinding.inflate(inflater, container, false)
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(CheckOutViewModel::class.java)
-        // TODO: Use the ViewModel
+        CustomToolbar.setToolbar(
+            ToolbarComponents(
+                view = binding.root,
+                title = "Check Out",
+                visibility = false,
+                backButtonVisibility = false, path = R.id.toolbar_checkOut,
+                icon = null
+            )
+        )
+        activity?.let { ChangeButtonNavVisibility.inVisibilityNavButton(it) }
+        return  binding.root
     }
 
 }

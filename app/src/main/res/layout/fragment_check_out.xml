@@ -1,13 +1,484 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         tools:context=".presentation.checkout.CheckOutFragment">
 
-    <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Hello" />
+    <include
+            layout="@layout/toolbar"
+            android:id="@+id/toolbar_checkOut"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/image_Details_IV" />
 
-</FrameLayout>
+    <LinearLayout
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+
+                    android:background="@color/background"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <LinearLayout
+                        android:padding="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/primaryDark"
+                        android:orientation="horizontal"
+                        android:id="@+id/linearLayout1"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent">
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:text="Delivery address"
+                            android:textColor="@color/background"
+                            android:textSize="15sp"
+                            android:layout_height="wrap_content" />
+
+                    <View
+                            android:layout_marginTop="12dp"
+                            android:layout_marginStart="3dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="3dp"
+                            android:background="@color/background"
+                            android:id="@+id/view" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                        android:padding="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:id="@+id/linearLayout2"
+                        app:layout_constraintTop_toBottomOf="@+id/linearLayout1"
+                        app:layout_constraintStart_toStartOf="@+id/linearLayout1"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginTop="7dp"
+                        app:layout_constraintHorizontal_bias="0.0">
+
+                    <TextView
+                            android:id="@+id/payment_fullName_TV"
+                            android:layout_width="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:textColor="@color/primaryDark"
+                            android:text="Full name"
+                            android:layout_height="wrap_content" />
+
+                    <LinearLayout
+                            android:id="@+id/linearLayout3"
+                            android:layout_width="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:orientation="horizontal"
+                            android:layout_height="wrap_content">
+
+                        <TextView
+                                android:id="@+id/payment_street_TV"
+                                android:layout_width="wrap_content"
+                                android:textColor="@color/primaryDark"
+                                android:text="Street"
+                                android:layout_height="wrap_content" />
+
+                        <TextView
+                                android:id="@+id/payment_number_TV"
+                                android:layout_marginStart="5dp"
+                                android:textColor="@color/primaryDark"
+                                android:layout_width="wrap_content"
+                                android:text="number"
+                                android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                            android:id="@+id/linearLayout4"
+                            android:layout_width="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:orientation="horizontal"
+                            android:layout_height="wrap_content">
+
+                        <TextView
+                                android:id="@+id/payment_zip_TV"
+                                android:layout_width="wrap_content"
+                                android:textColor="@color/primaryDark"
+                                android:text="Zip"
+                                android:layout_height="wrap_content" />
+
+                        <TextView
+                                android:id="@+id/payment_city_TV"
+                                android:layout_marginStart="5dp"
+                                android:textColor="@color/primaryDark"
+                                android:layout_width="wrap_content"
+                                android:text="city"
+                                android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+                    <TextView
+                            android:id="@+id/payment_country_TV"
+
+                            android:textColor="@color/primaryDark"
+                            android:layout_width="wrap_content"
+                            android:text="Country"
+                            android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                        android:layout_marginTop="7dp"
+                        android:layout_width="wrap_content"
+                        android:background="@color/primaryDark"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="5dp"
+                        android:id="@+id/linearLayout5"
+                        app:layout_constraintTop_toBottomOf="@id/linearLayout2"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/linearLayout2">
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:text="payment Method"
+                            android:textColor="@color/background"
+                            android:textSize="15sp"
+                            android:layout_height="wrap_content" />
+
+                    <View
+                            android:layout_marginTop="12dp"
+                            android:layout_marginStart="3dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="3dp"
+                            android:background="@color/background" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:padding="5dp"
+                        android:layout_marginTop="7dp"
+                        android:orientation="horizontal"
+                        app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/linearLayout5"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/linearLayout6">
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:text="payment Methode"
+                            android:layout_marginTop="10dp"
+                            android:textColor="@color/primaryDark"
+                            android:textSize="15sp"
+                            android:layout_height="wrap_content" />
+
+                    <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                    <ImageView
+                            android:src="@drawable/paypal_784404_1920"
+                            android:layout_width="100dp"
+                            android:layout_height="40dp" />
+
+                </LinearLayout>
+
+                <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:background="@color/divider"
+                        android:id="@+id/view1"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/linearLayout6"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+
+                <androidx.recyclerview.widget.RecyclerView
+
+                        android:layout_marginTop="5dp"
+                        android:layout_width="match_parent"
+                        tools:listitem="@layout/item_payment"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintTop_toBottomOf="@+id/linearLayout6"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:id="@+id/recyclerView" />
+
+                <LinearLayout
+                        android:id="@+id/linearLayout15"
+                        android:layout_width="match_parent"
+                        app:layout_constraintTop_toBottomOf="@+id/recyclerView"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+
+                    <LinearLayout
+
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:background="@drawable/item_payment_background"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:id="@+id/linearLayout16">
+
+                        <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_marginStart="20dp"
+                                android:src="@drawable/icon_gift_thin" />
+
+                        <View
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                android:layout_weight="1" />
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:textSize="14sp"
+                                android:textColor="@color/primaryDark"
+                                android:textStyle="bold"
+                                android:text="coupon"
+                                android:layout_height="wrap_content" />
+
+                        <View
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                android:layout_weight="1" />
+
+                        <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+
+                                android:src="@drawable/icon_light_arrow_right" />
+
+                    </LinearLayout>
+                    <LinearLayout
+
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:background="@drawable/item_payment_background"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:id="@+id/linearLayout17">
+
+                        <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_marginStart="20dp"
+                                android:src="@drawable/icon_seal_percent_thin" />
+
+                        <View
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                android:layout_weight="1" />
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:textSize="14sp"
+                                android:textColor="@color/primaryDark"
+                                android:textStyle="bold"
+                                android:text="discounts"
+                                android:layout_height="wrap_content" />
+
+                        <View
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                android:layout_weight="1" />
+
+                        <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+
+                                android:src="@drawable/icon_light_arrow_right" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:background="@drawable/item_payment_background"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:id="@+id/linearLayout18">
+
+                        <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_marginStart="20dp"
+                                android:src="@drawable/icon_free_point_up" />
+
+                        <View
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                android:layout_weight="1" />
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:textSize="14sp"
+                                android:textColor="@color/primaryDark"
+                                android:textStyle="bold"
+                                android:text="750 points worth 15 € redeemable"
+                                android:layout_height="wrap_content" />
+
+                        <View
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                android:layout_weight="1" />
+
+                        <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+
+                                android:src="@drawable/icon_light_arrow_right" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+
+                            android:padding="15dp"
+                            android:background="@drawable/item_payment_background"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:id="@+id/linearLayout19">
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:textSize="16sp"
+                                android:textColor="@color/primaryDark"
+                                android:textStyle="bold"
+                                android:text="Sub Cost "
+                                android:layout_height="wrap_content" />
+
+                        <View
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                android:layout_weight="1" />
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:textSize="16sp"
+                                android:textColor="@color/primaryDark"
+                                android:text="0.00 €"
+                                android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <LinearLayout
+
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="15dp"
+                            android:background="@drawable/item_payment_background"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:id="@+id/linearLayout50">
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:textSize="16sp"
+                                android:textColor="@color/primaryDark"
+                                android:textStyle="bold"
+                                android:text="Shipping"
+                                android:layout_height="wrap_content" />
+
+                        <View
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                android:layout_weight="1" />
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:textSize="16sp"
+                                android:textColor="@color/primaryDark"
+                                android:text="5.99 €"
+                                android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <LinearLayout
+
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="@color/primaryDark"
+                            android:padding="15dp"
+                            android:background="@drawable/item_payment_background"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:id="@+id/linearLayout20">
+
+                        <TextView
+                                android:layout_marginTop="5dp"
+                                android:layout_width="wrap_content"
+                                android:layout_marginBottom="5dp"
+                                android:textSize="18sp"
+                                android:textColor="@color/background"
+                                android:textStyle="bold"
+                                android:text="Totalcost"
+                                android:layout_height="wrap_content" />
+
+                        <View
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                android:layout_weight="1" />
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:textSize="16sp"
+                                android:textColor="@color/background"
+                                android:text="0.00 €"
+                                android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <ImageView
+                            android:layout_marginTop="50dp"
+
+                            android:src="@drawable/paypal_784404_1920"
+                            android:layout_width="match_parent"
+                            android:background="@color/paypal_background"
+                            android:padding="0dp"
+                            android:layout_height="50dp"/>
+
+                </LinearLayout>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </ScrollView>
+
+
+    </LinearLayout>
+
+    <View
+            android:layout_width="0dp"
+            android:layout_height="0.3dp"
+            android:background="@color/divider"
+            android:id="@+id/vi"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/scrollView2"
+            app:layout_constraintStart_toStartOf="parent" />
+
+</LinearLayout>
