@@ -44,8 +44,8 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
         viewModel.users.observe(viewLifecycleOwner) { users ->
             if (users != null && users.isNotEmpty()) {
                 val currentUser = users[0]  // Assuming the first user for now
-                binding.subtotalPriceCartTV.text = currentUser.cart?.subTotal.toString()
-                binding.totalPriceCartTV.text = currentUser.cart?.totalCost.toString()
+                binding.subtotalPriceCartTV.text = currentUser.cart?.subTotal.toString() +" €"
+                binding.totalPriceCartTV.text = currentUser.cart?.totalCost.toString() + " €"
                 binding.cartRV.adapter = currentUser.cart?.items?.let {
                     CartAdapter(it, currentUser.id, viewModel)
                 }

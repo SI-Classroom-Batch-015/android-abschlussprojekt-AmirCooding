@@ -53,8 +53,6 @@ class Repository(private val api: ApiService, private val database: AppDatabase)
     val showProductsToCart: LiveData<List<User>> get() = _showProductsToCart
 
 
-
-
     /**
      *
      * @_category Declare a MutableLiveData to hold a list of Category objects
@@ -169,7 +167,8 @@ class Repository(private val api: ApiService, private val database: AppDatabase)
         val user = database.appDao.getUserById(userId)
         user?.let {
             val updatedCartItems = it.cart?.items?.toMutableList() ?: mutableListOf()
-            val existingProductIndex = updatedCartItems.indexOfFirst { product -> product.id == updatedProduct.id }
+            val existingProductIndex =
+                updatedCartItems.indexOfFirst { product -> product.id == updatedProduct.id }
             if (existingProductIndex != -1) {
                 updatedCartItems[existingProductIndex] = updatedProduct
             } else {
@@ -187,16 +186,19 @@ class Repository(private val api: ApiService, private val database: AppDatabase)
         }
     }
 
-    private suspend fun updateCartPrices(userId: String, updatedCartItems: List<Product>) {
-        val subTotal = updatedCartItems.sumOf { product -> (product.price ?: 0.0) * product.quantity }
+    private fun updateCartPrices(userId: String, updatedCartItems: List<Product>) {
+        val subTotal =
+            updatedCartItems.sumOf { product -> (product.price ?: 0.00) * product.quantity }
         val countProduct = updatedCartItems.sumOf { product -> product.quantity }
         val shippingPrice = 5.99
-        val totalCost = subTotal + shippingPrice
+        val totalCost = if (countProduct == 0) 0.0 else subTotal + shippingPrice
+        val formattedSubTotal = String.format("%.2f", subTotal).toDouble()
+        val formattedTotalCost = String.format("%.2f", totalCost).toDouble()
         val updatedCart = Cart(
             items = updatedCartItems,
-            subTotal = subTotal,
+            subTotal = formattedSubTotal,
             shippingPrice = shippingPrice,
-            totalCost = totalCost,
+            totalCost = formattedTotalCost,
             countProduct = countProduct
         )
         val user = database.appDao.getUserById(userId)
