@@ -61,9 +61,8 @@ class HomeFragment : Fragment() {
                 val navController = Navigation.findNavController(binding.root)
                navController.navigate(R.id.listItemsFragment)
         }
-//TODO add photo to home profile
-        binding.imageProfileHome
-     //  Picasso.get().load()
+
+
 
     }
 

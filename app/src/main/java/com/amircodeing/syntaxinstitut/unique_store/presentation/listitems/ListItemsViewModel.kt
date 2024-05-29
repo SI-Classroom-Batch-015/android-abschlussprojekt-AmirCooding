@@ -26,8 +26,8 @@ class ListItemsViewModel(application: Application) : AndroidViewModel(applicatio
     private val _categoryJewelery = MutableLiveData<List<Product>>()
     val categoryJ: LiveData<List<Product>> get() = _categoryJewelery
 
-    private val _categoryE = MutableLiveData<List<Product>>()
-    val categoryEl: LiveData<List<Product>> get() = _categoryE
+    private val _categoryEl = MutableLiveData<List<Product>>()
+    val categoryEl: LiveData<List<Product>> get() = _categoryEl
 
     private val _categoryMen = MutableLiveData<List<Product>>()
     val categoryM: LiveData<List<Product>> get() = _categoryMen
@@ -37,12 +37,33 @@ class ListItemsViewModel(application: Application) : AndroidViewModel(applicatio
 
     fun setSelectedCategory(category: String) {
         _selectedCategory.value = category
-        // Simulate data load for debugging purposes
         when (category) {
-            "women" -> categoryWomen
-            "jewelery" -> categoryJewelery
-            "electronics" -> categoryE
-            "men" -> categoryM
+            "women" -> loadWomenCategory()
+            "jewelery" -> loadJeweleryCategory()
+            "electronics" -> loadElectronicsCategory()
+            "men" -> loadMenCategory()
+        }
+    }
+
+    private fun loadWomenCategory() {
+        viewModelScope.launch {
+            _categoryWomen.postValue(repository.categoryWomen.value)
+        }
+    }
+    private fun loadJeweleryCategory() {
+        viewModelScope.launch {
+            _categoryWomen.postValue(repository.categoryJeweler.value)
+        }
+    }
+    private fun loadElectronicsCategory() {
+        viewModelScope.launch {
+            _categoryWomen.postValue(repository.categoryElectronic.value)
+        }
+    }
+
+    private fun loadMenCategory() {
+        viewModelScope.launch {
+            _categoryWomen.postValue(repository.categoryMens.value)
         }
     }
 

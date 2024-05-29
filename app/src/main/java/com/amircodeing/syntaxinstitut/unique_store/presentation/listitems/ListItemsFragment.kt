@@ -1,14 +1,13 @@
 package com.amircodeing.syntaxinstitut.unique_store.presentation.listitems
 
 import android.content.res.ColorStateList
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -26,6 +25,8 @@ class ListItemsFragment : Fragment(R.layout.fragment_list_items) {
     private val viewModel: ListItemsViewModel by viewModels()
     private val homeViewModel: HomeViewModel by activityViewModels()
     private lateinit var adapter: ListCategoryAdapter
+    private var currentObserver: Observer<List<Product>>? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -49,18 +50,11 @@ class ListItemsFragment : Fragment(R.layout.fragment_list_items) {
 
         adapter = ListCategoryAdapter(homeViewModel)
         binding.listRV.adapter = adapter
-       viewModel.categoryMen.observe(viewLifecycleOwner){
-           adapter.submitList(it)
-       }
+
         setupCategoryClickListeners()
         observeCategories()
     }
 
-    /**
-     *      Set up click listener for the Electronics category TextView
-     *      Update the background tint of the selected TextView to indicate it's selected
-     *      Update the ViewModel with the selected category "electronics"
-     */
     private fun setupCategoryClickListeners() {
         with(binding) {
             categoryWomanTV.setOnClickListener {
@@ -86,27 +80,30 @@ class ListItemsFragment : Fragment(R.layout.fragment_list_items) {
     }
 
     /**
-     * Observe changes to the selected category in the ViewModel
-     *  When the selected category changes, perform the corresponding action
-     *         }
+     * the previous observer is removed before adding a new observer for the selected category.
      */
     private fun observeCategories() {
         viewModel.selectedCategory.observe(viewLifecycleOwner) { category ->
+            currentObserver?.let {
+                viewModel.categoryWomen.removeObserver(it)
+                viewModel.categoryJewelery.removeObserver(it)
+                viewModel.categoryE.removeObserver(it)
+                viewModel.categoryMen.removeObserver(it)
+            }
+            /**
+             * is used to track the current observer so that it can
+             * be removed when switching categories.
+             */
+            currentObserver = Observer { items ->
+                adapter.submitList(items)
+            }
             when (category) {
-                "women" -> viewModel.categoryWomen.observe(viewLifecycleOwner, categoryObserver)
-                "jewelery" -> viewModel.categoryJewelery.observe(
-                    viewLifecycleOwner,
-                    categoryObserver
-                )
-
-                "electronics" -> viewModel.categoryE.observe(viewLifecycleOwner, categoryObserver)
-                "men" -> viewModel.categoryMen.observe(viewLifecycleOwner, categoryObserver)
+                "women" -> viewModel.categoryWomen.observe(viewLifecycleOwner, currentObserver!!)
+                "jewelery" -> viewModel.categoryJewelery.observe(viewLifecycleOwner, currentObserver!!)
+                "electronics" -> viewModel.categoryE.observe(viewLifecycleOwner, currentObserver!!)
+                "men" -> viewModel.categoryMen.observe(viewLifecycleOwner, currentObserver!!)
             }
         }
-    }
-
-    private val categoryObserver = Observer<List<Product>> { items ->
-        adapter.submitList(items)
     }
 
     override fun onResume() {
@@ -116,11 +113,10 @@ class ListItemsFragment : Fragment(R.layout.fragment_list_items) {
         }
         activity?.let { ChangeButtonNavVisibility.visibilityNavButton(it) }
     }
-    /**
-     * Updates the UI to reflect the selected category by highlighting the respective TextView.
-     * It uses the updateBackgroundTint method to change the tint of the selected category TextView.
-     * @param category the category identifier as a String ("women", "jewelery", "electronics", "men").
-     */
+/**
+ * updates the UI to reflect the selected category by highlighting the respective TextView.
+ * @param category selected Category
+ */
     private fun updateUIForCategory(category: String) {
         when (category) {
             "women" -> updateBackgroundTint(binding.categoryWomanTV)
@@ -129,20 +125,18 @@ class ListItemsFragment : Fragment(R.layout.fragment_list_items) {
             "men" -> updateBackgroundTint(binding.categoryMenTV)
         }
     }
-/**
- * Reset background tint for all categories
- * Set the background tint for the selected category
- * Set the text color for the selected category
- */
+
+    /**
+     *updates the background tint and text color of the selected category
+     * TextView while resetting the others.
+     */
     private fun updateBackgroundTint(selectedTextView: TextView) {
         with(binding) {
-            // Reset background tint for all categories
             listOf(categoryWomanTV, categoryMenTV, categoryElectronicTV, categoryJeweleryTV).forEach {
                 it.backgroundTintList = null
                 it.setTextColor(ContextCompat.getColor(requireContext(), R.color.primaryDark))
             }
 
-            // Set the background tint for the selected category
             selectedTextView.backgroundTintList = ColorStateList.valueOf(
                 ContextCompat.getColor(
                     requireContext(),
@@ -150,11 +144,7 @@ class ListItemsFragment : Fragment(R.layout.fragment_list_items) {
                 )
             )
 
-            // Set the text color for the selected category
             selectedTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.divider))
         }
     }
-
 }
-
-

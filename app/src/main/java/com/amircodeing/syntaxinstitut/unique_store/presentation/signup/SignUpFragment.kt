@@ -72,6 +72,7 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
                                             Toast.LENGTH_LONG
                                         ).show()
                                     }
+                                    return
                                 }
 
                                 override fun onCancelled(error: DatabaseError) {

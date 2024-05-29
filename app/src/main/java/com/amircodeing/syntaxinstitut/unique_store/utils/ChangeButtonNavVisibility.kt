@@ -32,12 +32,7 @@ class ChangeButtonNavVisibility {
             bottomAppBar.visibility = View.VISIBLE
             floatActionButton.visibility = View.VISIBLE
         }
-        /*
-                fun setUpNBVisibility(activity: Activity) {
-                    activity.window?.decorView?.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-                    activity.window?.statusBarColor = ContextCompat.getColor(activity, R.color.background)
-                    inVisibilityNavButton(activity)
-                } */
+
     }
 
 
