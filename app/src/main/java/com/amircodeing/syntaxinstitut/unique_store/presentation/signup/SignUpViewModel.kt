@@ -13,6 +13,7 @@ import com.amircodeing.syntaxinstitut.unique_store.databinding.FragmentSignUpBin
 import com.amircodeing.syntaxinstitut.unique_store.utils.CustomInputField
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.storage.StorageReference
+import org.mindrot.jbcrypt.BCrypt
 
 class SignUpViewModel : ViewModel() {
 
@@ -104,24 +105,22 @@ class SignUpViewModel : ViewModel() {
             setInputHint("Deutschland")
         }
     }
+
     /**
      * Set labels and hints for each input
      */
     fun callInputComponents(signInView: View) {
-      setupFullNameInputField(signInView)
+        setupFullNameInputField(signInView)
         setupUserNameInputField(signInView)
         setupPasswordInputField(signInView)
-     setupEmailSignUpField(signInView)
+        setupEmailSignUpField(signInView)
         setupTelNumber(signInView)
-       setupCityInputField(signInView)
-      setupZipInputField(signInView)
-      setupStreetInputField(signInView)
-       setupCountryInputField(signInView)
-      setupNumberInputField(signInView)
+        setupCityInputField(signInView)
+        setupZipInputField(signInView)
+        setupStreetInputField(signInView)
+        setupCountryInputField(signInView)
+        setupNumberInputField(signInView)
     }
-
-
-
 
 
     fun getProfile(
@@ -133,14 +132,18 @@ class SignUpViewModel : ViewModel() {
         val fullName = binding.signUpFullName.getText()
         val userName = binding.signUpUserName.getText().trim()
         val email = binding.signUpEmail.getText().trim()
+        // Get the password from the input field
         val password = binding.signUpPassword.getText().trim()
+         // Generate a salt and hash the password
+        val hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt())
         val street = binding.signUpStreetET.getText().trim()
         val number = binding.signUpNumberET.getText().trim()
         val zip = binding.signUpZipET.getText().trim()
         val city = binding.signUpCityET.getText().trim()
         val tel = binding.signUpTel.getText()
         val country = binding.signUpCountryET.getText().trim()
-        val address = Address(street = street, number = number, zip = zip, city = city, country = country)
+        val address =
+            Address(street = street, number = number, zip = zip, city = city, country = country)
         /**
          *  Stored image Profile in Firebase Storage
          *  @see provideParameters  Define a data class named ProvideParameters
@@ -149,23 +152,35 @@ class SignUpViewModel : ViewModel() {
         provideParameters.uri.let {
             provideParameters.storageRef.child(contactId).putFile(it).addOnSuccessListener { task ->
                 task.metadata?.reference?.downloadUrl?.addOnSuccessListener { url ->
-                    Toast.makeText(provideParameters.context, "Image stored successfully", Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        provideParameters.context,
+                        "Image stored successfully",
+                        Toast.LENGTH_LONG
+                    ).show()
                     val user = User(
                         id = contactId,
                         fullName = fullName,
                         userName = userName,
                         email = email,
                         tel = tel,
-                        password = password,
+                        password = hashedPassword,
                         address = address,
                         image = url.toString()
                     )
                     callback(user)
                 }?.addOnFailureListener {
-                    Toast.makeText(provideParameters.context, "Failed to get download URL", Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        provideParameters.context,
+                        "Failed to get download URL",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }.addOnFailureListener {
-                Toast.makeText(provideParameters.context, "Failed to upload file", Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    provideParameters.context,
+                    "Failed to upload file",
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
     }
@@ -213,6 +228,7 @@ class SignUpViewModel : ViewModel() {
         signInView.findViewById<CustomInputField>(R.id.signUp_country_ET).clearInputs()
     }
 }
+
 data class ProvideParameters(
     val databaseReference: DatabaseReference,
     val storageRef: StorageReference,

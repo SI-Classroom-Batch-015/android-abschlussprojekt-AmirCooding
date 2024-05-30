@@ -8,7 +8,6 @@
         android:layout_height="match_parent"
         tools:context=".presentation.MainActivity">
 
-
     <androidx.fragment.app.FragmentContainerView
             android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
@@ -21,38 +20,37 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" />
 
-
     <com.google.android.material.bottomappbar.BottomAppBar
             android:id="@+id/bottom_appBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:fabCradleVerticalOffset="5dp"
-            app:fabCradleRoundedCornerRadius="40dp"
+            app:fabCradleVerticalOffset="0dp"
+            app:fabCradleRoundedCornerRadius="60dp"
             android:backgroundTint="@color/primaryDark"
             app:elevation="0dp"
             android:layout_gravity="bottom">
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
                 android:id="@+id/button_nav"
-                android:layout_marginEnd="16sp"
-                app:elevation="0dp"
-                android:background="@android:color/transparent"
-                app:itemIconTint="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="16sp"
+                android:background="@android:color/transparent"
+                app:elevation="0dp"
+                app:itemIconTint="@color/white"
                 app:itemTextColor="@color/white"
-                app:menu="@menu/bottom_navigation"/>
-
+                app:menu="@menu/bottom_navigation" />
     </com.google.android.material.bottomappbar.BottomAppBar>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/float_action_button"
             android:layout_width="wrap_content"
-            android:backgroundTint="@color/primaryDark"
-            app:elevation="0dp"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/primaryDark"
             android:src="@drawable/icon_cart_fill"
-            app:layout_anchor="@id/bottom_appBar"
-            android:contentDescription="TODO" />
+            android:contentDescription="TODO"
 
+            app:elevation="6dp"
+            app:layout_anchor="@id/bottom_appBar"
+            app:layout_anchorGravity="center" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

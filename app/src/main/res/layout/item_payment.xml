@@ -18,18 +18,7 @@ android:layout_margin="5dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" />
 
-    <ImageView
-            android:id="@+id/removeImageView"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/clarity_remove_line"
-            android:contentDescription="Remove item"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintVertical_bias="0.079"
-            app:layout_constraintHorizontal_bias="0.974"
-            app:layout_constraintStart_toEndOf="@+id/imageView" />
+
 
     <TextView
             android:id="@+id/quantity_product_TV"

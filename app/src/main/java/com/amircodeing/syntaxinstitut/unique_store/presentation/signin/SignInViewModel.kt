@@ -13,6 +13,7 @@ import com.amircodeing.syntaxinstitut.unique_store.data.remote.apiservice.ApiSer
 import com.amircodeing.syntaxinstitut.unique_store.utils.Constants
 import com.amircodeing.syntaxinstitut.unique_store.utils.CustomInputField
 import com.google.firebase.database.*
+import org.mindrot.jbcrypt.BCrypt
 
 class SignInViewModel (application: Application) : AndroidViewModel(application) {
     private val repository = Repository(ApiService, AppDatabase.getAppDatabase(application))
@@ -35,6 +36,7 @@ class SignInViewModel (application: Application) : AndroidViewModel(application)
         }
     }
 
+
     fun userNameAndPasswordValidation(userName: String, password: String, databaseReference: DatabaseReference) {
         databaseReference.orderByChild("userName").equalTo(userName)
             .addListenerForSingleValueEvent(object : ValueEventListener {
@@ -43,17 +45,22 @@ class SignInViewModel (application: Application) : AndroidViewModel(application)
                         for (userSnapshot in dataSnapshot.children) {
                             val userdata = userSnapshot.getValue(User::class.java)
                             if (userdata != null) {
-                                callUserToRoomDB(userdata)
-                            }
-                                Constants.currentUser = userdata
-                            if (userdata != null && userdata.password == password) {
-                                val userId = userSnapshot.key
-                                _signInResult.value = SignInResult.Success(userId)
-                                return
+                                // Validate hashed password
+                                if (BCrypt.checkpw(password, userdata.password)) {
+                                    // Password matches
+                                    callUserToRoomDB(userdata)
+                                    Constants.currentUser = userdata
+                                    val userId = userSnapshot.key
+                                    _signInResult.value = SignInResult.Success(userId)
+                                    return
+                                } else {
+                                    // Password does not match
+                                    _signInResult.value = SignInResult.Failure
+                                }
                             }
                         }
-                        _signInResult.value = SignInResult.Failure
                     } else {
+                        // User not found
                         _signInResult.value = SignInResult.Failure
                     }
                 }
@@ -63,6 +70,7 @@ class SignInViewModel (application: Application) : AndroidViewModel(application)
                 }
             })
     }
+
 
 
     fun callUserToRoomDB(user: User){

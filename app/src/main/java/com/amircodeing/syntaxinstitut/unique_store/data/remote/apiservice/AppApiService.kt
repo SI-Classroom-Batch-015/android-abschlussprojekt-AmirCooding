@@ -2,6 +2,7 @@ package com.amircodeing.syntaxinstitut.unique_store.data.remote.apiservice
 
 import com.amircodeing.syntaxinstitut.unique_store.data.model.Product
 import com.amircodeing.syntaxinstitut.unique_store.data.remote.BASE_URL
+import com.amircodeing.syntaxinstitut.unique_store.utils.Constants
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
@@ -18,7 +19,7 @@ private val moshi = Moshi.Builder()
 
 private val retrofit = Retrofit.Builder()
     .addConverterFactory(MoshiConverterFactory.create(moshi))
-    .baseUrl("https://fakestoreapi.com/")
+    .baseUrl(BASE_URL)
     .build()
 
 interface AppApiService {
