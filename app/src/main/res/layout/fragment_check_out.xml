@@ -3,6 +3,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
+        android:background="@color/background"
         android:layout_height="match_parent"
         android:orientation="vertical"
         tools:context=".presentation.checkout.CheckOutFragment">
@@ -15,6 +16,9 @@
 
     <LinearLayout
             android:layout_marginTop="10dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@color/background"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -22,13 +26,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-
+            <LinearLayout
                     android:background="@color/background"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
                 <LinearLayout
                         android:padding="5dp"
@@ -129,7 +131,6 @@
 
                     <TextView
                             android:id="@+id/payment_country_TV"
-
                             android:textColor="@color/primaryDark"
                             android:layout_width="wrap_content"
                             android:text="Country"
@@ -198,20 +199,22 @@
 
                 </LinearLayout>
 
+
                 <View
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:background="@color/divider"
                         android:id="@+id/view1"
+                        android:layout_marginBottom="5dp"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/linearLayout6"
+                        app:layout_constraintTop_toBottomOf="@+id/scrollView2"
                         app:layout_constraintStart_toStartOf="parent" />
 
 
                 <androidx.recyclerview.widget.RecyclerView
-
                         android:layout_marginTop="5dp"
                         android:layout_width="match_parent"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:listitem="@layout/item_payment"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
@@ -271,6 +274,7 @@
                                 android:src="@drawable/icon_light_arrow_right" />
 
                     </LinearLayout>
+
                     <LinearLayout
 
                             android:layout_width="match_parent"
@@ -371,7 +375,7 @@
                                 android:textSize="16sp"
                                 android:textColor="@color/primaryDark"
                                 android:textStyle="bold"
-                                android:text="Sub Cost "
+                                android:text="Sub Total"
                                 android:layout_height="wrap_content" />
 
                         <View
@@ -380,6 +384,7 @@
                                 android:layout_weight="1" />
 
                         <TextView
+                                android:id="@+id/sub_Total_PaymentTV"
                                 android:layout_width="wrap_content"
                                 android:textSize="16sp"
                                 android:textColor="@color/primaryDark"
@@ -445,40 +450,35 @@
                                 android:layout_weight="1" />
 
                         <TextView
+                                android:id="@+id/total_price_payment_TV"
                                 android:layout_width="wrap_content"
                                 android:textSize="16sp"
+                                android:textStyle="bold"
                                 android:textColor="@color/background"
                                 android:text="0.00 €"
                                 android:layout_height="wrap_content" />
                     </LinearLayout>
 
                     <ImageView
-                            android:layout_marginTop="50dp"
-
+                          android:layout_marginTop="50dp"
+                            android:id="@+id/payment_paypal_Buttom"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginEnd="5dp"
                             android:src="@drawable/paypal_784404_1920"
                             android:layout_width="match_parent"
                             android:background="@color/paypal_background"
                             android:padding="0dp"
-                            android:layout_height="50dp"/>
+                            android:layout_marginBottom="50dp"
+                            android:layout_height="50dp" />
 
                 </LinearLayout>
 
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
+            </LinearLayout>
 
         </ScrollView>
 
-
     </LinearLayout>
 
-    <View
-            android:layout_width="0dp"
-            android:layout_height="0.3dp"
-            android:background="@color/divider"
-            android:id="@+id/vi"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/scrollView2"
-            app:layout_constraintStart_toStartOf="parent" />
 
 </LinearLayout>

@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 
 class CartViewModel(application: Application) : AndroidViewModel(application) {
     private val repository = Repository(ApiService, AppDatabase.getAppDatabase(application))
-    val users: LiveData<List<User>> = repository.showProductsToCart
+    val users: LiveData<List<User>> = repository.userInformation
     fun increaseItemQuantity(userId: String, product: Product) {
         viewModelScope.launch {
             repository.updateCartForUser(userId, product.copy(quantity = product.quantity + 1))

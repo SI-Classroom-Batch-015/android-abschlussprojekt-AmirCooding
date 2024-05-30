@@ -49,8 +49,8 @@ class Repository(private val api: ApiService, private val database: AppDatabase)
     private val _showFavorites: LiveData<List<Product>> = database.appDao.getAllLiked()
     val showFavorites: LiveData<List<Product>> get() = _showFavorites
 
-    private val _showProductsToCart: LiveData<List<User>> = database.appDao.getAllUser()
-    val showProductsToCart: LiveData<List<User>> get() = _showProductsToCart
+    private val _userInformation: LiveData<List<User>> = database.appDao.getAllUser()
+    val userInformation: LiveData<List<User>> get() = _userInformation
 
 
     /**
@@ -209,36 +209,7 @@ class Repository(private val api: ApiService, private val database: AppDatabase)
     }
 }
 
-/*
 
-    fun updateCartForUser(userId: String, newProduct: Product) {
-        try {
-            val user = database.appDao.getUserById(userId)
-            user?.let {
-                val updatedCartItems = it.cart?.items?.toMutableList() ?: mutableListOf()
-                updatedCartItems.add(newProduct)
-                val subTotal = updatedCartItems.sumOf { product -> product.price ?: 0.0 }
-                val countProduct = (user.cart?.countProduct ?: 0) +1
-              //  val formattedSubTotal = String.format("%.2f", subTotal)
-                val shippingPrice = 5.99
-                val totalCost = subTotal + shippingPrice
-                val updatedCart = Cart(
-                    items = updatedCartItems,
-                    subTotal = subTotal,
-                    shippingPrice = shippingPrice,
-                    totalCost = totalCost,
-                    countProduct = countProduct
-                )
-                val updatedUser = it.copy(cart = updatedCart)
-                database.appDao.updateUser(updatedUser)
-            }
-            Log.i(TAG, "success add Product to  Cart")
-        } catch (e: Exception) {
-            Log.e(TAG, "Error add Product to Cart $e")
-
-        }
-    }
-*/
 
 
 

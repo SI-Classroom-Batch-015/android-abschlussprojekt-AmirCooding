@@ -1,6 +1,5 @@
 package com.amircodeing.syntaxinstitut.unique_store.presentation.checkout
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -35,5 +34,27 @@ class CheckOutFragment : Fragment() {
         activity?.let { ChangeButtonNavVisibility.inVisibilityNavButton(it) }
         return  binding.root
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        with(binding){
+           viewModel.userInfo.observe(viewLifecycleOwner){
+               info ->
+               for(item in info){
+                   paymentFullNameTV.text = item.fullName
+                   paymentStreetTV.text = item.address?.street
+                   paymentNumberTV.text = item.address?.number
+                   paymentZipTV.text = item.address?.zip
+                   paymentCityTV.text = item.address?.city
+                   paymentCountryTV.text = item.address?.country
+                   subTotalPaymentTV.text =String.format("%.2f €", item.cart?.subTotal)
+                   totalPricePaymentTV.text =String.format("%.2f €", item.cart?.totalCost)
+                 binding.recyclerView.adapter = item.cart?.let { CheckOutAdapter(it.items) }
+               }
+           }
+        }
+    }
+
+
 
 }

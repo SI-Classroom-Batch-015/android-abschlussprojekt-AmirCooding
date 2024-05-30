@@ -14,16 +14,17 @@
             app:layout_constraintStart_toStartOf="@+id/constraintLayout" />
 
     <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="419dp"
-            android:layout_height="328dp"
+            android:layout_width="411dp"
+            android:layout_height="454dp"
             tools:listitem="@layout/item_to_cart"
             android:id="@+id/cart_RV"
+
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar_cart"
-            android:layout_marginTop="20dp"
-            app:layout_constraintHorizontal_bias="0.0">
+            android:layout_marginTop="8dp"
+            app:layout_constraintHorizontal_bias="1.0">
 
     </androidx.recyclerview.widget.RecyclerView>
 
@@ -36,9 +37,8 @@
             android:backgroundTint="@color/white"
 
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintTop_toBottomOf="@+id/cart_RV"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintVertical_bias="1.0">
+            app:layout_constraintBottom_toBottomOf="parent">
+
         <LinearLayout
                 android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
@@ -62,18 +62,20 @@
                         android:text="subtotal"
                         android:textSize="16sp"
                         android:textColor="@color/hint"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content" />
+
                 <View
                         android:layout_width="0dp"
                         android:layout_height="0dp"
                         android:layout_weight="1" />
+
                 <TextView
                         android:id="@+id/subtotal_price_cart_TV"
                         android:layout_width="wrap_content"
                         android:text="234.99 €"
                         android:textSize="16sp"
                         android:textColor="@color/primaryDark"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content" />
 
             </LinearLayout>
 
@@ -92,18 +94,20 @@
                         android:text="shopping"
                         android:textSize="16sp"
                         android:textColor="@color/hint"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content" />
+
                 <View
                         android:layout_width="0dp"
                         android:layout_height="0dp"
                         android:layout_weight="1" />
+
                 <TextView
                         android:id="@+id/transfer_price_TV"
                         android:layout_width="wrap_content"
                         android:text="5.99 €"
                         android:textSize="16sp"
                         android:textColor="@color/primaryDark"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content" />
 
             </LinearLayout>
 
@@ -122,18 +126,20 @@
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:textColor="@color/hint"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content" />
+
                 <View
                         android:layout_width="0dp"
                         android:layout_height="0dp"
                         android:layout_weight="1" />
+
                 <TextView
                         android:id="@+id/total_price_cart_TV"
                         android:layout_width="wrap_content"
                         android:text="241.01 €"
                         android:textSize="16sp"
                         android:textColor="@color/primaryDark"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content" />
 
             </LinearLayout>
 
