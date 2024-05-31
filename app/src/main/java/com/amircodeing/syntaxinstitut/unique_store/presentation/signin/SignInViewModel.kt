@@ -79,10 +79,19 @@ class SignInViewModel (application: Application) : AndroidViewModel(application)
     }
 
 }
-
+/**
+ * this class represent the different results of a sign-in attempt
+ * @see UserNotFound Represents a failed sign-in due to the username not being found in the database
+ * @see WrongPassword Represents a failed sign-in due to the password being incorrect
+ .در زبان برنامه‌نویسی Kotlin، از object برای تعریف یک شیء تک‌نمونه‌ای (singleton) استفاده می‌شود. وقتی از object استفاده می‌کنید،
+ * در واقع می‌گویید که تنها یک نمونه از آن نوع خاص وجود دارد. این ویژگی زمانی مفید است
+ * که نوع داده نیازی به نگهداری وضعیت (داده‌ها) ندارد و دلیلی برای داشتن نمونه‌های متعدد از آن وجود ندارد.
+ *
+ *
+ */
 sealed class SignInResult {
     data class Success(val userId: String?) : SignInResult()
-    object UserNotFound : SignInResult()
-    object WrongPassword : SignInResult()
+    data object UserNotFound : SignInResult()
+    data object WrongPassword : SignInResult()
     data class Error(val errorMessage: String) : SignInResult()
 }
