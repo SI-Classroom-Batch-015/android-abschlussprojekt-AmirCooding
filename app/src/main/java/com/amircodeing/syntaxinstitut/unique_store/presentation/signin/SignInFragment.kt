@@ -49,7 +49,8 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
             if (userName.isNotEmpty() && password.isNotEmpty()) {
                 viewModel.userNameAndPasswordValidation(userName, password, databaseReference)
             } else {
-                Toast.makeText(requireContext(), "Username or Password is empty", Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), "Username or Password is empty", Toast.LENGTH_LONG)
+                    .show()
             }
         }
 
@@ -60,17 +61,22 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
                     val action = SignInFragmentDirections.actionSignInFragmentToHomeFragment()
                     findNavController().navigate(action)
                 }
-                is SignInResult.Failure -> {
-                    Toast.makeText(context, "Sign In Failed", Toast.LENGTH_LONG).show()
+
+                is SignInResult.UserNotFound -> {
+                    Toast.makeText(context, "Username not found", Toast.LENGTH_LONG).show()
                 }
+
+                is SignInResult.WrongPassword -> {
+                    Toast.makeText(context, "Incorrect password", Toast.LENGTH_LONG).show()
+                }
+
                 is SignInResult.Error -> {
-                    Toast.makeText(context, "Error: ${result.errorMessage}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, "Error: ${result.errorMessage}", Toast.LENGTH_LONG)
+                        .show()
                 }
             }
         }
+
+
     }
-
-
-
-
 }

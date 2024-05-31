@@ -24,6 +24,7 @@
 
         <ScrollView
                 android:layout_width="match_parent"
+                android:scrollbars="none"
                 android:layout_height="wrap_content">
 
             <LinearLayout
@@ -217,6 +218,7 @@
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:listitem="@layout/item_payment"
                         android:layout_height="wrap_content"
+                        android:scrollbars="none"
                         android:orientation="vertical"
                         app:layout_constraintTop_toBottomOf="@+id/linearLayout6"
                         app:layout_constraintEnd_toEndOf="parent"

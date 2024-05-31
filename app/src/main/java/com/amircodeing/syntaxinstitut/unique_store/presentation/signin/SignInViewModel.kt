@@ -55,13 +55,14 @@ class SignInViewModel (application: Application) : AndroidViewModel(application)
                                     return
                                 } else {
                                     // Password does not match
-                                    _signInResult.value = SignInResult.Failure
+                                    _signInResult.value = SignInResult.WrongPassword
+                                    return
                                 }
                             }
                         }
                     } else {
                         // User not found
-                        _signInResult.value = SignInResult.Failure
+                        _signInResult.value = SignInResult.UserNotFound
                     }
                 }
 
@@ -81,6 +82,7 @@ class SignInViewModel (application: Application) : AndroidViewModel(application)
 
 sealed class SignInResult {
     data class Success(val userId: String?) : SignInResult()
-    object Failure : SignInResult()
+    object UserNotFound : SignInResult()
+    object WrongPassword : SignInResult()
     data class Error(val errorMessage: String) : SignInResult()
 }
