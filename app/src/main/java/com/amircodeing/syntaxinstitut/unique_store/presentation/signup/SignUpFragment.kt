@@ -74,7 +74,6 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
                                     }
                                     return
                                 }
-
                                 override fun onCancelled(error: DatabaseError) {
                                     Toast.makeText(
                                         requireContext(),

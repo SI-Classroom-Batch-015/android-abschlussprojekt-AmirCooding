@@ -29,7 +29,7 @@ class SignInViewModel (application: Application) : AndroidViewModel(application)
         }
     }
 
-     fun setupEmailInputField(signInView: View) {
+     fun setupUserNameInputField(signInView: View) {
         signInView.findViewById<CustomInputField>(R.id.signIn_userName).apply {
             setLabelText("Username")
             setInputHint("Username")

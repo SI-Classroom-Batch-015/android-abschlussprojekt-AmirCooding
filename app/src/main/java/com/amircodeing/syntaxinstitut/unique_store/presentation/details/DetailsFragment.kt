@@ -69,7 +69,6 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                 }
                     }
 
-
             addToFavoriteB.setOnClickListener {
                     if (product != null) {
                         if (product.isLiked == true) {

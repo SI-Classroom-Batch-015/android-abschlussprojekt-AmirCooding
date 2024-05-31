@@ -1,5 +1,6 @@
 package com.amircodeing.syntaxinstitut.unique_store.data
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,7 +11,9 @@ import com.amircodeing.syntaxinstitut.unique_store.data.model.Cart
 import com.amircodeing.syntaxinstitut.unique_store.data.model.Category
 import com.amircodeing.syntaxinstitut.unique_store.data.model.Product
 import com.amircodeing.syntaxinstitut.unique_store.data.model.User
+import com.amircodeing.syntaxinstitut.unique_store.data.remote.CrudFDataBase
 import com.amircodeing.syntaxinstitut.unique_store.data.remote.apiservice.ApiService
+import com.google.firebase.database.DatabaseReference
 
 
 const val TAG = "Repository"
@@ -161,6 +164,15 @@ class Repository(private val api: ApiService, private val database: AppDatabase)
 
     fun updateProduct(id: Int, isLiked: Boolean) {
         database.appDao.productUpdate(id, isLiked)
+    }
+
+    fun updatePassword(updatePasswordHandler: CrudFDataBase.UpdatePasswordHandler){
+        try {
+           CrudFDataBase.updatePassword(updatePasswordHandler)
+            Log.i(TAG, "success update Password of FDB")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error update password of FDB $e")
+        }
     }
 
     suspend fun updateCartForUser(userId: String, updatedProduct: Product) {

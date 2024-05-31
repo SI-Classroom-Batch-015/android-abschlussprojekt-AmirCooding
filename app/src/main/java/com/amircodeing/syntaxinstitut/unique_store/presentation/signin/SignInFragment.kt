@@ -25,7 +25,7 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
     ): View? {
         binding = FragmentSignInBinding.inflate(inflater, container, false)
         activity?.let { ChangeButtonNavVisibility.inVisibilityNavButton(it) }
-        viewModel.setupEmailInputField(binding.root)
+        viewModel.setupUserNameInputField(binding.root)
         viewModel.setupPasswordInputField(binding.root)
         firebaseDatabase = FirebaseDatabase.getInstance()
         return binding.root
@@ -37,6 +37,10 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
         binding.signUpFFTV.setOnClickListener {
             val navController = Navigation.findNavController(binding.root)
             navController.navigate(R.id.signUpFragment)
+        }
+        binding.recoveryPasswordTV.setOnClickListener {
+            val navController = Navigation.findNavController(binding.root)
+            navController.navigate(R.id.recoveryPasswordFragment)
         }
 
         binding.customButtonSignIn.setOnClickListener {
