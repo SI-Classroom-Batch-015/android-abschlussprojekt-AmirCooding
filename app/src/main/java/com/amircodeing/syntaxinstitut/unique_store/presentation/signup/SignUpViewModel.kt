@@ -1,21 +1,29 @@
 package com.amircodeing.syntaxinstitut.unique_store.presentation.signup
 
+import android.app.Application
 import android.content.Context
-import android.net.Uri
 import android.view.View
-import android.widget.ImageView
 import android.widget.Toast
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.amircodeing.syntaxinstitut.unique_store.R
-import com.amircodeing.syntaxinstitut.unique_store.data.model.Address
+import com.amircodeing.syntaxinstitut.unique_store.data.Repository
+import com.amircodeing.syntaxinstitut.unique_store.data.local.database.AppDatabase
+import com.amircodeing.syntaxinstitut.unique_store.data.model.Auth
 import com.amircodeing.syntaxinstitut.unique_store.data.model.User
-import com.amircodeing.syntaxinstitut.unique_store.databinding.FragmentSignUpBinding
+import com.amircodeing.syntaxinstitut.unique_store.data.remote.apiservice.ApiService
+import com.amircodeing.syntaxinstitut.unique_store.data.remote.firebaseService.FirebaseService
+import com.amircodeing.syntaxinstitut.unique_store.data.remote.firebaseService.SessionState
 import com.amircodeing.syntaxinstitut.unique_store.utils.CustomInputField
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.storage.StorageReference
-import org.mindrot.jbcrypt.BCrypt
+import kotlinx.coroutines.launch
 
-class SignUpViewModel : ViewModel() {
+class SignUpViewModel(application: Application) : AndroidViewModel(application) {
+    private val repository = Repository(ApiService, AppDatabase.getAppDatabase(application) , FirebaseService())
+
+    private val _sessionState = MutableLiveData<SessionState>()
+    val sessionState: LiveData<SessionState> get() = _sessionState
 
     /**
      *
@@ -32,6 +40,7 @@ class SignUpViewModel : ViewModel() {
      * @see setupCityInputField
      * @see setupCountryInputField
      */
+
     private fun setupFullNameInputField(signInView: View) {
         signInView.findViewById<CustomInputField>(R.id.signUp_fullName).apply {
             setLabelText("Full Name")
@@ -77,28 +86,24 @@ class SignUpViewModel : ViewModel() {
             setInputHint("Eduard-Bernstein-Straße")
         }
     }
-
     private fun setupNumberInputField(signInView: View) {
         signInView.findViewById<CustomInputField>(R.id.signUp_number_ET).apply {
             setLabelText("Nr")
             setInputHint("10")
         }
     }
-
     private fun setupZipInputField(signInView: View) {
         signInView.findViewById<CustomInputField>(R.id.signUp_zip_ET).apply {
             setLabelText("Zip")
             setInputHint("28299")
         }
     }
-
     private fun setupCityInputField(signInView: View) {
         signInView.findViewById<CustomInputField>(R.id.signUp_city_ET).apply {
             setLabelText("City")
             setInputHint("Bremen")
         }
     }
-
     private fun setupCountryInputField(signInView: View) {
         signInView.findViewById<CustomInputField>(R.id.signUp_country_ET).apply {
             setLabelText("Country")
@@ -106,13 +111,18 @@ class SignUpViewModel : ViewModel() {
         }
     }
 
+    fun signUp(auth: Auth) {
+        viewModelScope.launch {
+            val isSuccess = repository.createUser(auth)
+            _sessionState.value = if (isSuccess) SessionState.REGISTERED else SessionState.FAILED
+        }
+    }
+
     /**
      * Set labels and hints for each input
      */
-    fun callInputComponents(signInView: View) {
+    fun setViewOnProfileInput(signInView: View) {
         setupFullNameInputField(signInView)
-        setupUserNameInputField(signInView)
-        setupPasswordInputField(signInView)
         setupEmailSignUpField(signInView)
         setupTelNumber(signInView)
         setupCityInputField(signInView)
@@ -122,88 +132,26 @@ class SignUpViewModel : ViewModel() {
         setupNumberInputField(signInView)
     }
 
+    fun setViewOnAuthInput(signInView: View) {
+           setupPasswordInputField(signInView)
+            setupUserNameInputField(signInView)
+    }
 
-    fun getProfile(
-        binding: FragmentSignUpBinding,
-        callback: (User) -> Unit,
-        provideParameters: ProvideParameters
-    ) {
-        val contactId = provideParameters.databaseReference.push().key!!
-        val fullName = binding.signUpFullName.getText()
-        val userName = binding.signUpUserName.getText().trim()
-        val email = binding.signUpEmail.getText().trim()
-        // Get the password from the input field
-        val password = binding.signUpPassword.getText().trim()
-         // Generate a salt and hash the password
-        val hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt())
-        val street = binding.signUpStreetET.getText().trim()
-        val number = binding.signUpNumberET.getText().trim()
-        val zip = binding.signUpZipET.getText().trim()
-        val city = binding.signUpCityET.getText().trim()
-        val tel = binding.signUpTel.getText()
-        val country = binding.signUpCountryET.getText().trim()
-        val address =
-            Address(street = street, number = number, zip = zip, city = city, country = country)
-        /**
-         *  Stored image Profile in Firebase Storage
-         *  @see provideParameters  Define a data class named ProvideParameters
-         *  that encapsulates parameters needed for certain operations.
-         */
-        provideParameters.uri.let {
-            provideParameters.storageRef.child(contactId).putFile(it).addOnSuccessListener { task ->
-                task.metadata?.reference?.downloadUrl?.addOnSuccessListener { url ->
-                    Toast.makeText(
-                        provideParameters.context,
-                        "Image stored successfully",
-                        Toast.LENGTH_LONG
-                    ).show()
-                    val user = User(
-                        id = contactId,
-                        fullName = fullName,
-                        userName = userName,
-                        email = email,
-                        tel = tel,
-                        password = hashedPassword,
-                        address = address,
-                        image = url.toString()
-                    )
-                    callback(user)
-                }?.addOnFailureListener {
-                    Toast.makeText(
-                        provideParameters.context,
-                        "Failed to get download URL",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-            }.addOnFailureListener {
-                Toast.makeText(
-                    provideParameters.context,
-                    "Failed to upload file",
-                    Toast.LENGTH_LONG
-                ).show()
-            }
+    fun setProfile(user : User) {
+        viewModelScope.launch {
+            repository.setProfile(user)
         }
     }
 
-    fun checkEmptyField(user: User, context: Context): Boolean {
+    fun checkEmptyFieldInAuth(auth : Auth, context: Context): Boolean {
         val emptyFields = mutableListOf<String>()
-        if (user.fullName.isEmpty()) emptyFields.add("Full Name")
-        if (user.userName.isEmpty()) emptyFields.add("Username")
-        if (user.email.isEmpty()) emptyFields.add("email")
-        val email = user.email
-        if (email.isEmpty()) {
-            emptyFields.add("email (must be contain @)")
+        with(auth) {
+            if (username.isEmpty()) emptyFields.add("Full Name")
+            val password = password
+            if (password.isEmpty() || password.length < 8) {
+                emptyFields.add("password (must be at least 8 characters long and contain at least one special character)")
+            }
         }
-        if (user.tel.isEmpty()) emptyFields.add("telephone")
-        val password = user.password
-        if (password.isEmpty() || password.length < 8) {
-            emptyFields.add("password (must be at least 8 characters long and contain at least one special character")
-        }
-        if (user.address!!.street.isEmpty()) emptyFields.add("street")
-        if (user.address.number.isEmpty()) emptyFields.add("number")
-        if (user.address.zip.isEmpty()) emptyFields.add("zip")
-        if (user.address.city.isEmpty()) emptyFields.add("city")
-        if (user.address.country.isEmpty()) emptyFields.add("country")
         if (emptyFields.isNotEmpty()) {
             val message = "The following fields are empty: ${emptyFields.joinToString(", ")}"
             Toast.makeText(context, message, Toast.LENGTH_LONG).show()
@@ -212,26 +160,35 @@ class SignUpViewModel : ViewModel() {
         return true
     }
 
-    fun clearSignUpInputs(signInView: View) {
-        signInView.findViewById<CustomInputField>(R.id.signUp_fullName).clearInputs()
-        // Clear the image view
-        val signUpImageIV = signInView.findViewById<ImageView>(R.id.add_image_profile_IV)
-        signUpImageIV.setImageDrawable(null) // Clear the image
-        signUpImageIV.setBackgroundResource(0) // Clear background if necessary
-
-        signInView.findViewById<CustomInputField>(R.id.signUpTel).clearInputs()
-        signInView.findViewById<CustomInputField>(R.id.signUpEmail).clearInputs()
-        signInView.findViewById<CustomInputField>(R.id.signUp_street_ET).clearInputs()
-        signInView.findViewById<CustomInputField>(R.id.signUp_number_ET).clearInputs()
-        signInView.findViewById<CustomInputField>(R.id.signUp_zip_ET).clearInputs()
-        signInView.findViewById<CustomInputField>(R.id.signUp_city_ET).clearInputs()
-        signInView.findViewById<CustomInputField>(R.id.signUp_country_ET).clearInputs()
-    }
 }
 
-data class ProvideParameters(
-    val databaseReference: DatabaseReference,
-    val storageRef: StorageReference,
-    val context: Context,
-    val uri: Uri
-)
+
+     fun checkEmptyFieldInProfile(user: User, context: Context): Boolean {
+        val emptyFields = mutableListOf<String>()
+        with(user) {
+            if (fullName.isEmpty()) emptyFields.add("Full Name")
+            if (email.isEmpty()) emptyFields.add("email")
+            if (tel.isEmpty()) emptyFields.add("telephone")
+            val password = password
+            if (password.isEmpty() || password.length < 8) {
+                emptyFields.add("password (must be at least 8 characters long and contain at least one special character)")
+            }
+            with(address) {
+                if (this?.street?.isEmpty() == true) emptyFields.add("street")
+                if (this?.number?.isEmpty() == true) emptyFields.add("number")
+                if (this?.zip?.isEmpty() == true) emptyFields.add("zip")
+                if (this?.city?.isEmpty() == true) emptyFields.add("city")
+                if (this?.country?.isEmpty() == true) emptyFields.add("country")
+            }
+        }
+        if (emptyFields.isNotEmpty()) {
+            val message = "The following fields are empty: ${emptyFields.joinToString(", ")}"
+            Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+            return false
+        }
+        return true
+    }
+
+
+
+

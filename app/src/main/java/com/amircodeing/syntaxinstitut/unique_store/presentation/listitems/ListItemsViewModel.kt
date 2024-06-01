@@ -10,10 +10,10 @@ import com.amircodeing.syntaxinstitut.unique_store.data.Repository
 import com.amircodeing.syntaxinstitut.unique_store.data.local.database.AppDatabase
 import com.amircodeing.syntaxinstitut.unique_store.data.model.Product
 import com.amircodeing.syntaxinstitut.unique_store.data.remote.apiservice.ApiService
+import com.amircodeing.syntaxinstitut.unique_store.data.remote.firebaseService.FirebaseService
 import kotlinx.coroutines.launch
-
 class ListItemsViewModel(application: Application) : AndroidViewModel(application) {
-    private val repository = Repository(ApiService, AppDatabase.getAppDatabase(application))
+    private val repository = Repository(ApiService, AppDatabase.getAppDatabase(application) , FirebaseService())
     val categoryE = repository.categoryElectronic
     val categoryMen = repository.categoryMens
     val categoryWomen = repository.categoryWomen

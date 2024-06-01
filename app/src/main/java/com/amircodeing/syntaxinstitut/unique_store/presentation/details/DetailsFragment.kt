@@ -74,8 +74,6 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                         if (product.isLiked == true) {
                             viewModel.addProductToFavoriteList(product)
                             viewModel.updateProduct(product.id, !product.isLiked!!)
-                            Constants.currentUser?.let { it1 -> viewModel.addFavoriteToFBDB(it1.id, product.id.toString(), requireContext()) }
-
                             // Set the drawable to the empty heart icon
                             addToFavoriteB.setCompoundDrawablesWithIntrinsicBounds(
                                 R.drawable.icon_heart_dark_empty, 0, 0, 0)

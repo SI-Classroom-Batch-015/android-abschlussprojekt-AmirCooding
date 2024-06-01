@@ -35,8 +35,7 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
         super.onViewCreated(view, savedInstanceState)
         val databaseReference = firebaseDatabase.reference.child("users")
         binding.signUpFFTV.setOnClickListener {
-            val navController = Navigation.findNavController(binding.root)
-            navController.navigate(R.id.signUpFragment)
+            Navigation.findNavController(binding.root).navigate(R.id.authFragment)
         }
         binding.recoveryPasswordTV.setOnClickListener {
             val navController = Navigation.findNavController(binding.root)
@@ -44,38 +43,10 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
         }
 
         binding.customButtonSignIn.setOnClickListener {
-            val password = binding.signInPassword.getText().trim()
-            val userName = binding.signInUserName.getText().trim()
-            if (userName.isNotEmpty() && password.isNotEmpty()) {
-                viewModel.userNameAndPasswordValidation(userName, password, databaseReference)
-            } else {
-                Toast.makeText(requireContext(), "Username or Password is empty", Toast.LENGTH_LONG)
-                    .show()
-            }
+
         }
 
-        viewModel.signInResult.observe(viewLifecycleOwner) { result ->
-            when (result) {
-                is SignInResult.Success -> {
-                    Toast.makeText(context, "Sign In Successful", Toast.LENGTH_LONG).show()
-                    val action = SignInFragmentDirections.actionSignInFragmentToHomeFragment()
-                    findNavController().navigate(action)
-                }
 
-                is SignInResult.UserNotFound -> {
-                    Toast.makeText(context, "Username not found", Toast.LENGTH_LONG).show()
-                }
-
-                is SignInResult.WrongPassword -> {
-                    Toast.makeText(context, "Incorrect password", Toast.LENGTH_LONG).show()
-                }
-
-                is SignInResult.Error -> {
-                    Toast.makeText(context, "Error: ${result.errorMessage}", Toast.LENGTH_LONG)
-                        .show()
-                }
-            }
-        }
 
 
     }

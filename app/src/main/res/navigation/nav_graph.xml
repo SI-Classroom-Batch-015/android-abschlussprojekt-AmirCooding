@@ -68,4 +68,9 @@
             android:name="com.amircodeing.syntaxinstitut.unique_store.presentation.signup.SignUpFragment"
             android:label="fragment_sign_up"
             tools:layout="@layout/fragment_sign_up" />
+    <fragment
+            android:id="@+id/authFragment"
+            android:name="com.amircodeing.syntaxinstitut.unique_store.presentation.signup.AuthFragment"
+            android:label="fragment_auth"
+            tools:layout="@layout/fragment_auth" />
 </navigation>

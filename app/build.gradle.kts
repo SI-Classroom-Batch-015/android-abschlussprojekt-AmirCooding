@@ -46,15 +46,15 @@ android {
 dependencies {
     //firebase
     implementation (platform("com.google.firebase:firebase-bom:32.4.0"))
-    implementation ("com.google.firebase:firebase-analytics:17.2.1")
     implementation("com.google.firebase:firebase-firestore:25.0.0")
     implementation("com.google.firebase:firebase-storage")
-    implementation("com.google.firebase:firebase-auth")
     implementation ("com.google.firebase:firebase-database:21.0.0")
+    implementation("com.google.firebase:firebase-auth:23.0.0")
 
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
+
 
     val retrofitVersion = "2.9.0"
     val roomVersion = "2.6.0"
@@ -67,7 +67,7 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:2.7.5")
     implementation ("com.google.code.gson:gson:2.8.2")
     testImplementation("junit:junit:4.13.2")
-    // foe hashing password
+    // for hashing password
     implementation("org.mindrot:jbcrypt:0.4")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")

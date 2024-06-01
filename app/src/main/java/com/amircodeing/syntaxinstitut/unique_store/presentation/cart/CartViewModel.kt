@@ -10,10 +10,11 @@ import com.amircodeing.syntaxinstitut.unique_store.data.local.database.AppDataba
 import com.amircodeing.syntaxinstitut.unique_store.data.model.Product
 import com.amircodeing.syntaxinstitut.unique_store.data.model.User
 import com.amircodeing.syntaxinstitut.unique_store.data.remote.apiservice.ApiService
+import com.amircodeing.syntaxinstitut.unique_store.data.remote.firebaseService.FirebaseService
 import kotlinx.coroutines.launch
 
 class CartViewModel(application: Application) : AndroidViewModel(application) {
-    private val repository = Repository(ApiService, AppDatabase.getAppDatabase(application))
+    private val repository = Repository(ApiService, AppDatabase.getAppDatabase(application) , FirebaseService())
     val users: LiveData<List<User>> = repository.userInformation
     private val _cartItems = MutableLiveData<MutableList<Product>>()
     val cartItems: LiveData<MutableList<Product>> = _cartItems

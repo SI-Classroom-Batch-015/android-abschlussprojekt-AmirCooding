@@ -9,16 +9,21 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.Navigation
 import com.amircodeing.syntaxinstitut.unique_store.R
+import com.amircodeing.syntaxinstitut.unique_store.data.model.Address
+import com.amircodeing.syntaxinstitut.unique_store.data.model.User
+import com.amircodeing.syntaxinstitut.unique_store.data.remote.firebaseService.SessionState
 import com.amircodeing.syntaxinstitut.unique_store.databinding.FragmentSignUpBinding
 import com.amircodeing.syntaxinstitut.unique_store.utils.ChangeButtonNavVisibility
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 
 class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
     private lateinit var firebaseDatabase: FirebaseDatabase
+    private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var databaseReference: DatabaseReference
     private lateinit var storageRef: StorageReference
     private lateinit var binding: FragmentSignUpBinding
@@ -31,71 +36,34 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentSignUpBinding.inflate(inflater, container, false)
+        firebaseAuth = FirebaseAuth.getInstance()
         firebaseDatabase = FirebaseDatabase.getInstance()
         databaseReference = firebaseDatabase.reference.child("users")
         storageRef = FirebaseStorage.getInstance().getReference("Images")
         selectImageProfile()
-
         activity?.let { ChangeButtonNavVisibility.inVisibilityNavButton(it) }
-        viewModel.callInputComponents(binding.root)
+        viewModel.setViewOnProfileInput(binding.root)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.signInButtonInSignUp.setOnClickListener {
-            val navController = Navigation.findNavController(binding.root)
-            navController.navigate(R.id.signInFragment)
-        }
-
         binding.customButtonSignup.setOnClickListener {
-            uri?.let { imageUri ->
-                val provideParameters =
-                    ProvideParameters(databaseReference, storageRef, requireContext(), imageUri)
-                viewModel.getProfile(binding, { user ->
-                    if (viewModel.checkEmptyField(user, requireContext())) {
-                        databaseReference.orderByChild("email").equalTo(user.email)
-                            .addListenerForSingleValueEvent(object : ValueEventListener {
-                                override fun onDataChange(snapshot: DataSnapshot) {
-                                    if (!snapshot.exists()) {
-                                        databaseReference.child(user.id).setValue(user)
-                                        Toast.makeText(
-                                            requireContext(),
-                                            "Signup Successful",
-                                            Toast.LENGTH_LONG
-                                        ).show()
-                                    } else {
-                                        Toast.makeText(
-                                            requireContext(),
-                                            "User already exists",
-                                            Toast.LENGTH_LONG
-                                        ).show()
-                                    }
-                                    return
-                                }
-                                override fun onCancelled(error: DatabaseError) {
-                                    Toast.makeText(
-                                        requireContext(),
-                                        "Database Error: $error",
-                                        Toast.LENGTH_LONG
-                                    ).show()
-                                }
-                            })
-                        viewModel.clearSignUpInputs(binding.root)
-                        val navController = Navigation.findNavController(binding.root)
-                        navController.navigate(R.id.signInFragment)
-                    } else {
-                        Toast.makeText(
-                            requireContext(),
-                            "Please fill all fields",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
-                }, provideParameters)
-            } ?: Toast.makeText(requireContext(), "Please select an image", Toast.LENGTH_LONG)
-                .show()
-        }
+            val user = User(
+                fullName = binding.signUpFullName.getText().trim(),
+                email = binding.signUpEmail.getText().trim(),
+                tel =binding.signUpTel.getText().trim(),
+                address = Address(
+                    street = binding.signUpStreetET.getText().trim(),
+                    number = binding.signUpNumberET.getText().trim(),
+                    zip = binding.signUpZipET.getText().trim(),
+                    city = binding.signUpCityET.getText().trim(),
+                    country = binding.signUpCountryET.getText().trim(),
+                )
+            )
+
+            }
     }
 
     private fun selectImageProfile() {

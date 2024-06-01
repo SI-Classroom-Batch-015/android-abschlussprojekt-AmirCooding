@@ -1,24 +1,25 @@
 package com.amircodeing.syntaxinstitut.unique_store.data
 
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.amircodeing.syntaxinstitut.unique_store.data.local.database.AppDatabase
 import com.amircodeing.syntaxinstitut.unique_store.data.local.datasource.DataSource
 import com.amircodeing.syntaxinstitut.unique_store.data.local.datasource.DataSourceImpl
+import com.amircodeing.syntaxinstitut.unique_store.data.model.Auth
 import com.amircodeing.syntaxinstitut.unique_store.data.model.Cart
 import com.amircodeing.syntaxinstitut.unique_store.data.model.Category
 import com.amircodeing.syntaxinstitut.unique_store.data.model.Product
 import com.amircodeing.syntaxinstitut.unique_store.data.model.User
-import com.amircodeing.syntaxinstitut.unique_store.data.remote.CrudFDataBase
+
 import com.amircodeing.syntaxinstitut.unique_store.data.remote.apiservice.ApiService
-import com.google.firebase.database.DatabaseReference
+import com.amircodeing.syntaxinstitut.unique_store.data.remote.firebaseService.FirebaseService
+import com.amircodeing.syntaxinstitut.unique_store.data.remote.firebaseService.FirestormService
 
 
 const val TAG = "Repository"
 
-class Repository(private val api: ApiService, private val database: AppDatabase) {
+class Repository(private val api: ApiService, private val database: AppDatabase,private val firebaseService: FirebaseService) {
     private val dataSource: DataSource = DataSourceImpl()
 
     /**
@@ -55,6 +56,10 @@ class Repository(private val api: ApiService, private val database: AppDatabase)
     private val _userInformation: LiveData<List<User>> = database.appDao.getAllUser()
     val userInformation: LiveData<List<User>> get() = _userInformation
 
+    private val _userProfile = MutableLiveData<User?>()
+    val userProfile: LiveData<User?> get() = _userProfile
+
+    val isLoggedIn = firebaseService.isLoggedIn
 
     /**
      *
@@ -78,7 +83,6 @@ class Repository(private val api: ApiService, private val database: AppDatabase)
     fun getProduct(): LiveData<Product> {
         return product
     }
-
 
     /**
      * fetch Products from api and set it on _product variable
@@ -115,13 +119,68 @@ class Repository(private val api: ApiService, private val database: AppDatabase)
             Log.e(TAG, "Error loading category $e")
         }
     }
-
+//TODO improve  this method what should be deleted ? and where should it be deleted ?
     suspend fun deleteAll() {
         try {
             database.appDao.deleteAll()
-            Log.i(TAG, "success loading category")
+            Log.i(TAG, "success Delete All Product from ....")
         } catch (e: Exception) {
             Log.e(TAG, "Error loading category $e")
+        }
+    }
+
+    suspend fun createUser(auth: Auth): Boolean {
+        return try {
+            signOut()
+            firebaseService.createUserWithUserNameAndPassword(auth)
+        } catch (e: Exception) {
+            Log.e(Repository::class.simpleName, "Could not create a user")
+            false
+        }
+    }
+
+    suspend fun signInUser(auth : Auth): Boolean {
+        return try {
+            val result = firebaseService.signInWithEmailAndPassword(auth)
+            getUserProfile()
+            result
+        } catch (e: Exception) {
+            Log.e(Repository::class.simpleName, "Could not log-in the user")
+            false
+        }
+    }
+
+    fun signOut() {
+        try {
+            firebaseService.signOut()
+            _userProfile.value = null
+        } catch (e: Exception) {
+            Log.e(Repository::class.simpleName, "Could not log-out the user")
+        }
+    }
+
+    // Profiles
+
+    suspend fun setProfile(profile: User): Boolean {
+        try {
+            val uid = firebaseService.userId ?: return false
+            val firestormService = FirestormService(uid)
+            firestormService.setProfile(profile)
+            getUserProfile()
+            return true
+        } catch (e: Exception) {
+            Log.e(Repository::class.simpleName, "Could not create a profile")
+            return false
+        }
+    }
+
+    private suspend fun getUserProfile() {
+        try {
+            val uid = firebaseService.userId ?: return
+            val firestormService = FirestormService(uid)
+            _userProfile.value = firestormService.getProfile(uid)
+        } catch (e: Exception) {
+            Log.e(Repository::class.simpleName, "Could not get profile")
         }
     }
 
@@ -166,14 +225,7 @@ class Repository(private val api: ApiService, private val database: AppDatabase)
         database.appDao.productUpdate(id, isLiked)
     }
 
-    fun updatePassword(updatePasswordHandler: CrudFDataBase.UpdatePasswordHandler){
-        try {
-           CrudFDataBase.updatePassword(updatePasswordHandler)
-            Log.i(TAG, "success update Password of FDB")
-        } catch (e: Exception) {
-            Log.e(TAG, "Error update password of FDB $e")
-        }
-    }
+
 
     suspend fun updateCartForUser(userId: String, updatedProduct: Product) {
         val user = database.appDao.getUserById(userId)
@@ -197,10 +249,9 @@ class Repository(private val api: ApiService, private val database: AppDatabase)
             updateCartPrices(userId, updatedCartItems)
         }
     }
-
+// TODO move to ViewModel
     private fun updateCartPrices(userId: String, updatedCartItems: List<Product>) {
-        val subTotal =
-            updatedCartItems.sumOf { product -> (product.price ?: 0.00) * product.quantity }
+        val subTotal = updatedCartItems.sumOf { product -> (product.price ?: 0.00) * product.quantity }
         val countProduct = updatedCartItems.sumOf { product -> product.quantity }
         val shippingPrice = 5.99
         val totalCost = if (countProduct == 0) 0.0 else subTotal + shippingPrice

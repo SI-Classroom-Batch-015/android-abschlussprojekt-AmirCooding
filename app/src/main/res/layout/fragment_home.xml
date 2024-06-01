@@ -163,7 +163,7 @@
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-
+ android:paddingStart="5dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:layout_width="match_parent"
             android:orientation="horizontal"
