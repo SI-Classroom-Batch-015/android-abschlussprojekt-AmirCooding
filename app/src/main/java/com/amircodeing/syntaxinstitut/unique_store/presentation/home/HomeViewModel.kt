@@ -27,6 +27,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+
     fun loadCategory() {
         viewModelScope.launch {
             repository.loadCategory()

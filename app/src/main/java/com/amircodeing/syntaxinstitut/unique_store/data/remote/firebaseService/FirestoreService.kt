@@ -4,7 +4,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
 
-class FirestormService(private val uid: String) {
+class FirestoreService(private val uid: String) {
     private val database = Firebase.firestore
 
     suspend fun setProfile(user: User) {

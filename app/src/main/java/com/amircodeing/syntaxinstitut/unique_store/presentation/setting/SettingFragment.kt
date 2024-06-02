@@ -1,29 +1,26 @@
 package com.amircodeing.syntaxinstitut.unique_store.presentation.setting
 
-import android.content.Intent
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.viewModels
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import coil.load
 import com.amircodeing.syntaxinstitut.unique_store.R
 import com.amircodeing.syntaxinstitut.unique_store.databinding.FragmentSettingBinding
-import com.amircodeing.syntaxinstitut.unique_store.presentation.MainActivity
-import com.amircodeing.syntaxinstitut.unique_store.presentation.signin.SignInFragmentDirections
 import com.amircodeing.syntaxinstitut.unique_store.utils.Constants
 import com.amircodeing.syntaxinstitut.unique_store.utils.CustomToolbar
 import com.amircodeing.syntaxinstitut.unique_store.utils.ToolbarComponents
-import com.google.firebase.auth.FirebaseAuth
-
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+const val  TAG = "SettingFragment"
 class SettingFragment : Fragment(R.layout.fragment_setting) {
-
     private lateinit var binding: FragmentSettingBinding
-    private lateinit var mAuth: FirebaseAuth
-
+    private val viewModle  : SettingViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -37,12 +34,18 @@ class SettingFragment : Fragment(R.layout.fragment_setting) {
                 icon = null
             )
         )
-        mAuth = FirebaseAuth.getInstance()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.logOutB.setOnClickListener {
+            viewModle.signOut()
+            Toast.makeText(context, "Sign Out Successful", Toast.LENGTH_LONG).show()
+            Navigation.findNavController(binding.root).navigate(R.id.signInFragment)
+
+        }
         val user = Constants.currentUser
         if (user != null) {
             with(binding) {
@@ -55,12 +58,6 @@ class SettingFragment : Fragment(R.layout.fragment_setting) {
                 zipTV.text = user.address?.zip
                 cityTV.text = user.address?.city
                 countryTV.text = user.address?.country
-                logOutB.setOnClickListener {
-                    mAuth.signOut()
-                    Toast.makeText(context, "Sign Out Successful", Toast.LENGTH_LONG).show()
-                    val action = SettingFragmentDirections.actionSettingFragmentToSignInFragment()
-                    findNavController().navigate(action)
-                }
             }
         }
 

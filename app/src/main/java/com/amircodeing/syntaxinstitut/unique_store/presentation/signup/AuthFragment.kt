@@ -17,14 +17,14 @@ import com.amircodeing.syntaxinstitut.unique_store.utils.ChangeButtonNavVisibili
 
 class AuthFragment : Fragment() {
 
-    private  lateinit var  binding : FragmentAuthBinding
-    private  val viewModel  : SignUpViewModel by  viewModels()
+    private lateinit var binding: FragmentAuthBinding
+    private val viewModel: SignUpViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-      binding = FragmentAuthBinding.inflate(inflater, container, false)
+        binding = FragmentAuthBinding.inflate(inflater, container, false)
         activity?.let { ChangeButtonNavVisibility.inVisibilityNavButton(it) }
         viewModel.setViewOnAuthInput(binding.root)
         return binding.root
@@ -32,25 +32,32 @@ class AuthFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-            binding.customButtonCreateAccount.setOnClickListener {
 
-                   val auth = Auth(
-                       "${binding.signUpUserName.getText().trim()}@gmail.com",
-                                   hashPassword(binding.signUpPassword.getText().trim())
-                   )
+        binding.signInButtonInSignUp.setOnClickListener {
+            Navigation.findNavController(binding.root).navigate(R.id.signInFragment)
+        }
+        binding.customButtonCreateAccount.setOnClickListener {
+            val auth = Auth(
+                binding.signUpUserName.getText().trim(),
+                hashPassword(binding.signUpPassword.getText().trim())
+            )
+            if (viewModel.checkEmptyFieldInAuth(auth, requireContext())) {
                 viewModel.signUp(auth)
                 viewModel.sessionState.observe(viewLifecycleOwner) { state ->
                     val message = when (state) {
                         SessionState.REGISTERED -> {
                             Navigation.findNavController(binding.root).navigate(R.id.signUpFragment)
-                            "You successfully registered!"
+                            "profile has been successfully saved!"
                         }
+
                         SessionState.FAILED -> "Your action failed!"
                         else -> throw NotImplementedError()
                     }
                     Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
                 }
             }
+
+        }
 
     }
 

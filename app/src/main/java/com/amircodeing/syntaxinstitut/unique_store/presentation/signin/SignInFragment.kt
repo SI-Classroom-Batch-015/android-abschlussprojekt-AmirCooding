@@ -10,6 +10,9 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.amircodeing.syntaxinstitut.unique_store.R
+import com.amircodeing.syntaxinstitut.unique_store.data.model.Auth
+import com.amircodeing.syntaxinstitut.unique_store.data.model.hashPassword
+import com.amircodeing.syntaxinstitut.unique_store.data.remote.firebaseService.SessionState
 import com.amircodeing.syntaxinstitut.unique_store.databinding.FragmentSignInBinding
 import com.amircodeing.syntaxinstitut.unique_store.utils.ChangeButtonNavVisibility
 import com.google.firebase.database.FirebaseDatabase
@@ -33,7 +36,6 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val databaseReference = firebaseDatabase.reference.child("users")
         binding.signUpFFTV.setOnClickListener {
             Navigation.findNavController(binding.root).navigate(R.id.authFragment)
         }
@@ -43,6 +45,26 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
         }
 
         binding.customButtonSignIn.setOnClickListener {
+
+            val auth = Auth(
+                binding.signInUserName.getText().trim(),
+                hashPassword(binding.signInPassword.getText().trim())
+            )
+            if(viewModel.checkEmptyFieldInAuth(auth,requireContext())){
+                viewModel.signIn(auth)
+                viewModel.sessionState.observe(viewLifecycleOwner) { state ->
+                    val message = when (state) {
+                        SessionState.REGISTERED -> {
+                            Navigation.findNavController(binding.root).navigate(R.id.homeFragment)
+                            viewModel.isLoggedIn
+                            "Login  been successfully"
+                        }
+                        SessionState.FAILED -> "Your action failed!"
+                        else -> throw NotImplementedError()
+                    }
+                    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                }
+            }
 
         }
 

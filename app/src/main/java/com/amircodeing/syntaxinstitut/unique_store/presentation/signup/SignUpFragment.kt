@@ -2,6 +2,7 @@ package com.amircodeing.syntaxinstitut.unique_store.presentation.signup
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,9 +10,11 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.Navigation
 import com.amircodeing.syntaxinstitut.unique_store.R
 import com.amircodeing.syntaxinstitut.unique_store.data.model.Address
 import com.amircodeing.syntaxinstitut.unique_store.data.model.User
+import com.amircodeing.syntaxinstitut.unique_store.data.remote.firebaseService.FirebaseService
 import com.amircodeing.syntaxinstitut.unique_store.data.remote.firebaseService.SessionState
 import com.amircodeing.syntaxinstitut.unique_store.databinding.FragmentSignUpBinding
 import com.amircodeing.syntaxinstitut.unique_store.utils.ChangeButtonNavVisibility
@@ -20,15 +23,11 @@ import com.google.firebase.database.*
 
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-
+const val TAG =" SignUpFragment"
 class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
-    private lateinit var firebaseDatabase: FirebaseDatabase
-    private lateinit var firebaseAuth: FirebaseAuth
-    private lateinit var databaseReference: DatabaseReference
-    private lateinit var storageRef: StorageReference
     private lateinit var binding: FragmentSignUpBinding
-    private var uri: Uri? = null
-
+    private val f = FirebaseService()
+    private var imageUri: Uri? = null
     private val viewModel: SignUpViewModel by viewModels()
 
     override fun onCreateView(
@@ -36,34 +35,10 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentSignUpBinding.inflate(inflater, container, false)
-        firebaseAuth = FirebaseAuth.getInstance()
-        firebaseDatabase = FirebaseDatabase.getInstance()
-        databaseReference = firebaseDatabase.reference.child("users")
-        storageRef = FirebaseStorage.getInstance().getReference("Images")
         selectImageProfile()
         activity?.let { ChangeButtonNavVisibility.inVisibilityNavButton(it) }
         viewModel.setViewOnProfileInput(binding.root)
         return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        binding.customButtonSignup.setOnClickListener {
-            val user = User(
-                fullName = binding.signUpFullName.getText().trim(),
-                email = binding.signUpEmail.getText().trim(),
-                tel =binding.signUpTel.getText().trim(),
-                address = Address(
-                    street = binding.signUpStreetET.getText().trim(),
-                    number = binding.signUpNumberET.getText().trim(),
-                    zip = binding.signUpZipET.getText().trim(),
-                    city = binding.signUpCityET.getText().trim(),
-                    country = binding.signUpCountryET.getText().trim(),
-                )
-            )
-
-            }
     }
 
     private fun selectImageProfile() {
@@ -75,7 +50,7 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
             // Set the selected image URI to the ImageView.
             binding.addImageProfileIV.setImageURI(uri)
             // If the URI is not null, assign it to the variable 'uri'.
-            if (uri != null) this.uri = uri
+            if (uri != null) this.imageUri = uri
         }
         /**
          * Set an OnClickListener on the ImageView (addImageProfileIV) to launch the image picker.
@@ -83,4 +58,49 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
          */
         binding.addImageProfileIV.setOnClickListener { pickImage.launch("image/*") }
     }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.customButtonSignup.setOnClickListener {
+            Log.e(TAG ,"UID ---------------------------->"+ f.userId?.let { it1 -> Log.i(TAG , it1) }.toString())
+            val user = User(
+                fullName = binding.signUpFullName.getText().trim(),
+                email = binding.signUpEmail.getText().trim(),
+                tel = binding.signUpTel.getText().trim(),
+                address = Address(
+                    street = binding.signUpStreetET.getText().trim(),
+                    number = binding.signUpNumberET.getText().trim(),
+                    zip = binding.signUpZipET.getText().trim(),
+                    city = binding.signUpCityET.getText().trim(),
+                    country = binding.signUpCountryET.getText().trim()
+                )
+            )
+            if(viewModel.checkEmptyFieldInProfile(user,requireContext())){
+                val isRegisteringUser = viewModel.userProfile.value != null
+
+
+                if (isRegisteringUser) {
+                    Navigation.findNavController(binding.root).navigate(R.id.signInFragment)
+                } else {
+
+                }
+
+            }
+            viewModel.sessionState.observe(viewLifecycleOwner) { state ->
+                val message = when (state) {
+                    SessionState.REGISTERED -> {
+                        "profile has been successfully saved!"
+                    }
+                    SessionState.FAILED -> "Your action failed!"
+                    else -> throw NotImplementedError()
+                }
+                Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+            }
+        }
+
+
+
+    }
+
 }

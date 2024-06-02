@@ -1,5 +1,6 @@
 package com.amircodeing.syntaxinstitut.unique_store.data
 
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -11,17 +12,20 @@ import com.amircodeing.syntaxinstitut.unique_store.data.model.Cart
 import com.amircodeing.syntaxinstitut.unique_store.data.model.Category
 import com.amircodeing.syntaxinstitut.unique_store.data.model.Product
 import com.amircodeing.syntaxinstitut.unique_store.data.model.User
-
 import com.amircodeing.syntaxinstitut.unique_store.data.remote.apiservice.ApiService
 import com.amircodeing.syntaxinstitut.unique_store.data.remote.firebaseService.FirebaseService
-import com.amircodeing.syntaxinstitut.unique_store.data.remote.firebaseService.FirestormService
+import com.amircodeing.syntaxinstitut.unique_store.data.remote.firebaseService.StorageService
 
 
 const val TAG = "Repository"
 
-class Repository(private val api: ApiService, private val database: AppDatabase,private val firebaseService: FirebaseService) {
+class Repository(
+    private val api: ApiService,
+    private val database: AppDatabase,
+    private val firebaseService: FirebaseService
+) {
     private val dataSource: DataSource = DataSourceImpl()
-
+    private val storageService = StorageService()
     /**
      * @_products Declare a MutableLiveData to hold a list of Product objects
      * @products Publicly expose a LiveData object
@@ -59,7 +63,8 @@ class Repository(private val api: ApiService, private val database: AppDatabase,
     private val _userProfile = MutableLiveData<User?>()
     val userProfile: LiveData<User?> get() = _userProfile
 
-    val isLoggedIn = firebaseService.isLoggedIn
+    val isLoggedIn: Boolean
+        get() = firebaseService.isLoggedIn
 
     /**
      *
@@ -119,7 +124,8 @@ class Repository(private val api: ApiService, private val database: AppDatabase,
             Log.e(TAG, "Error loading category $e")
         }
     }
-//TODO improve  this method what should be deleted ? and where should it be deleted ?
+
+    //TODO improve  this method what should be deleted ? and where should it be deleted ?
     suspend fun deleteAll() {
         try {
             database.appDao.deleteAll()
@@ -132,17 +138,16 @@ class Repository(private val api: ApiService, private val database: AppDatabase,
     suspend fun createUser(auth: Auth): Boolean {
         return try {
             signOut()
-            firebaseService.createUserWithUserNameAndPassword(auth)
+            firebaseService.createUserWithEmailAndPassword(auth)
         } catch (e: Exception) {
             Log.e(Repository::class.simpleName, "Could not create a user")
             false
         }
     }
 
-    suspend fun signInUser(auth : Auth): Boolean {
+    suspend fun signInUser(auth: Auth): Boolean {
         return try {
             val result = firebaseService.signInWithEmailAndPassword(auth)
-            getUserProfile()
             result
         } catch (e: Exception) {
             Log.e(Repository::class.simpleName, "Could not log-in the user")
@@ -156,31 +161,6 @@ class Repository(private val api: ApiService, private val database: AppDatabase,
             _userProfile.value = null
         } catch (e: Exception) {
             Log.e(Repository::class.simpleName, "Could not log-out the user")
-        }
-    }
-
-    // Profiles
-
-    suspend fun setProfile(profile: User): Boolean {
-        try {
-            val uid = firebaseService.userId ?: return false
-            val firestormService = FirestormService(uid)
-            firestormService.setProfile(profile)
-            getUserProfile()
-            return true
-        } catch (e: Exception) {
-            Log.e(Repository::class.simpleName, "Could not create a profile")
-            return false
-        }
-    }
-
-    private suspend fun getUserProfile() {
-        try {
-            val uid = firebaseService.userId ?: return
-            val firestormService = FirestormService(uid)
-            _userProfile.value = firestormService.getProfile(uid)
-        } catch (e: Exception) {
-            Log.e(Repository::class.simpleName, "Could not get profile")
         }
     }
 
@@ -226,7 +206,6 @@ class Repository(private val api: ApiService, private val database: AppDatabase,
     }
 
 
-
     suspend fun updateCartForUser(userId: String, updatedProduct: Product) {
         val user = database.appDao.getUserById(userId)
         user?.let {
@@ -249,9 +228,11 @@ class Repository(private val api: ApiService, private val database: AppDatabase,
             updateCartPrices(userId, updatedCartItems)
         }
     }
-// TODO move to ViewModel
+
+    // TODO move to ViewModel
     private fun updateCartPrices(userId: String, updatedCartItems: List<Product>) {
-        val subTotal = updatedCartItems.sumOf { product -> (product.price ?: 0.00) * product.quantity }
+        val subTotal =
+            updatedCartItems.sumOf { product -> (product.price ?: 0.00) * product.quantity }
         val countProduct = updatedCartItems.sumOf { product -> product.quantity }
         val shippingPrice = 5.99
         val totalCost = if (countProduct == 0) 0.0 else subTotal + shippingPrice

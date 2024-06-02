@@ -2,6 +2,7 @@ package com.amircodeing.syntaxinstitut.unique_store.presentation.signup
 
 import android.app.Application
 import android.content.Context
+import android.net.Uri
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
@@ -24,7 +25,7 @@ class SignUpViewModel(application: Application) : AndroidViewModel(application) 
 
     private val _sessionState = MutableLiveData<SessionState>()
     val sessionState: LiveData<SessionState> get() = _sessionState
-
+    val userProfile = repository.userProfile
     /**
      *
      * Set up Custom FIeld for Inputs in Sign up screen
@@ -111,6 +112,8 @@ class SignUpViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
+
+
     fun signUp(auth: Auth) {
         viewModelScope.launch {
             val isSuccess = repository.createUser(auth)
@@ -137,16 +140,11 @@ class SignUpViewModel(application: Application) : AndroidViewModel(application) 
             setupUserNameInputField(signInView)
     }
 
-    fun setProfile(user : User) {
-        viewModelScope.launch {
-            repository.setProfile(user)
-        }
-    }
 
     fun checkEmptyFieldInAuth(auth : Auth, context: Context): Boolean {
         val emptyFields = mutableListOf<String>()
         with(auth) {
-            if (username.isEmpty()) emptyFields.add("Full Name")
+            if (email.isEmpty()) emptyFields.add("Username")
             val password = password
             if (password.isEmpty() || password.length < 8) {
                 emptyFields.add("password (must be at least 8 characters long and contain at least one special character)")
@@ -160,19 +158,12 @@ class SignUpViewModel(application: Application) : AndroidViewModel(application) 
         return true
     }
 
-}
-
-
      fun checkEmptyFieldInProfile(user: User, context: Context): Boolean {
         val emptyFields = mutableListOf<String>()
         with(user) {
             if (fullName.isEmpty()) emptyFields.add("Full Name")
             if (email.isEmpty()) emptyFields.add("email")
             if (tel.isEmpty()) emptyFields.add("telephone")
-            val password = password
-            if (password.isEmpty() || password.length < 8) {
-                emptyFields.add("password (must be at least 8 characters long and contain at least one special character)")
-            }
             with(address) {
                 if (this?.street?.isEmpty() == true) emptyFields.add("street")
                 if (this?.number?.isEmpty() == true) emptyFields.add("number")
@@ -188,6 +179,9 @@ class SignUpViewModel(application: Application) : AndroidViewModel(application) 
         }
         return true
     }
+}
+
+
 
 
 

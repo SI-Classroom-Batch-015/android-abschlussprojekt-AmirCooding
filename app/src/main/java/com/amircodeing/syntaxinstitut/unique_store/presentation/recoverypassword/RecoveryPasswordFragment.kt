@@ -1,32 +1,31 @@
 package com.amircodeing.syntaxinstitut.unique_store.presentation.recoverypassword
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import com.amircodeing.syntaxinstitut.unique_store.R
 import com.amircodeing.syntaxinstitut.unique_store.databinding.FragmentRecoveryPasswordBinding
 import com.amircodeing.syntaxinstitut.unique_store.utils.ChangeButtonNavVisibility
 import com.amircodeing.syntaxinstitut.unique_store.utils.CustomToolbar
 import com.amircodeing.syntaxinstitut.unique_store.utils.ToolbarComponents
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.auth.FirebaseAuth
 
+const val TAG = "RecoveryPasswordFragment"
 class RecoveryPasswordFragment : Fragment() {
     private lateinit var binding: FragmentRecoveryPasswordBinding
-    private lateinit var databaseReference: DatabaseReference
-    private lateinit var firebaseDatabase: FirebaseDatabase
+    private lateinit var firebaseAuth: FirebaseAuth
     val viewModel: RecoveryPasswordViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentRecoveryPasswordBinding.inflate(inflater, container, false)
-        firebaseDatabase = FirebaseDatabase.getInstance()
-        databaseReference = firebaseDatabase.reference.child("users")
+       firebaseAuth = FirebaseAuth.getInstance()
         CustomToolbar.setToolbar(
             ToolbarComponents(
                 view = binding.root,
@@ -43,6 +42,23 @@ class RecoveryPasswordFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.sendEmail.setOnClickListener {
+       val email = binding.recoveryPasswordEmailTV.getText().trim()
+            if(!email.isNullOrEmpty()){
+            firebaseAuth.sendPasswordResetEmail(email)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Toast.makeText(requireContext(), "Check your Email please", Toast.LENGTH_SHORT).show()
+
+                    } else {
+                        val errorMessage = task.exception?.message
+                        Toast.makeText(requireContext(), "Failed to send password reset email: $errorMessage", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+            }
+        }
 
 
     }

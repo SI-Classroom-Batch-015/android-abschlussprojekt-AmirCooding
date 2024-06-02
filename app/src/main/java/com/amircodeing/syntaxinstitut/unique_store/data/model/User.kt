@@ -15,7 +15,7 @@ data class User(
     val email: String = "",
     val tel: String = "",
     var password: String = "",
-    val image: String? = null,
+    var image: String? = null,
     @Embedded
     val cart: Cart? = null,
     @Embedded

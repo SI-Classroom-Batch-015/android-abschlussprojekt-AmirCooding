@@ -152,6 +152,7 @@
         <TextView
                 android:id="@+id/news_seeAll_TV"
                 android:layout_width="wrap_content"
+                android:visibility="invisible"
                 android:focusable="true"
                 android:clickable="true"
                 android:text="@string/see_all"
