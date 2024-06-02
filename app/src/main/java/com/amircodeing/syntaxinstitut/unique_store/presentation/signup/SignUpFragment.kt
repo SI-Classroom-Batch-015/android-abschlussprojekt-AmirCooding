@@ -66,7 +66,6 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
             Log.e(TAG ,"UID ---------------------------->"+ f.userId?.let { it1 -> Log.i(TAG , it1) }.toString())
             val user = User(
                 fullName = binding.signUpFullName.getText().trim(),
-                email = binding.signUpEmail.getText().trim(),
                 tel = binding.signUpTel.getText().trim(),
                 address = Address(
                     street = binding.signUpStreetET.getText().trim(),

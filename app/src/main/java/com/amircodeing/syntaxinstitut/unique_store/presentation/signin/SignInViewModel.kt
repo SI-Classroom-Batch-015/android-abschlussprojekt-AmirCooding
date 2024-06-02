@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.view.View
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -24,7 +25,7 @@ import org.mindrot.jbcrypt.BCrypt
 
 class SignInViewModel (application: Application) : AndroidViewModel(application) {
     private val repository = Repository(ApiService, AppDatabase.getAppDatabase(application) , FirebaseService())
-  val isLoggedIn = repository.isLoggedIn
+    val isLoggedIn = repository.isLoggedIn
 
     private val _sessionState = MutableLiveData<SessionState>()
     val sessionState: LiveData<SessionState> get() = _sessionState
@@ -32,10 +33,10 @@ class SignInViewModel (application: Application) : AndroidViewModel(application)
     fun signIn(auth: Auth) {
         viewModelScope.launch {
             val isSuccess = repository.signInUser(auth)
-            _sessionState.value = if (isSuccess) SessionState.REGISTERED else SessionState.FAILED
+            _sessionState.value = if (isSuccess) SessionState.LOGGED_IN else SessionState.FAILED
         }
     }
-     fun setupPasswordInputField(signInView: View) {
+    fun setupPasswordInputField(signInView: View) {
         signInView.findViewById<CustomInputField>(R.id.signInPassword).apply {
             setLabelText("Password")
             setInputHint("*********")
@@ -43,12 +44,13 @@ class SignInViewModel (application: Application) : AndroidViewModel(application)
         }
     }
 
-     fun setupUserNameInputField(signInView: View) {
+    fun setupUserNameInputField(signInView: View) {
         signInView.findViewById<CustomInputField>(R.id.signIn_userName).apply {
-            setLabelText("Username")
-            setInputHint("Username")
+            setLabelText("Email Address")
+            setInputHint("example@gmail.com")
         }
     }
+
 
     fun checkEmptyFieldInAuth(auth : Auth, context: Context): Boolean {
         val emptyFields = mutableListOf<String>()

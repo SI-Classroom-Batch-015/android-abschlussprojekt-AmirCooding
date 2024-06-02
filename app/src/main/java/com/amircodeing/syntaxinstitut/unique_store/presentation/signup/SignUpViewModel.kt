@@ -49,13 +49,6 @@ class SignUpViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
-    private fun setupUserNameInputField(signInView: View) {
-        signInView.findViewById<CustomInputField>(R.id.signUp_userName).apply {
-            setLabelText("Username")
-            setInputHint("Username")
-        }
-    }
-
 
     private fun setupTelNumber(signInView: View) {
         signInView.findViewById<CustomInputField>(R.id.signUpTel).apply {
@@ -66,7 +59,7 @@ class SignUpViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     private fun setupEmailSignUpField(signInView: View) {
-        signInView.findViewById<CustomInputField>(R.id.signUpEmail).apply {
+        signInView.findViewById<CustomInputField>(R.id.signUp_userName).apply {
             setLabelText("Email Address")
             setInputHint("example@gmail.com")
         }
@@ -126,7 +119,6 @@ class SignUpViewModel(application: Application) : AndroidViewModel(application) 
      */
     fun setViewOnProfileInput(signInView: View) {
         setupFullNameInputField(signInView)
-        setupEmailSignUpField(signInView)
         setupTelNumber(signInView)
         setupCityInputField(signInView)
         setupZipInputField(signInView)
@@ -137,7 +129,7 @@ class SignUpViewModel(application: Application) : AndroidViewModel(application) 
 
     fun setViewOnAuthInput(signInView: View) {
            setupPasswordInputField(signInView)
-            setupUserNameInputField(signInView)
+           setupEmailSignUpField(signInView)
     }
 
 

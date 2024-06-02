@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.navigation.Navigation
 import com.amircodeing.syntaxinstitut.unique_store.R
 import com.amircodeing.syntaxinstitut.unique_store.databinding.FragmentRecoveryPasswordBinding
 import com.amircodeing.syntaxinstitut.unique_store.utils.ChangeButtonNavVisibility
@@ -45,10 +46,11 @@ class RecoveryPasswordFragment : Fragment() {
 
         binding.sendEmail.setOnClickListener {
        val email = binding.recoveryPasswordEmailTV.getText().trim()
-            if(!email.isNullOrEmpty()){
+            if(email.isNotEmpty()){
             firebaseAuth.sendPasswordResetEmail(email)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
+                        Navigation.findNavController(binding.root).navigate(R.id.signInFragment)
                         Toast.makeText(requireContext(), "Check your Email please", Toast.LENGTH_SHORT).show()
 
                     } else {
@@ -57,6 +59,8 @@ class RecoveryPasswordFragment : Fragment() {
                     }
                 }
 
+            }else{
+                Toast.makeText(requireContext(), "Please enter the correct email", Toast.LENGTH_SHORT).show()
             }
         }
 

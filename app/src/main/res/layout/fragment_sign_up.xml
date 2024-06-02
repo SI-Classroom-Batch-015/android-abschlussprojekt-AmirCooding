@@ -99,12 +99,6 @@
                     android:layout_width="match_parent"
                     android:layout_marginBottom="10dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/signUpEmail" />
-
-            <com.amircodeing.syntaxinstitut.unique_store.utils.CustomInputField
-                    android:layout_width="match_parent"
-                    android:layout_marginBottom="10dp"
-                    android:layout_height="wrap_content"
                     android:id="@+id/signUpTel" />
 
             <ProgressBar

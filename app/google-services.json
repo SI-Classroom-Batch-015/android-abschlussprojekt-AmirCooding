@@ -13,7 +13,20 @@
           "package_name": "com.amircodeing.syntaxinstitut.unique_store"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "847342918543-mv20001sjq0372nmtjnd8cvo0p8ooosm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.amircodeing.syntaxinstitut.unique_store",
+            "certificate_hash": "dd98697ec86732a17c1a5987a89941089aad09fc"
+          }
+        },
+        {
+          "client_id": "847342918543-8epkojg35l7n5u09gpjhoukh3gl0vfl1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDB1ifB6da577_LK3xKH541Gbv43xVLeG0"
@@ -21,7 +34,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "847342918543-8epkojg35l7n5u09gpjhoukh3gl0vfl1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

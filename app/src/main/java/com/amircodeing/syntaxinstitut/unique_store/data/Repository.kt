@@ -1,7 +1,10 @@
 package com.amircodeing.syntaxinstitut.unique_store.data
 
+import android.content.Context
 import android.net.Uri
 import android.util.Log
+import android.view.View
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.amircodeing.syntaxinstitut.unique_store.data.local.database.AppDatabase
@@ -26,6 +29,7 @@ class Repository(
 ) {
     private val dataSource: DataSource = DataSourceImpl()
     private val storageService = StorageService()
+
     /**
      * @_products Declare a MutableLiveData to hold a list of Product objects
      * @products Publicly expose a LiveData object
@@ -154,6 +158,8 @@ class Repository(
             false
         }
     }
+
+
 
     fun signOut() {
         try {

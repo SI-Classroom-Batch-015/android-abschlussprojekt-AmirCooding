@@ -1,14 +1,27 @@
 package com.amircodeing.syntaxinstitut.unique_store.data.remote.firebaseService
-
+import android.app.Activity
+import android.content.Context
+import android.view.View
+import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.navigation.Navigation
+import com.amircodeing.syntaxinstitut.unique_store.R
 import com.amircodeing.syntaxinstitut.unique_store.data.model.Auth
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
 
 
 class FirebaseService {
-
     private var user: FirebaseUser? = null
 
     val isLoggedIn: Boolean
@@ -26,6 +39,7 @@ class FirebaseService {
         return user != null
     }
 
+
     suspend fun signInWithEmailAndPassword(auth: Auth): Boolean {
         val result = Firebase.auth.signInWithEmailAndPassword(auth.email, auth.password).await()
         user = result.user
@@ -35,4 +49,5 @@ class FirebaseService {
     fun signOut() {
         Firebase.auth.signOut()
     }
+
 }

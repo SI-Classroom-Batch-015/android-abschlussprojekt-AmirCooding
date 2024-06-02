@@ -113,7 +113,9 @@
                 app:layout_constraintHorizontal_bias="0.0">
 
             <LinearLayout
-
+                    android:id="@+id/signIn_button_google"
+                    android:focusable="true"
+                    android:clickable="true"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal"
