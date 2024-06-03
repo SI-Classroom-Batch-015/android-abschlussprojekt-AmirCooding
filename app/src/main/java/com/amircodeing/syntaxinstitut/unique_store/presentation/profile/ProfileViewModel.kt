@@ -21,11 +21,14 @@ import com.amircodeing.syntaxinstitut.unique_store.data.remote.firebaseService.F
 import com.amircodeing.syntaxinstitut.unique_store.data.remote.firebaseService.SessionState
 import com.amircodeing.syntaxinstitut.unique_store.utils.CustomInputField
 import kotlinx.coroutines.launch
-const val  TAG = "ProfileViewModel"
+
+const val TAG = "ProfileViewModel"
+
 class ProfileViewModel(application: Application) : AndroidViewModel(application) {
-    private val repository = Repository(ApiService, AppDatabase.getAppDatabase(application) , FirebaseService())
+    private val repository =
+        Repository(ApiService, AppDatabase.getAppDatabase(application), FirebaseService())
     private val _sessionState = MutableLiveData<SessionState>()
-    val sessionState : LiveData<SessionState> = _sessionState
+    val sessionState: LiveData<SessionState> = _sessionState
 
 
     /**
@@ -51,6 +54,43 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
+    fun checkEmptyFieldInProfile(user: User, context: Context): Boolean {
+        val emptyFields = mutableListOf<String>()
+        with(user) {
+            if (fullName.isEmpty()) emptyFields.add("Full Name")
+            if (tel.isEmpty()) emptyFields.add("Mobile")
+            if (tel.length > 15) {
+                Toast.makeText(
+                    context,
+                    "Mobile number should not exceed 15 characters",
+                    Toast.LENGTH_LONG
+                ).show()
+                return false
+            }
+            with(address) {
+                if (this?.street?.isEmpty() == true) emptyFields.add("Street")
+                if (this?.number?.isEmpty() == true) emptyFields.add("Nr")
+                if (this?.zip?.isEmpty() == true) emptyFields.add("Zip")
+                if (this?.zip?.length!! > 5) {
+                    Toast.makeText(
+                        context,
+                        "Zip code should not exceed 5 characters",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    return false
+                }
+                if (this?.city?.isEmpty() == true) emptyFields.add("City")
+                if (this?.country?.isEmpty() == true) emptyFields.add("Country")
+            }
+        }
+        if (emptyFields.isNotEmpty()) {
+            val message = "The following fields are empty: ${emptyFields.joinToString(", ")}"
+            Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+            return false
+        }
+        return true
+    }
+
     fun setViewOnProfileInput(signInView: View) {
         setupInputField(signInView, R.id.signUp_fullName, "Full Name", "Allisson Becker")
         setupInputField(signInView, R.id.signUpTel, "Mobile", "00491157576789")
@@ -60,6 +100,8 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
         setupInputField(signInView, R.id.signUp_city_ET, "City", "Bremen")
         setupInputField(signInView, R.id.signUp_country_ET, "Country", "Deutschland")
     }
+
+
     fun setProfileWithImage(user: User, imageUri: Uri?) {
         viewModelScope.launch {
             val result = repository.setProfileWithImage(user, imageUri)
@@ -67,10 +109,11 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
                 _sessionState.value = SessionState.IS_PROFILE_SAVED
             }.onFailure { e ->
                 _sessionState.value = SessionState.FAILED
-                Log.e(TAG ,"Error------->$e")
+                Log.e(TAG, "Error------->$e")
             }
         }
     }
+}
 
 /*
     fun setProfile(user: User) {
@@ -81,26 +124,6 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
     }
 */
 
-    fun checkEmptyFieldInProfile(user: User, context: Context): Boolean {
-        val emptyFields = mutableListOf<String>()
-        with(user) {
-            if (fullName.isEmpty()) emptyFields.add("Full Name")
-            if (tel.isEmpty()) emptyFields.add("telephone")
-            with(address) {
-                if (this?.street?.isEmpty() == true) emptyFields.add("street")
-                if (this?.number?.isEmpty() == true) emptyFields.add("number")
-                if (this?.zip?.isEmpty() == true) emptyFields.add("zip")
-                if (this?.city?.isEmpty() == true) emptyFields.add("city")
-                if (this?.country?.isEmpty() == true) emptyFields.add("country")
-            }
-        }
-        if (emptyFields.isNotEmpty()) {
-            val message = "The following fields are empty: ${emptyFields.joinToString(", ")}"
-            Toast.makeText(context, message, Toast.LENGTH_LONG).show()
-            return false
-        }
-        return true
-    }
-}
+
 
 

@@ -16,16 +16,15 @@ import kotlinx.coroutines.launch
 class FavoriteViewModel (application: Application) : AndroidViewModel(application) {
     private val repository = Repository(ApiService, AppDatabase.getAppDatabase(application) , FirebaseService())
     private val _favoriteResult = MutableLiveData<Boolean>()
-    val favoriteResult: LiveData<Boolean> get() = _favoriteResult
 
     val favorites = repository.showFavorites
 
-    init {
-        loadProducts()
-    }
-    private fun loadProducts() {
+init {
+    getAllFavorite()
+}
+    fun getAllFavorite() {
         viewModelScope.launch {
-            repository.getAllFavorite()
+            repository.getAllFromFavorite()
         }
     }
 

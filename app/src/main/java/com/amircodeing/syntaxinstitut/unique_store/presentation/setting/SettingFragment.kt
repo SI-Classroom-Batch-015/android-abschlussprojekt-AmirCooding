@@ -51,7 +51,6 @@ class SettingFragment : Fragment(R.layout.fragment_setting) {
             with(binding) {
                 addImageProfileIV.load(user.image)
                 fullName.text = user.fullName
-                emailTV.text = user.email
                 telTV.text = user.tel
                 streetTV.text = user.address?.street
                 numberTV.text = user.address?.number

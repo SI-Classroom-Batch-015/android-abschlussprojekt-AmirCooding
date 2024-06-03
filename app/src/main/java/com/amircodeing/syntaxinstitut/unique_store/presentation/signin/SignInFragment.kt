@@ -15,6 +15,7 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.amircodeing.syntaxinstitut.unique_store.R
 import com.amircodeing.syntaxinstitut.unique_store.data.model.Auth
+import com.amircodeing.syntaxinstitut.unique_store.data.model.User
 import com.amircodeing.syntaxinstitut.unique_store.data.model.hashPassword
 import com.amircodeing.syntaxinstitut.unique_store.data.remote.firebaseService.FirebaseService
 import com.amircodeing.syntaxinstitut.unique_store.data.remote.firebaseService.SessionState
@@ -42,6 +43,7 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentSignInBinding.inflate(inflater, container, false)
+        viewModel.getProfile()
         activity?.let { ChangeButtonNavVisibility.inVisibilityNavButton(it) }
         auth = FirebaseAuth.getInstance()
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -76,24 +78,27 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
 
             if(viewModel.checkEmptyFieldInAuth(auth,requireContext())){
                 viewModel.signIn(auth)
+            viewModel.sessionState.observe(viewLifecycleOwner) { state ->
+                val message = when (state) {
+                    SessionState.LOGGED_IN -> {
+                        viewModel.isLoggedIn
+                        val user = viewModel.userProfile.value
+                                Toast.makeText(context, user.toString(), Toast.LENGTH_SHORT).show()
 
-                viewModel.sessionState.observe(viewLifecycleOwner) { state ->
-                    val message = when (state) {
-                        SessionState.LOGGED_IN -> {
-                            val  user = FirebaseAuth.getInstance().currentUser
-                            Toast.makeText(context,user?.uid, Toast.LENGTH_SHORT).show()
-                            Navigation.findNavController(binding.root).navigate(R.id.profileFragment)
-                            "Login  been successfully"
-                        }
-                        SessionState.FAILED -> "Your action failed!"
-                        else -> throw NotImplementedError()
+                        Navigation.findNavController(binding.root).navigate(R.id.homeFragment)
+                        "Login  been successfully"
                     }
-                    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                    SessionState.FAILED -> "Your action failed!"
+                    else -> throw NotImplementedError()
                 }
-
+                Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+            }
             }
 
+
         }
+
+
     }
 
 

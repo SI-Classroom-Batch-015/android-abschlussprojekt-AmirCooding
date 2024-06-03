@@ -67,9 +67,12 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                     }
 
             addToFavoriteB.setOnClickListener {
+
+
                     if (product != null) {
+                                viewModel.addFavorite(product)
                         if (product.isLiked == true) {
-                            viewModel.addProductToFavoriteList(product)
+                            //viewModel.addProductToFavoriteList(product)
                             viewModel.updateProduct(product.id, !product.isLiked!!)
                             // Set the drawable to the empty heart icon
                             addToFavoriteB.setCompoundDrawablesWithIntrinsicBounds(

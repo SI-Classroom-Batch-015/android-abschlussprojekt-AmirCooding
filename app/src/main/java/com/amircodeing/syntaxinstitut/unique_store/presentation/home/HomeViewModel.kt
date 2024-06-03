@@ -16,6 +16,12 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     val products = repository.products
     val category = repository.category
 
+
+     fun addFavorite(product: Product) {
+        viewModelScope.launch {
+            repository.addFavorite(product)
+        }
+    }
     init {
         deleteAllProducts()
         loadProducts()
@@ -49,12 +55,12 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
             repository.deleteAll()
         }
     }
-
+/*
     fun addProductToFavoriteList(product: Product) {
         viewModelScope.launch {
             repository.addProductToFavorite(product)
         }
-    }
+    } */
     fun updateProduct(id: Int, isLiked: Boolean) {
         viewModelScope.launch {
             repository.updateProduct(id, isLiked)

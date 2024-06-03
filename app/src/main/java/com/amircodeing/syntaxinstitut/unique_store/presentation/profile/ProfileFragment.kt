@@ -65,7 +65,6 @@ class ProfileFragment : Fragment() {
                     country = binding.signUpCountryET.getText().trim()
                 )
             )
-
             if (viewModel.checkEmptyFieldInProfile(user, requireContext())) {
                 viewModel.setProfileWithImage(user, imageUri)
             }

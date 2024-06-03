@@ -28,8 +28,6 @@ import com.google.firebase.storage.StorageReference
 const val TAG =" SignUpFragment"
 class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
     private lateinit var binding: FragmentSignUpBinding
-    private val f = FirebaseService()
-    private var imageUri: Uri? = null
     private val viewModel: SignUpViewModel by viewModels()
 
     override fun onCreateView(
@@ -37,7 +35,7 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentSignUpBinding.inflate(inflater, container, false)
-
+        viewModel.setViewOnAuthInput(binding.root)
         activity?.let { ChangeButtonNavVisibility.inVisibilityNavButton(it) }
         return binding.root
     }

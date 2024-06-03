@@ -22,9 +22,7 @@ import kotlinx.coroutines.tasks.await
 
 
 class FirebaseService {
-
-    private var user: FirebaseUser? = null
-
+    private var user: FirebaseUser? = Firebase.auth.currentUser
     val isLoggedIn: Boolean
         get() = user != null
 

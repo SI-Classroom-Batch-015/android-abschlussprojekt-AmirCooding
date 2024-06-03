@@ -2,6 +2,7 @@ package com.amircodeing.syntaxinstitut.unique_store.presentation.signin
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -29,6 +30,8 @@ class SignInViewModel (application: Application) : AndroidViewModel(application)
 
     private val _sessionState = MutableLiveData<SessionState>()
     val sessionState: LiveData<SessionState> get() = _sessionState
+
+    val userProfile = repository.userProfile
 
     fun signIn(auth: Auth) {
         viewModelScope.launch {
@@ -69,11 +72,25 @@ class SignInViewModel (application: Application) : AndroidViewModel(application)
         return true
     }
 
-}
 
+    fun getProfile(){
+        try {viewModelScope.launch {
+          repository.getUserProfile()
+        }
+        }catch (e : Exception){
+            Log.e(com.amircodeing.syntaxinstitut.unique_store.presentation.profile.TAG,"PROFILE VIEWMODEL-------->$e")
+        }
+    }
 
-/*     fun callUserToRoomDB(user: User){
+/* fun addUserTODB(user: User){
+    try {viewModelScope.launch {
         repository.addUserTORoomDB(user)
-    } */
+    }
+    }catch (e : Exception){
+        Log.e(com.amircodeing.syntaxinstitut.unique_store.presentation.profile.TAG,"PROFILE VIEWMODEL-------->$e")
+    }
+} */
 
+
+}
 

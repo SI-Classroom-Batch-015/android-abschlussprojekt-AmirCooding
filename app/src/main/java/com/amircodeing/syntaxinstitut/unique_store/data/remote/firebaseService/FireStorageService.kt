@@ -11,7 +11,7 @@ class FireStorageService {
         FirebaseStorage.getInstance()
     }
 
-    fun getProfileImagesRef(): StorageReference {
+    private fun getProfileImagesRef(): StorageReference {
         return storage.reference.child("profileImages")
     }
 

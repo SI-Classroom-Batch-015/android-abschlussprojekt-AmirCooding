@@ -62,17 +62,16 @@ class Repository(
     val categoryJeweler: LiveData<List<Product>> get() = _categoryJeweler
 
 
-    private val _showFavorites: LiveData<List<Product>> = database.appDao.getAllLiked()
+    private val _showFavorites = MutableLiveData<List<Product>>()
     val showFavorites: LiveData<List<Product>> get() = _showFavorites
 
     private val _userInformation: LiveData<List<User>> = database.appDao.getAllUser()
     val userInformation: LiveData<List<User>> get() = _userInformation
 
-    private val _userProfile = MutableLiveData<User?>()
-    val userProfile: LiveData<User?> get() = _userProfile
+    private val _userProfile = MutableLiveData<User>()
+    val userProfile: LiveData<User> get() = _userProfile
 
-    val isLoggedIn: Boolean
-        get() = firebaseService.isLoggedIn
+    val isLoggedIn = firebaseService.isLoggedIn
 
     /**
      *
@@ -166,7 +165,6 @@ class Repository(
     fun signOut() {
         try {
             firebaseService.signOut()
-            _userProfile.value = null
         } catch (e: Exception) {
             Log.e(Repository::class.simpleName, "Could not log-out the user")
         }
@@ -180,7 +178,7 @@ class Repository(
                     val imageUrl = fireStorageService.uploadProfileImage(imageUri)
                     user.image = imageUrl
                 }
-                firestoreService?.setProfile(user)
+                setProfile(user)
                 Result.success(Unit)
             } catch (e: Exception) {
                 Result.failure(e)
@@ -189,13 +187,13 @@ class Repository(
     }
 
 
-    suspend fun setProfile(user: User): Boolean {
+    private suspend fun setProfile(user: User): Boolean {
         try {
            // val uid = firebaseService.userId ?: return false
             firestoreService?.setProfile(user)
-            if (userId != null) {
-                getUserProfile(userId)
-            }
+       /*      if (userId != null) {
+                getUserProfile()
+            } */
             return true
         } catch (e: Exception) {
             Log.e(Repository::class.simpleName, "Could not create a profile")
@@ -203,55 +201,49 @@ class Repository(
         }
     }
 
-    private suspend fun getUserProfile(userID : String ) {
+     suspend fun getUserProfile() {
         try {
-            _userProfile.value = firestoreService?.getProfile(userID)
+            _userProfile.value = firestoreService?.getProfile(firebaseService.userId.toString())
         } catch (e: Exception) {
             Log.e(Repository::class.simpleName, "Could not get profile")
         }
     }
-/*
-    private suspend fun getUserProfile() {
+
+
+
+    suspend fun addFavorite( product: Product){
         try {
-          //  val uid = firebaseService.userId ?: return
-            val uid = FirebaseAuth.getInstance().currentUser?.uid
-            val firestoreService = uid?.let { FirestoreService(it) }
-            _userProfile.value = uid?.let { firestoreService?.getProfile(it) }
+           firestoreService?.addToFavorite(firebaseService.userId.toString(),product)
         } catch (e: Exception) {
-            Log.e(Repository::class.simpleName, "Could not get profile")
-        }
-    }
-*/
-
-
-
-    fun getAllFavorite() {
-        try {
-            database.appDao.getAllLiked()
-            Log.i(TAG, "success loading List of Favorite")
-        } catch (e: Exception) {
-            Log.e(TAG, "Error loading List of Favorite $e")
+            Log.e(Repository::class.simpleName, "Could not save Favorite")
         }
     }
 
-    fun addProductToFavorite(product: Product) {
+    suspend fun getAllFromFavorite(){
         try {
-            database.appDao.addProductToFavorites(product)
-            Log.i(TAG, "success add Product of Favorite")
+
+            val products: MutableList<Product> = mutableListOf()
+            for (item in firestoreService?.getAllFavorite(firebaseService.userId.toString())!!) {
+                products.add(
+                    Product(
+                        title = item.title,
+                        price = item.price,
+                        description = item.description,
+                        category = item.category,
+                        image = item.image,
+                        rating = item.rating
+                    )
+                )
+            }
+            _showFavorites.postValue(products)
+            Log.i(TAG, "success loading Products From Firebase")
         } catch (e: Exception) {
-            Log.e(TAG, "Error remove Product of Favorite $e")
+            Log.e(TAG, "Error loading Products From Firebase $e")
         }
     }
 
-    fun addUserTORoomDB(user: User) {
-        try {
-            database.appDao.addUserToDB(user)
-            Log.i(TAG, "success add user to DB")
-        } catch (e: Exception) {
-            Log.e(TAG, "Error add user to DB $e")
-        }
-    }
 
+//TODO remove product frome Faivorite
     fun removeProductFromFavorite(product: Product) {
         try {
             database.appDao.removeProductFromFavorites(product)

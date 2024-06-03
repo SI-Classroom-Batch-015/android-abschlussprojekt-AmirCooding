@@ -11,10 +11,7 @@ data class User(
     @PrimaryKey
     val id: String = "",
     val fullName: String = "",
-    val userName: String = "",
-    val email: String = "",
     val tel: String = "",
-    var password: String = "",
     var image: String? = null,
     @Embedded
     val cart: Cart? = null,
