@@ -25,7 +25,6 @@ class CheckOutAdapter(
             titleProductTV.text = product.title
             pricePaymentItem.text = String.format("%.2f €", product.price)
             quantityProductTV.text = product.quantity.toString()
-
         }
     }
 

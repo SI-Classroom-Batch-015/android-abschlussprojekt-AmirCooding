@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 import coil.load
 import com.amircodeing.syntaxinstitut.unique_store.R
+import com.amircodeing.syntaxinstitut.unique_store.data.model.Cart
 import com.amircodeing.syntaxinstitut.unique_store.data.model.Product
 import com.amircodeing.syntaxinstitut.unique_store.databinding.FragmentDetailsBinding
 import com.amircodeing.syntaxinstitut.unique_store.presentation.home.HomeViewModel
@@ -20,7 +21,8 @@ import com.amircodeing.syntaxinstitut.unique_store.utils.Constants
 import com.amircodeing.syntaxinstitut.unique_store.utils.CustomToolbar.Companion.setToolbar
 import com.amircodeing.syntaxinstitut.unique_store.utils.ToolbarComponents
 
-const val TAG =" SignUpFragment"
+const val TAG = " SignUpFragment"
+
 class DetailsFragment : Fragment(R.layout.fragment_details) {
     private lateinit var binding: FragmentDetailsBinding
     private val viewModel: HomeViewModel by activityViewModels()
@@ -61,39 +63,31 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
 
             addToCartB.setOnClickListener {
                 if (product != null) {
-                    Constants.currentUser?.id?.let { it1 -> viewModel.updateCartForUser(it1,product) }
+                        viewModel.addProductToCart(product)
+
                     addToCartB.visibility = View.INVISIBLE
                 }
-                    }
+            }
 
             addToFavoriteB.setOnClickListener {
 
-
-                    if (product != null) {
-                                viewModel.addFavorite(product)
-                        if (product.isLiked == true) {
-                            //viewModel.addProductToFavoriteList(product)
-                            viewModel.updateProduct(product.id, !product.isLiked!!)
-                            // Set the drawable to the empty heart icon
-                            addToFavoriteB.setCompoundDrawablesWithIntrinsicBounds(
-                                R.drawable.icon_heart_dark_empty, 0, 0, 0)
-                            addToFavoriteB.text = "to favorite"
-                        } else {
-                            viewModel.updateProduct(product.id, !product.isLiked!!)
-                            // Set the drawable to the filled heart icon
-                            addToFavoriteB.setCompoundDrawablesWithIntrinsicBounds(
-                                R.drawable.icon_heart_fill, 0, 0, 0)
-                            addToFavoriteB.text = "added to favorite"
-                        }
-                    }
-                    // Toggle the state
+                if (product != null) {
+                    viewModel.addFavorite(product)
+                    addToFavoriteB.setCompoundDrawablesWithIntrinsicBounds(
+                        R.drawable.icon_heart_dark_empty, 0, 0, 0
+                    )
+                    addToFavoriteB.text = "to favorite"
+                } else {
+                    addToFavoriteB.setCompoundDrawablesWithIntrinsicBounds(
+                        R.drawable.icon_heart_fill, 0, 0, 0
+                    )
+                    addToFavoriteB.text = "added to favorite"
+                }
                 if (product != null) {
                     product.isLiked = !product.isLiked!!
                 }
 
             }
-
-
 
 
         }

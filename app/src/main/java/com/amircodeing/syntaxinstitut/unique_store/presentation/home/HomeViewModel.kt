@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.amircodeing.syntaxinstitut.unique_store.data.Repository
 import com.amircodeing.syntaxinstitut.unique_store.data.local.database.AppDatabase
+import com.amircodeing.syntaxinstitut.unique_store.data.model.Cart
 import com.amircodeing.syntaxinstitut.unique_store.data.model.Product
 import com.amircodeing.syntaxinstitut.unique_store.data.remote.apiservice.ApiService
 import com.amircodeing.syntaxinstitut.unique_store.data.remote.firebaseService.FirebaseService
@@ -20,6 +21,11 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
      fun addFavorite(product: Product) {
         viewModelScope.launch {
             repository.addFavorite(product)
+        }
+    }
+    fun addProductToCart(product: Product) {
+        viewModelScope.launch {
+            repository.addToCart(product)
         }
     }
     init {

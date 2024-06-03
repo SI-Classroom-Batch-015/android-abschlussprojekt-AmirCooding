@@ -1,10 +1,10 @@
 package com.amircodeing.syntaxinstitut.unique_store.presentation.cart
 
-import CartAdapter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.graphics.createBitmap
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
@@ -18,12 +18,14 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
     private lateinit var binding: FragmentCartBinding
     private val viewModel: CartViewModel by viewModels()
 
+    private lateinit var cartAdapter: CartAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentCartBinding.inflate(inflater, container, false)
-
+        viewModel.getAllProductFromFirebase()
         CustomToolbar.setToolbar(
             ToolbarComponents(
                 view = binding.root,
@@ -41,19 +43,25 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        cartAdapter = CartAdapter(viewModel)
+        binding.cartRV.adapter = cartAdapter
+
+        viewModel.showCart.observe(viewLifecycleOwner) { carts ->
+            cartAdapter.submitList(carts.flatMap { it.items })
+            viewModel.calculateTotals(carts)
+
+        }
+        viewModel.totalCart.observe(viewLifecycleOwner) { cart ->
+            binding.subtotalPriceCartTV.text = String.format("%.2f", cart.subTotal)
+            binding.totalPrice.text = String.format("%.2f", cart.totalCost)
+            binding.transferPriceTV.text = String.format("%.2f", cart.shippingPrice)
+        }
+
         binding.customButtonMyCart.setOnClickListener {
             val navController = Navigation.findNavController(binding.root)
             navController.navigate(R.id.checkOutFragment)
         }
-        viewModel.users.observe(viewLifecycleOwner) { users ->
-            if (users != null && users.isNotEmpty()) {
-                val currentUser = users[0]  // Assuming the first user for now
-                binding.subtotalPriceCartTV.text = currentUser.cart?.subTotal.toString() +" €"
-                binding.totalPriceCartTV.text = currentUser.cart?.totalCost.toString() + " €"
-                binding.cartRV.adapter = currentUser.cart?.items?.let {
-                    CartAdapter(it, currentUser.id, viewModel)
-                }
-            }
-        }
+
     }
 }

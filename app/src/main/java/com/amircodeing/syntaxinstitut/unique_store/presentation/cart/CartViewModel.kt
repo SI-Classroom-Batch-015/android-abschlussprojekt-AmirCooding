@@ -7,37 +7,63 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.amircodeing.syntaxinstitut.unique_store.data.Repository
 import com.amircodeing.syntaxinstitut.unique_store.data.local.database.AppDatabase
+import com.amircodeing.syntaxinstitut.unique_store.data.model.Cart
 import com.amircodeing.syntaxinstitut.unique_store.data.model.Product
 import com.amircodeing.syntaxinstitut.unique_store.data.model.User
 import com.amircodeing.syntaxinstitut.unique_store.data.remote.apiservice.ApiService
 import com.amircodeing.syntaxinstitut.unique_store.data.remote.firebaseService.FirebaseService
 import kotlinx.coroutines.launch
 
+
+
+
+
 class CartViewModel(application: Application) : AndroidViewModel(application) {
     private val repository = Repository(ApiService, AppDatabase.getAppDatabase(application) , FirebaseService())
-    val users: LiveData<List<User>> = repository.userInformation
-    private val _cartItems = MutableLiveData<MutableList<Product>>()
-    val cartItems: LiveData<MutableList<Product>> = _cartItems
-    fun increaseItemQuantity(userId: String, product: Product) {
+    private val userId = FirebaseService()
+    val showCart = repository.showCart
+
+    private val _totalCart = MutableLiveData<Cart>()
+    val totalCart: LiveData<Cart> = _totalCart
+
+
+    fun calculateTotals(carts: List<Cart>) {
+        val subTotal = carts.sumOf { it.subTotal }
+        val countProduct = carts.sumOf { it.countProduct }
+        val shippingPrice = 5.99
+        val totalCost = subTotal + shippingPrice
+
+        _totalCart.value = Cart(emptyList(), subTotal, totalCost, shippingPrice, countProduct)
+    }
+
+    fun increaseItemQuantity( product: Product) {
         viewModelScope.launch {
-            repository.updateCartForUser(userId, product.copy(quantity = product.quantity + 1))
+            userId.userId?.let { repository.updateCartForUser(it, product.copy(quantity = product.quantity + 1)) }
         }
     }
 
-    fun decreaseItemQuantity(userId: String, product: Product) {
+    fun decreaseItemQuantity(product: Product) {
         viewModelScope.launch {
             if (product.quantity > 1) {
-                repository.updateCartForUser(userId, product.copy(quantity = product.quantity - 1))
+                userId.userId?.let { repository.updateCartForUser(it, product.copy(quantity = product.quantity - 1)) }
             } else {
-                repository.removeFromCart(userId, product)
+              /*   userId.userId?.let { repository.removeFromCart(product.id.toString()) } */
             }
         }
     }
 
-    fun removeItemFromCart(userId: String, product: Product) {
+    fun getAllProductFromFirebase() {
         viewModelScope.launch {
-            repository.removeFromCart(userId, product)
+           repository.getAllFromCart()
         }
     }
+
+    // TODO remove from favorite
+
+/*     fun removeItemFromCart( product: Product) {
+        viewModelScope.launch {
+            userId.userId?.let { repository.removeFromCart(product.id) }
+        }
+    } */
 
 }

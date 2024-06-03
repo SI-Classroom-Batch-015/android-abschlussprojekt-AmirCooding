@@ -65,6 +65,9 @@ class Repository(
     private val _showFavorites = MutableLiveData<List<Product>>()
     val showFavorites: LiveData<List<Product>> get() = _showFavorites
 
+    private val _showCart = MutableLiveData<List<Cart>>()
+    val showCart: LiveData<List<Cart>> get() = _showCart
+
     private val _userInformation: LiveData<List<User>> = database.appDao.getAllUser()
     val userInformation: LiveData<List<User>> get() = _userInformation
 
@@ -242,16 +245,41 @@ class Repository(
         }
     }
 
+    suspend fun addToCart( product: Product){
+        try {
+            val cart = Cart(items = listOf(product))
+            firestoreService?.addToCart(firebaseService.userId.toString(),cart)
+        } catch (e: Exception) {
+            Log.e(Repository::class.simpleName, "Could not save Favorite")
+        }
+    }
+    suspend fun getAllFromCart(){
+        try {
+            _showCart.postValue(firestoreService?.getAllProductsFromCart(firebaseService.userId.toString()))
+            Log.i(TAG, "success loading Products From Firebase to cart")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error loading Products From Firebase to cart $e")
+        }
+    }
+
+    suspend fun removeFromCart( productId: Product) {
+        try {
+            firestoreService?.removeFromCart(firebaseService.userId.toString() ,productId)
+            Log.i(TAG, "success loading Products From Firebase to cart")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error loading Products From Firebase to cart $e")
+        }
+    }
 
 //TODO remove product frome Faivorite
-    fun removeProductFromFavorite(product: Product) {
+/*     fun removeProductFromFavorite(product: Product) {
         try {
             database.appDao.removeProductFromFavorites(product)
             Log.i(TAG, "success remove List of Favorite")
         } catch (e: Exception) {
             Log.e(TAG, "Error remove List of Favorite $e")
         }
-    }
+    } */
 
     fun updateProduct(id: Int, isLiked: Boolean) {
         database.appDao.productUpdate(id, isLiked)
@@ -273,13 +301,6 @@ class Repository(
         }
     }
 
-    suspend fun removeFromCart(userId: String, product: Product) {
-        val user = database.appDao.getUserById(userId)
-        user?.let {
-            val updatedCartItems = it.cart?.items?.filter { it.id != product.id } ?: listOf()
-            updateCartPrices(userId, updatedCartItems)
-        }
-    }
 
     // TODO move to ViewModel
     private fun updateCartPrices(userId: String, updatedCartItems: List<Product>) {

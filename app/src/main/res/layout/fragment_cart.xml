@@ -72,7 +72,7 @@
                 <TextView
                         android:id="@+id/subtotal_price_cart_TV"
                         android:layout_width="wrap_content"
-                        android:text="234.99 €"
+                        android:text="0.00 €"
                         android:textSize="16sp"
                         android:textColor="@color/primaryDark"
                         android:layout_height="wrap_content" />
@@ -89,7 +89,7 @@
                     android:layout_height="wrap_content">
 
                 <TextView
-                        android:id="@+id/shopping_transfer_cart_TV"
+                        android:id="@+id/shopping_transfer"
                         android:layout_width="wrap_content"
                         android:text="shopping"
                         android:textSize="16sp"
@@ -104,7 +104,7 @@
                 <TextView
                         android:id="@+id/transfer_price_TV"
                         android:layout_width="wrap_content"
-                        android:text="5.99 €"
+                        android:text="0.00 €"
                         android:textSize="16sp"
                         android:textColor="@color/primaryDark"
                         android:layout_height="wrap_content" />
@@ -120,7 +120,7 @@
                     android:layout_height="wrap_content">
 
                 <TextView
-                        android:id="@+id/total_cost_cart_TV"
+                        android:id="@+id/total_cost_cart"
                         android:layout_width="wrap_content"
                         android:text="Total Cost"
                         android:textSize="16sp"
@@ -134,9 +134,9 @@
                         android:layout_weight="1" />
 
                 <TextView
-                        android:id="@+id/total_price_cart_TV"
+                        android:id="@+id/total_price"
                         android:layout_width="wrap_content"
-                        android:text="241.01 €"
+                        android:text="0.00 €"
                         android:textSize="16sp"
                         android:textColor="@color/primaryDark"
                         android:layout_height="wrap_content" />
