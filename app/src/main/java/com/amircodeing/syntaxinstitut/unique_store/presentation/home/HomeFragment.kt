@@ -41,7 +41,10 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         callImageProfile()
-
+        binding.homeProfile.setOnClickListener {
+            val navController = Navigation.findNavController(binding.root)
+            navController.navigate(R.id.profileFragment)
+        }
         //navigateButton = view.findViewById(R.id.button_nav)
         viewModel.products.observe(viewLifecycleOwner) { product ->
             binding.bestSellerRV.adapter = ProductAdapter(
@@ -73,7 +76,7 @@ class HomeFragment : Fragment() {
                 if (it.exists()) {
                     val image = it.child("image").value
                     Toast.makeText(requireContext(), "Result Found", Toast.LENGTH_LONG).show()
-                    binding.imageProfileHome.load(image)
+                    binding.homeProfile.load(image)
                 } else {
                     Toast.makeText(requireContext(), "Result Not Found", Toast.LENGTH_LONG).show()
                 }

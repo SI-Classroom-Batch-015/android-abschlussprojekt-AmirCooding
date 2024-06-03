@@ -1,10 +1,7 @@
 package com.amircodeing.syntaxinstitut.unique_store.data
 
-import android.content.Context
 import android.net.Uri
 import android.util.Log
-import android.view.View
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.amircodeing.syntaxinstitut.unique_store.data.local.database.AppDatabase
@@ -16,8 +13,13 @@ import com.amircodeing.syntaxinstitut.unique_store.data.model.Category
 import com.amircodeing.syntaxinstitut.unique_store.data.model.Product
 import com.amircodeing.syntaxinstitut.unique_store.data.model.User
 import com.amircodeing.syntaxinstitut.unique_store.data.remote.apiservice.ApiService
+import com.amircodeing.syntaxinstitut.unique_store.data.remote.firebaseService.FireStorageService
 import com.amircodeing.syntaxinstitut.unique_store.data.remote.firebaseService.FirebaseService
+import com.amircodeing.syntaxinstitut.unique_store.data.remote.firebaseService.FirestoreService
 import com.amircodeing.syntaxinstitut.unique_store.data.remote.firebaseService.StorageService
+import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 
 const val TAG = "Repository"
@@ -28,7 +30,9 @@ class Repository(
     private val firebaseService: FirebaseService
 ) {
     private val dataSource: DataSource = DataSourceImpl()
-    private val storageService = StorageService()
+    private val fireStorageService = FireStorageService()
+    private val userId = FirebaseAuth.getInstance().currentUser?.uid
+    private val firestoreService = userId?.let { FirestoreService(it) }
 
     /**
      * @_products Declare a MutableLiveData to hold a list of Product objects
@@ -98,7 +102,6 @@ class Repository(
      */
     suspend fun loadProduct() {
         try {
-            //   _products.postValue(api.retrofitService.getProducts())
             val products: MutableList<Product> = mutableListOf()
             for (item in api.retrofitService.getProducts()) {
                 products.add(
@@ -113,7 +116,6 @@ class Repository(
                 )
             }
             database.appDao.insertProducts(products)
-            // _products.postValue(products)
             Log.i(TAG, "success loading Products")
         } catch (e: Exception) {
             Log.e(TAG, "Error loading Products $e")
@@ -169,6 +171,58 @@ class Repository(
             Log.e(Repository::class.simpleName, "Could not log-out the user")
         }
     }
+
+
+    suspend fun setProfileWithImage(user: User, imageUri: Uri?): Result<Unit> {
+        return withContext(Dispatchers.IO) {
+            try {
+                if (imageUri != null) {
+                    val imageUrl = fireStorageService.uploadProfileImage(imageUri)
+                    user.image = imageUrl
+                }
+                firestoreService?.setProfile(user)
+                Result.success(Unit)
+            } catch (e: Exception) {
+                Result.failure(e)
+            }
+        }
+    }
+
+
+    suspend fun setProfile(user: User): Boolean {
+        try {
+           // val uid = firebaseService.userId ?: return false
+            firestoreService?.setProfile(user)
+            if (userId != null) {
+                getUserProfile(userId)
+            }
+            return true
+        } catch (e: Exception) {
+            Log.e(Repository::class.simpleName, "Could not create a profile")
+            return false
+        }
+    }
+
+    private suspend fun getUserProfile(userID : String ) {
+        try {
+            _userProfile.value = firestoreService?.getProfile(userID)
+        } catch (e: Exception) {
+            Log.e(Repository::class.simpleName, "Could not get profile")
+        }
+    }
+/*
+    private suspend fun getUserProfile() {
+        try {
+          //  val uid = firebaseService.userId ?: return
+            val uid = FirebaseAuth.getInstance().currentUser?.uid
+            val firestoreService = uid?.let { FirestoreService(it) }
+            _userProfile.value = uid?.let { firestoreService?.getProfile(it) }
+        } catch (e: Exception) {
+            Log.e(Repository::class.simpleName, "Could not get profile")
+        }
+    }
+*/
+
 
 
     fun getAllFavorite() {

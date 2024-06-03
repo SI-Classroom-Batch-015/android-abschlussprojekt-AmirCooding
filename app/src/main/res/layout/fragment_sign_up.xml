@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".presentation.signup.SignUpFragment">
 
-
     <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/scrollView3"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.377">
 
 
         <LinearLayout
@@ -27,7 +33,7 @@
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text="Create Proflile"
+                    android:text="@string/create_account"
                     android:textColor="@color/primaryDark"
                     android:textSize="28sp"
                     android:textStyle="bold"
@@ -43,7 +49,7 @@
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text="let's create profile together"
+                    android:text="@string/let_s_create_account_together"
                     android:textColor="@color/hint"
                     android:textSize="14sp"
                     android:layout_height="wrap_content"
@@ -54,52 +60,77 @@
                     android:id="@+id/hint_signing" />
 
 
-            <com.google.android.material.card.MaterialCardView
-                    android:layout_width="150dp"
-                    app:cardCornerRadius="150dp"
-                    android:layout_height="150dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="30dp"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:id="@+id/materialCardView">
-                <ImageView
-                        android:id="@+id/add_image_profile_IV"
-                        android:scaleType="centerCrop"
-                        android:layout_width="match_parent"
-                        android:src="@drawable/icon_iamge_picker"
-                        android:layout_height="match_parent"
-                        android:contentDescription="TODO" />
-
-            </com.google.android.material.card.MaterialCardView>
-
-            <TextView
+            <LinearLayout
                     android:layout_width="wrap_content"
-                    android:text="Personal Infrormation"
-                    android:textColor="@color/primaryDark"
-                    android:textSize="16sp"
-                    android:layout_marginBottom="20dp"
-                    app:layout_constraintTop_toBottomOf="@+id/hint_signing"
-                    android:textStyle="bold"
-                    android:layout_marginTop="20dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.161"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:id="@+id/linearLayout5"
+                    android:layout_marginTop="30dp"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout_input"
+                    app:layout_constraintStart_toStartOf="@+id/linearLayout_input"
+                    app:layout_constraintEnd_toEndOf="@+id/linearLayout_input"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:orientation="horizontal"
+                    app:layout_constraintHorizontal_bias="0.528"
+                    app:layout_constraintVertical_bias="0.694">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:padding="5dp"
+                        android:text="@string/already_have_an_account"
+                        android:layout_height="wrap_content" />
+
+                <TextView
+                        android:id="@+id/signIn_button_inSignUp"
+                        android:layout_width="wrap_content"
+                        android:text="@string/sign_in"
+                        android:textColor="@color/textButton"
+                        android:layout_height="wrap_content" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content">
+
+                <View
+                        android:id="@+id/divider5"
+                        android:layout_marginTop="12dp"
+                        android:layout_width="160dp"
+                        android:layout_height="1dp"
+                        android:background="?android:attr/listDivider" />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:textSize="16sp"
+                        android:text="or"
+                        android:layout_height="wrap_content" />
+
+                <View
+                        android:id="@+id/divider6"
+                        android:layout_marginTop="12dp"
+                        android:layout_width="160dp"
+                        android:layout_height="1dp"
+                        android:background="?android:attr/listDivider" />
+
+            </LinearLayout>
 
             <com.amircodeing.syntaxinstitut.unique_store.utils.CustomInputField
                     android:layout_width="match_parent"
                     android:layout_marginBottom="10dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/signUp_fullName" />
-
+                    android:id="@+id/signUp_userName" />
 
             <com.amircodeing.syntaxinstitut.unique_store.utils.CustomInputField
                     android:layout_width="match_parent"
                     android:layout_marginBottom="10dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/signUpTel" />
+                    android:id="@+id/signUpPassword" />
 
             <ProgressBar
                     android:layout_gravity="center_horizontal"
@@ -107,71 +138,10 @@
                     android:visibility="invisible"
                     android:indeterminateTint="@color/primaryDark"
                     android:id="@+id/progress_circular_signUp"
-                    android:layout_height="wrap_content"/>
-
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:text="Address"
-                    android:textColor="@color/primaryDark"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="20dp"
-                    app:layout_constraintTop_toBottomOf="@+id/hint_signing"
-                    android:layout_marginTop="20dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.161"
                     android:layout_height="wrap_content" />
-
-            <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_height="wrap_content">
-
-                <com.amircodeing.syntaxinstitut.unique_store.utils.CustomInputField
-                        android:layout_width="230dp"
-                        android:layout_marginEnd="15dp"
-                        android:layout_marginBottom="10dp"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/signUp_street_ET" />
-
-                <com.amircodeing.syntaxinstitut.unique_store.utils.CustomInputField
-                        android:layout_width="70dp"
-                        android:inputType="number"
-
-                        android:layout_marginBottom="10dp"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/signUp_number_ET" />
-            </LinearLayout>
-
-            <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_height="wrap_content">
-
-                <com.amircodeing.syntaxinstitut.unique_store.utils.CustomInputField
-                        android:layout_width="150dp"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginEnd="20dp"
-                        android:inputType="number"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/signUp_zip_ET" />
-
-                <com.amircodeing.syntaxinstitut.unique_store.utils.CustomInputField
-                        android:layout_width="150dp"
-                        android:layout_marginBottom="10dp"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/signUp_city_ET" />
-            </LinearLayout>
-
-            <com.amircodeing.syntaxinstitut.unique_store.utils.CustomInputField
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/signUp_country_ET" />
 
 
             <androidx.cardview.widget.CardView
-                    android:id="@+id/signup_custom_button_CV"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
                     android:backgroundTint="@color/primaryDark"
@@ -179,11 +149,11 @@
                     app:cardCornerRadius="30dp">
 
                 <Button
-                        android:id="@+id/custom_button_signup"
+                        android:id="@+id/custom_button_CreateAccount"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="?attr/selectableItemBackground"
-                        android:text="Save"
+                        android:text="Create Account"
                         android:textColor="@color/white"
                         android:textAllCaps="false"
                         android:gravity="center"
@@ -202,4 +172,4 @@
     </ScrollView>
 
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

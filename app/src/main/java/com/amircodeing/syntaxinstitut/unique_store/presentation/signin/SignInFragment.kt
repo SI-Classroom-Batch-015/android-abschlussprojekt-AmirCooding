@@ -57,7 +57,7 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.signUpFFTV.setOnClickListener {
-            Navigation.findNavController(binding.root).navigate(R.id.authFragment)
+            Navigation.findNavController(binding.root).navigate(R.id.signUpFragment)
         }
         binding.recoveryPasswordTV.setOnClickListener {
             Navigation.findNavController(binding.root).navigate(R.id.recoveryPasswordFragment)
@@ -76,7 +76,21 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
 
             if(viewModel.checkEmptyFieldInAuth(auth,requireContext())){
                 viewModel.signIn(auth)
-                declareState()
+
+                viewModel.sessionState.observe(viewLifecycleOwner) { state ->
+                    val message = when (state) {
+                        SessionState.LOGGED_IN -> {
+                            val  user = FirebaseAuth.getInstance().currentUser
+                            Toast.makeText(context,user?.uid, Toast.LENGTH_SHORT).show()
+                            Navigation.findNavController(binding.root).navigate(R.id.profileFragment)
+                            "Login  been successfully"
+                        }
+                        SessionState.FAILED -> "Your action failed!"
+                        else -> throw NotImplementedError()
+                    }
+                    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                }
+
             }
 
         }
@@ -123,17 +137,5 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
     }
 
 
-    private fun declareState() {
-        viewModel.sessionState.observe(viewLifecycleOwner) { state ->
-            val message = when (state) {
-                SessionState.LOGGED_IN -> {
-                    "Login  been successfully"
-                }
 
-                SessionState.FAILED -> "Your action failed!"
-                else -> throw NotImplementedError()
-            }
-            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-        }
-    }
 }
