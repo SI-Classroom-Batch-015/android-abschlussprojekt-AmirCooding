@@ -75,7 +75,8 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
                 binding.signInUserName.getText().trim(),
                 hashPassword(binding.signInPassword.getText().trim())
             )
-
+           binding.signInProgressbar.visibility = View.VISIBLE
+            binding.signInProgressbar2.visibility = View.VISIBLE
             if(viewModel.checkEmptyFieldInAuth(auth,requireContext())){
                 viewModel.signIn(auth)
             viewModel.sessionState.observe(viewLifecycleOwner) { state ->
@@ -88,7 +89,11 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
                         Navigation.findNavController(binding.root).navigate(R.id.homeFragment)
                         "Login  been successfully"
                     }
-                    SessionState.FAILED -> "Your action failed!"
+                    SessionState.FAILED -> {
+                        binding.signInProgressbar.visibility = View.GONE
+                        binding.signInProgressbar2.visibility = View.GONE
+                        "Your action failed!"
+                    }
                     else -> throw NotImplementedError()
                 }
                 Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
@@ -97,6 +102,8 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
 
 
         }
+        binding.signInProgressbar.visibility = View.GONE
+        binding.signInProgressbar2.visibility = View.GONE
 
 
     }

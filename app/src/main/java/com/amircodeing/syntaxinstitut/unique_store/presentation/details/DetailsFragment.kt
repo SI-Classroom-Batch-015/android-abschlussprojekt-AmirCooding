@@ -65,7 +65,7 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
 
             addToCartB.setOnClickListener {
                 if (product != null) {
-                    favorite.addProductToFavorite(product)
+                    viewModel.addProductToCart(product)
 
                     addToCartB.visibility = View.INVISIBLE
                 }

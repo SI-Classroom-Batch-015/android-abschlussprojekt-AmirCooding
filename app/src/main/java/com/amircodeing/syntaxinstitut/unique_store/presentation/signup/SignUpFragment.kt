@@ -25,7 +25,9 @@ import com.google.firebase.database.*
 
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-const val TAG =" SignUpFragment"
+
+const val TAG = " SignUpFragment"
+
 class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
     private lateinit var binding: FragmentSignUpBinding
     private val viewModel: SignUpViewModel by viewModels()
@@ -41,7 +43,6 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
     }
 
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -53,6 +54,8 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
                 binding.signUpUserName.getText().trim(),
                 hashPassword(binding.signUpPassword.getText().trim())
             )
+            binding.signUpProgressbar.visibility = View.VISIBLE
+            binding.signUpProgressbar2.visibility = View.VISIBLE
             if (viewModel.checkEmptyFieldInAuth(auth, requireContext())) {
                 viewModel.signUp(auth)
                 viewModel.sessionState.observe(viewLifecycleOwner) { state ->
@@ -62,7 +65,12 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
                             "profile has been successfully saved!"
                         }
 
-                        SessionState.FAILED -> "Your action failed!"
+                        SessionState.FAILED -> {
+                            binding.signUpProgressbar.visibility = View.GONE
+                            binding.signUpProgressbar2.visibility = View.GONE
+                            "Your action failed!"
+                        }
+
                         else -> throw NotImplementedError()
                     }
                     Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
@@ -70,6 +78,8 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
             }
 
         }
+        binding.signUpProgressbar.visibility = View.GONE
+        binding.signUpProgressbar2.visibility = View.GONE
 
     }
 
