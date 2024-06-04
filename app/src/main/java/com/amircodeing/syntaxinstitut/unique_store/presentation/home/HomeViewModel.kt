@@ -61,23 +61,13 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
             repository.deleteAll()
         }
     }
-/*
-    fun addProductToFavoriteList(product: Product) {
-        viewModelScope.launch {
-            repository.addProductToFavorite(product)
-        }
-    } */
+
     fun updateProduct(id: Int, isLiked: Boolean) {
         viewModelScope.launch {
             repository.updateProduct(id, isLiked)
         }
     }
 
-    fun updateCartForUser(userId: String, newCart : Product){
-        viewModelScope.launch {
-            repository.updateCartForUser(userId,newCart)
-        }
-    }
 
 
 

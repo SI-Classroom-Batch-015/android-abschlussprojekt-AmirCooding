@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.graphics.createBitmap
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -25,7 +26,6 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentCartBinding.inflate(inflater, container, false)
-        viewModel.getAllProductFromFirebase()
         CustomToolbar.setToolbar(
             ToolbarComponents(
                 view = binding.root,
@@ -43,20 +43,15 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        cartAdapter = CartAdapter(viewModel)
-        binding.cartRV.adapter = cartAdapter
-
-        viewModel.showCart.observe(viewLifecycleOwner) { carts ->
-            cartAdapter.submitList(carts.flatMap { it.items })
-            viewModel.calculateTotals(carts)
-
+        val adapter = CartAdapter(viewModel)
+        binding.cartRV.adapter = adapter
+        viewModel.showCart.observe(viewLifecycleOwner) { cart ->
+            adapter.submitList(cart.items)
+            binding.totalPrice.text = cart.totalCost.toString()
+            binding.transferPriceTV.text = cart.shippingPrice.toString()
+            binding.subtotalPriceCartTV.text = cart.subTotal.toString()
         }
-        viewModel.totalCart.observe(viewLifecycleOwner) { cart ->
-            binding.subtotalPriceCartTV.text = String.format("%.2f", cart.subTotal)
-            binding.totalPrice.text = String.format("%.2f", cart.totalCost)
-            binding.transferPriceTV.text = String.format("%.2f", cart.shippingPrice)
-        }
+
 
         binding.customButtonMyCart.setOnClickListener {
             val navController = Navigation.findNavController(binding.root)

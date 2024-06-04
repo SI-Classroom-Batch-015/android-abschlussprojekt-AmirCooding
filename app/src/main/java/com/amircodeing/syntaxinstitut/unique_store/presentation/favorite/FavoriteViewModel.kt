@@ -30,8 +30,7 @@ init {
 
     fun removeProductFromFavoriteList(product: Product){
         viewModelScope.launch {
-           // repository.removeProductFromFavorite(product)
-            repository.updateProduct(product.id , isLiked = false)
+           repository.removeFromFavorite(product)
         }
     }
 

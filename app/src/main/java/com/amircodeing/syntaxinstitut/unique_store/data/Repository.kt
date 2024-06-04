@@ -65,8 +65,8 @@ class Repository(
     private val _showFavorites = MutableLiveData<List<Product>>()
     val showFavorites: LiveData<List<Product>> get() = _showFavorites
 
-    private val _showCart = MutableLiveData<List<Cart>>()
-    val showCart: LiveData<List<Cart>> get() = _showCart
+    private val _showCart = MutableLiveData<Cart>()
+    val showCart: LiveData<Cart> get() = _showCart
 
     private val _userInformation: LiveData<List<User>> = database.appDao.getAllUser()
     val userInformation: LiveData<List<User>> get() = _userInformation
@@ -164,7 +164,6 @@ class Repository(
     }
 
 
-
     fun signOut() {
         try {
             firebaseService.signOut()
@@ -192,9 +191,9 @@ class Repository(
 
     private suspend fun setProfile(user: User): Boolean {
         try {
-           // val uid = firebaseService.userId ?: return false
+            // val uid = firebaseService.userId ?: return false
             firestoreService?.setProfile(user)
-       /*      if (userId != null) {
+            /*      if (userId != null) {
                 getUserProfile()
             } */
             return true
@@ -204,7 +203,7 @@ class Repository(
         }
     }
 
-     suspend fun getUserProfile() {
+    suspend fun getUserProfile() {
         try {
             _userProfile.value = firestoreService?.getProfile(firebaseService.userId.toString())
         } catch (e: Exception) {
@@ -213,16 +212,31 @@ class Repository(
     }
 
 
-
-    suspend fun addFavorite( product: Product){
+    suspend fun addFavorite(product: Product) {
         try {
-           firestoreService?.addToFavorite(firebaseService.userId.toString(),product)
+            val uid = firebaseService.userId
+            if (uid != null) {
+                firestoreService?.addToFavorite(uid,product)
+                getAllFromFavorite()
+            }
         } catch (e: Exception) {
             Log.e(Repository::class.simpleName, "Could not save Favorite")
         }
     }
+    suspend fun removeFromFavorite(product: Product) {
+        try {
+            val uid = firebaseService.userId
+            if (uid != null) {
+                firestoreService?.removeFromFavorite(uid, product)
+                getAllFromFavorite()
+            }
+        } catch (e: Exception) {
+            Log.e(Repository::class.simpleName, "Could not save Favorite")
+        }
 
-    suspend fun getAllFromFavorite(){
+    }
+
+    suspend fun getAllFromFavorite() {
         try {
 
             val products: MutableList<Product> = mutableListOf()
@@ -245,18 +259,28 @@ class Repository(
         }
     }
 
-    suspend fun addToCart( product: Product){
+    suspend fun addToCart(product: Product) {
         try {
-            val cart = Cart(items = listOf(product))
-            firestoreService?.addToCart(firebaseService.userId.toString(),cart)
+            firebaseService.userId?.let { firestoreService?.addProductToCart(it, product) }
         } catch (e: Exception) {
             Log.e(Repository::class.simpleName, "Could not save Favorite")
         }
     }
-    suspend fun getAllFromCart(){
+
+    suspend fun getAllFromCart() {
         try {
-            _showCart.postValue(firestoreService?.getAllProductsFromCart(firebaseService.userId.toString()))
+            val uid = firebaseService.userId
+            _showCart.postValue(uid?.let { firestoreService?.getAllProductsFromCart(it) })
             Log.i(TAG, "success loading Products From Firebase to cart")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error loading Products From Firebase to cart $e")
+        }
+    }
+
+    fun listenToCartChanges() {
+        try {
+            firestoreService?.listenToCartChanges(_showCart)
+            Log.i(TAG, "success listen to change cart")
         } catch (e: Exception) {
             Log.e(TAG, "Error loading Products From Firebase to cart $e")
         }
@@ -264,7 +288,7 @@ class Repository(
 
     suspend fun removeFromCart( productId: Product) {
         try {
-            firestoreService?.removeFromCart(firebaseService.userId.toString() ,productId)
+            firebaseService.userId?.let { firestoreService?.removeFromCart(it, productId) }
             Log.i(TAG, "success loading Products From Firebase to cart")
         } catch (e: Exception) {
             Log.e(TAG, "Error loading Products From Firebase to cart $e")
@@ -272,7 +296,7 @@ class Repository(
     }
 
 //TODO remove product frome Faivorite
-/*     fun removeProductFromFavorite(product: Product) {
+    /*     fun removeProductFromFavorite(product: Product) {
         try {
             database.appDao.removeProductFromFavorites(product)
             Log.i(TAG, "success remove List of Favorite")
@@ -286,45 +310,12 @@ class Repository(
     }
 
 
-    suspend fun updateCartForUser(userId: String, updatedProduct: Product) {
-        val user = database.appDao.getUserById(userId)
-        user?.let {
-            val updatedCartItems = it.cart?.items?.toMutableList() ?: mutableListOf()
-            val existingProductIndex =
-                updatedCartItems.indexOfFirst { product -> product.id == updatedProduct.id }
-            if (existingProductIndex != -1) {
-                updatedCartItems[existingProductIndex] = updatedProduct
-            } else {
-                updatedCartItems.add(updatedProduct)
-            }
-            updateCartPrices(userId, updatedCartItems)
-        }
-    }
 
 
-    // TODO move to ViewModel
-    private fun updateCartPrices(userId: String, updatedCartItems: List<Product>) {
-        val subTotal =
-            updatedCartItems.sumOf { product -> (product.price ?: 0.00) * product.quantity }
-        val countProduct = updatedCartItems.sumOf { product -> product.quantity }
-        val shippingPrice = 5.99
-        val totalCost = if (countProduct == 0) 0.0 else subTotal + shippingPrice
-        val formattedSubTotal = String.format("%.2f", subTotal).toDouble()
-        val formattedTotalCost = String.format("%.2f", totalCost).toDouble()
-        val updatedCart = Cart(
-            items = updatedCartItems,
-            subTotal = formattedSubTotal,
-            shippingPrice = shippingPrice,
-            totalCost = formattedTotalCost,
-            countProduct = countProduct
-        )
-        val user = database.appDao.getUserById(userId)
-        user?.let {
-            val updatedUser = it.copy(cart = updatedCart)
-            database.appDao.updateUser(updatedUser)
-        }
-    }
 }
+
+
+
 
 
 

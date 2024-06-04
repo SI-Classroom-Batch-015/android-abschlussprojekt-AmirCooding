@@ -36,6 +36,10 @@ class CartAdapter(
             decreaseFromCart.setOnClickListener {
                 viewModel.decreaseItemQuantity(product)
             }
+
+            binding.deleteFromCart.setOnClickListener {
+                viewModel.removeFromCart(product)
+            }
         }
     }
 
