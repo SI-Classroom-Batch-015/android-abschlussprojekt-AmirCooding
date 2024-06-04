@@ -8,6 +8,7 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
+import java.math.RoundingMode
 
 const val TAG = "FirestoreService"
 class FirestoreService(private val uid: String) {
@@ -40,7 +41,6 @@ class FirestoreService(private val uid: String) {
     }
 
 
-
     suspend fun getAllFavorite(uid: String)  : List<Product>{
         val result = database.collection("Profiles").
         document(uid).collection("Favorites").get().await()
@@ -58,7 +58,7 @@ class FirestoreService(private val uid: String) {
         updateCart(cartDocument, cart, product)
     }
 
-     suspend fun updateCart(cartDocument: DocumentReference, cart: Cart, product: Product) {
+    suspend fun updateCart(cartDocument: DocumentReference, cart: Cart, product: Product) {
         val updatedItems = cart.items.toMutableList()
         val existingIndex = updatedItems.indexOfFirst { it.id == product.id }
 
@@ -70,10 +70,10 @@ class FirestoreService(private val uid: String) {
             updatedItems.add(product.copy(quantity = 1))
         }
 
-        val updatedSubTotal = updatedItems.sumOf { (it.price ?: 0.0) * (it.quantity ?: 1) }
+        val updatedSubTotal = updatedItems.sumOf { (it.price ?: 0.0) * (it.quantity ?: 1) }.toBigDecimal().setScale(2, RoundingMode.HALF_UP).toDouble()
         val updatedCount = updatedItems.sumOf { it.quantity ?: 1 }
         val shippingPrice = if (updatedCount == 0) 0.0 else 5.99
-        val updatedTotalCost = updatedSubTotal + shippingPrice
+        val updatedTotalCost = (updatedSubTotal + shippingPrice).toBigDecimal().setScale(2, RoundingMode.HALF_UP).toDouble()
 
         val updatedCart = Cart(
             items = updatedItems,
@@ -84,6 +84,7 @@ class FirestoreService(private val uid: String) {
 
         cartDocument.set(updatedCart).await()
     }
+
 
     suspend fun removeFromCart(uid: String, product: Product) {
         val cartDocument = database.collection("Profiles").document(uid).collection("Carts").document("cart")

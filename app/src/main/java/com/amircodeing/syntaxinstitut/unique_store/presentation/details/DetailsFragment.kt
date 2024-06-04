@@ -15,6 +15,7 @@ import com.amircodeing.syntaxinstitut.unique_store.R
 import com.amircodeing.syntaxinstitut.unique_store.data.model.Cart
 import com.amircodeing.syntaxinstitut.unique_store.data.model.Product
 import com.amircodeing.syntaxinstitut.unique_store.databinding.FragmentDetailsBinding
+import com.amircodeing.syntaxinstitut.unique_store.presentation.favorite.FavoriteViewModel
 import com.amircodeing.syntaxinstitut.unique_store.presentation.home.HomeViewModel
 import com.amircodeing.syntaxinstitut.unique_store.utils.ChangeButtonNavVisibility
 import com.amircodeing.syntaxinstitut.unique_store.utils.Constants
@@ -26,6 +27,7 @@ const val TAG = " SignUpFragment"
 class DetailsFragment : Fragment(R.layout.fragment_details) {
     private lateinit var binding: FragmentDetailsBinding
     private val viewModel: HomeViewModel by activityViewModels()
+    private val favorite: FavoriteViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -63,7 +65,7 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
 
             addToCartB.setOnClickListener {
                 if (product != null) {
-                        viewModel.addProductToCart(product)
+                    favorite.addProductToFavorite(product)
 
                     addToCartB.visibility = View.INVISIBLE
                 }
@@ -73,25 +75,12 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
 
                 if (product != null) {
                     viewModel.addFavorite(product)
-                    addToFavoriteB.setCompoundDrawablesWithIntrinsicBounds(
-                        R.drawable.icon_heart_dark_empty, 0, 0, 0
-                    )
-                    addToFavoriteB.text = "to favorite"
-                } else {
-                    addToFavoriteB.setCompoundDrawablesWithIntrinsicBounds(
-                        R.drawable.icon_heart_fill, 0, 0, 0
-                    )
-                    addToFavoriteB.text = "added to favorite"
                 }
-                if (product != null) {
-                    product.isLiked = !product.isLiked!!
-                }
-
             }
-
 
         }
     }
+
 
     private fun FragmentDetailsBinding.upvCalculate(
         product: Product

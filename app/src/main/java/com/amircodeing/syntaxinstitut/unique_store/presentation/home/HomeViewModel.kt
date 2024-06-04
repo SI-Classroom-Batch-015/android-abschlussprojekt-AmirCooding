@@ -10,17 +10,20 @@ import com.amircodeing.syntaxinstitut.unique_store.data.model.Cart
 import com.amircodeing.syntaxinstitut.unique_store.data.model.Product
 import com.amircodeing.syntaxinstitut.unique_store.data.remote.apiservice.ApiService
 import com.amircodeing.syntaxinstitut.unique_store.data.remote.firebaseService.FirebaseService
+import com.amircodeing.syntaxinstitut.unique_store.presentation.favorite.FavoriteViewModel
 import kotlinx.coroutines.launch
 
 class HomeViewModel(application: Application) : AndroidViewModel(application) {
     private val repository = Repository(ApiService, AppDatabase.getAppDatabase(application) , FirebaseService())
+
     val products = repository.products
     val category = repository.category
+    val userProfile = repository.userProfile
 
 
      fun addFavorite(product: Product) {
         viewModelScope.launch {
-            repository.addFavorite(product)
+            repository.addToFavorite(product)
         }
     }
     fun addProductToCart(product: Product) {

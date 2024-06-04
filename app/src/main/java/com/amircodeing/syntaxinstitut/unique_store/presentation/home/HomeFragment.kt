@@ -13,9 +13,12 @@ import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.SnapHelper
 import coil.load
 import com.amircodeing.syntaxinstitut.unique_store.R
+import com.amircodeing.syntaxinstitut.unique_store.data.remote.firebaseService.FirebaseService
+import com.amircodeing.syntaxinstitut.unique_store.data.remote.firebaseService.FirestoreService
 import com.amircodeing.syntaxinstitut.unique_store.databinding.FragmentHomeBinding
 import com.amircodeing.syntaxinstitut.unique_store.utils.ChangeButtonNavVisibility
 import com.amircodeing.syntaxinstitut.unique_store.utils.Constants
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
@@ -31,6 +34,7 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
+        //TODO return null
         viewModel.loadCategory()
         return binding.root
     }
@@ -39,13 +43,13 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         callImageProfile()
+        binding.homeProfile.load(viewModel.userProfile.value?.image)
         binding.homeProfile.setOnClickListener {
             val navController = Navigation.findNavController(binding.root)
             navController.navigate(R.id.profileFragment)
         }
-        //navigateButton = view.findViewById(R.id.button_nav)
+
         viewModel.products.observe(viewLifecycleOwner) { product ->
             binding.bestSellerRV.adapter = ProductAdapter(
                // product,

@@ -47,9 +47,9 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
         binding.cartRV.adapter = adapter
         viewModel.showCart.observe(viewLifecycleOwner) { cart ->
             adapter.submitList(cart.items)
-            binding.totalPrice.text = cart.totalCost.toString()
-            binding.transferPriceTV.text = cart.shippingPrice.toString()
-            binding.subtotalPriceCartTV.text = cart.subTotal.toString()
+            binding.totalPrice.text = String.format("%.2f", cart.totalCost)
+            binding.transferPriceTV.text = String.format("%.2f", cart.shippingPrice)
+            binding.subtotalPriceCartTV.text = String.format("%.2f", cart.subTotal)
         }
 
 

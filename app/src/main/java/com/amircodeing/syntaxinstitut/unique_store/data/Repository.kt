@@ -61,10 +61,6 @@ class Repository(
     private val _categoryJeweler: LiveData<List<Product>> = database.appDao.getListJewelery()
     val categoryJeweler: LiveData<List<Product>> get() = _categoryJeweler
 
-
-    private val _showFavorites = MutableLiveData<List<Product>>()
-    val showFavorites: LiveData<List<Product>> get() = _showFavorites
-
     private val _showCart = MutableLiveData<Cart>()
     val showCart: LiveData<Cart> get() = _showCart
 
@@ -211,34 +207,39 @@ class Repository(
         }
     }
 
-
-    suspend fun addFavorite(product: Product) {
-        try {
+       suspend fun addToFavorite(product: Product): List<Product> {
+        return try {
             val uid = firebaseService.userId
             if (uid != null) {
-                firestoreService?.addToFavorite(uid,product)
-                getAllFromFavorite()
+                firestoreService?.addToFavorite(uid, product) ?: emptyList()
+            } else {
+                emptyList()
             }
         } catch (e: Exception) {
-            Log.e(Repository::class.simpleName, "Could not save Favorite")
+            Log.e(Repository::class.simpleName, "Could not save Favorite: $e")
+            emptyList()
         }
     }
-    suspend fun removeFromFavorite(product: Product) {
-        try {
+
+    suspend fun removeFromFavorite(product: Product): List<Product> {
+        return try {
             val uid = firebaseService.userId
             if (uid != null) {
-                firestoreService?.removeFromFavorite(uid, product)
-                getAllFromFavorite()
+                firestoreService?.removeFromFavorite(uid, product) ?: emptyList()
+            } else {
+                emptyList()
             }
         } catch (e: Exception) {
-            Log.e(Repository::class.simpleName, "Could not save Favorite")
+            Log.e(Repository::class.simpleName, "Could not remove Favorite: $e")
+            emptyList()
         }
-
     }
 
-    suspend fun getAllFromFavorite() {
-        try {
 
+
+
+    suspend fun getAllFromFavorite(): List<Product> {
+        try {
             val products: MutableList<Product> = mutableListOf()
             for (item in firestoreService?.getAllFavorite(firebaseService.userId.toString())!!) {
                 products.add(
@@ -252,12 +253,13 @@ class Repository(
                     )
                 )
             }
-            _showFavorites.postValue(products)
-            Log.i(TAG, "success loading Products From Firebase")
+            return products
         } catch (e: Exception) {
-            Log.e(TAG, "Error loading Products From Firebase $e")
+            Log.e(TAG, "Error loading Products From Firebase: $e")
+            return emptyList()
         }
     }
+
 
     suspend fun addToCart(product: Product) {
         try {

@@ -32,6 +32,7 @@ class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentFavoriteBinding .inflate(inflater, container, false)
+        viewModel.getAllFavorite()
         CustomToolbar.setToolbar(ToolbarComponents(view = binding.root, title = "Favorite", visibility = false,
             backButtonVisibility = true,
             path = R.id.toolbar_favorite,
@@ -44,7 +45,7 @@ class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.favorites.observe(viewLifecycleOwner){
+        viewModel.showFavorites.observe(viewLifecycleOwner){
                 favorites ->
             binding.favoriteListRV.adapter = FavoriteAdapter(favorites , viewModel )
         }

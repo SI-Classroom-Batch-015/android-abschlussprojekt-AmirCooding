@@ -40,7 +40,7 @@ class FavoriteAdapter(
                 navController.navigate(R.id.detailsFragment)
             }
             removeProduct.setOnClickListener {
-                viewModel.removeProductFromFavoriteList(product)
+                viewModel.deleteProductFromFavorite(product)
             }
         }
 
