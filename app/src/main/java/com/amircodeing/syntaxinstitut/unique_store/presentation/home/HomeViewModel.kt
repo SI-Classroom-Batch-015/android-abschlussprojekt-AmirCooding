@@ -1,8 +1,10 @@
 package com.amircodeing.syntaxinstitut.unique_store.presentation.home
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.amircodeing.syntaxinstitut.unique_store.data.Repository
 import com.amircodeing.syntaxinstitut.unique_store.data.local.database.AppDatabase
@@ -20,6 +22,35 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     val category = repository.category
     val userProfile = repository.userProfile
 
+    private val _favoriteBadge = MutableLiveData<Int>()
+    val showCountFavorites: LiveData<Int> get() = _favoriteBadge
+
+    private val _cartBadge = MutableLiveData<Int>()
+    val cartBadge: LiveData<Int> get() = _cartBadge
+
+    fun updateCartProductCount() {
+        viewModelScope.launch {
+            try {
+                val count = repository.getAllCountProductCart()
+                _cartBadge.postValue(count)
+            } catch (e: Exception) {
+                Log.e("HomeViewModel", "Error fetching favorite product count", e)
+                _cartBadge.postValue(0)
+            }
+        }
+    }
+
+    fun updateFavoriteProductCount() {
+        viewModelScope.launch {
+            try {
+                val count = repository.getFavoriteProductCount()
+                _favoriteBadge.postValue(count)
+            } catch (e: Exception) {
+                Log.e("HomeViewModel", "Error fetching favorite product count", e)
+                _favoriteBadge.postValue(0)
+            }
+        }
+    }
 
      fun addFavorite(product: Product) {
         viewModelScope.launch {
@@ -32,6 +63,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
     init {
+       // updateFavoriteProductCount()
         deleteAllProducts()
         loadProducts()
     }

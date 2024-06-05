@@ -83,8 +83,8 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
                 val message = when (state) {
                     SessionState.LOGGED_IN -> {
                         viewModel.isLoggedIn
-                        val user = viewModel.userProfile.value
-                                Toast.makeText(context, user.toString(), Toast.LENGTH_SHORT).show()
+                        //val user = viewModel.userProfile.value
+                              //  Toast.makeText(context, user.toString(), Toast.LENGTH_SHORT).show()
 
                         Navigation.findNavController(binding.root).navigate(R.id.homeFragment)
                         "Login  been successfully"

@@ -64,13 +64,15 @@ class Repository(
     private val _showCart = MutableLiveData<Cart>()
     val showCart: LiveData<Cart> get() = _showCart
 
+
     private val _userInformation: LiveData<List<User>> = database.appDao.getAllUser()
     val userInformation: LiveData<List<User>> get() = _userInformation
 
     private val _userProfile = MutableLiveData<User>()
     val userProfile: LiveData<User> get() = _userProfile
-
     val isLoggedIn = firebaseService.isLoggedIn
+
+
 
     /**
      *
@@ -261,6 +263,17 @@ class Repository(
     }
 
 
+        suspend fun getFavoriteProductCount(): Int {
+            return try {
+                firestoreService!!.getFavoriteProductCount(firebaseService.userId.toString())
+            } catch (e: Exception) {
+                Log.e(Repository::class.simpleName, "Could not get count Favorites", e)
+                0
+            }
+        }
+
+
+
     suspend fun addToCart(product: Product) {
         try {
             firebaseService.userId?.let { firestoreService?.addProductToCart(it, product) }
@@ -268,7 +281,19 @@ class Repository(
             Log.e(Repository::class.simpleName, "Could not save Favorite")
         }
     }
-
+    suspend fun getAllCountProductCart(): Int {
+        return try {
+            val uid = firebaseService.userId
+            if (uid != null) {
+                firestoreService?.getAllProductsFromCart(uid)?.countProduct ?: 0
+            } else {
+                0
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Error loading Products From Firebase to cart", e)
+            0
+        }
+    }
     suspend fun getAllFromCart() {
         try {
             val uid = firebaseService.userId

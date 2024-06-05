@@ -20,6 +20,9 @@ class FavoriteViewModel (application: Application) : AndroidViewModel(applicatio
     private val _showFavorites = MutableLiveData<List<Product>>()
     val showFavorites: LiveData<List<Product>> get() = _showFavorites
 
+    private val _showBadgeFavorite = MutableLiveData<Int>()
+    val showBadgeFavorite: LiveData<Int> get() = _showBadgeFavorite
+
 
 init {
     getAllFavorite()

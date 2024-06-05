@@ -7,6 +7,8 @@ import com.amircodeing.syntaxinstitut.unique_store.data.model.User
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 import java.math.RoundingMode
 
@@ -46,6 +48,13 @@ class FirestoreService(private val uid: String) {
         document(uid).collection("Favorites").get().await()
         return  result.toObjects(Product::class.java)
     }
+    suspend fun getFavoriteProductCount(uid: String): Int {
+        val result = database.collection("Profiles")
+            .document(uid).collection("Favorites").get().await()
+        return result.size()
+    }
+
+
 
     suspend fun addProductToCart(uid: String, product: Product) {
         val cartDocument = database.collection("Profiles").document(uid).collection("Carts").document("cart")
@@ -124,23 +133,6 @@ class FirestoreService(private val uid: String) {
         }
     }
 
-
-
-    /*     private suspend fun updateCartAfterRemoval(cartDocument: DocumentReference, updatedItems: MutableList<Product>) {
-            val updatedSubTotal = updatedItems.sumOf { it.price ?: 0.0 }
-            val updatedCount = updatedItems.size
-            val shippingPrice = if (updatedCount == 0) 0.0 else 5.99
-            val updatedTotalCost = updatedSubTotal + shippingPrice
-
-            val updatedCart = Cart(
-                items = updatedItems,
-                subTotal = updatedSubTotal,
-                totalCost = updatedTotalCost,
-                countProduct = updatedCount
-            )
-
-            cartDocument.set(updatedCart).await()
-        } */
 
     suspend fun getAllProductsFromCart(uid: String): Cart? {
         val result = database.collection("Profiles")

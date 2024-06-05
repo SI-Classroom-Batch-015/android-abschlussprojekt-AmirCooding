@@ -36,6 +36,7 @@ class HomeFragment : Fragment() {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         //TODO return null
         viewModel.loadCategory()
+
         return binding.root
     }
 
@@ -78,9 +79,8 @@ class HomeFragment : Fragment() {
         Constants.currentUser?.let {
             databaseReference.child(it.id).get().addOnSuccessListener {
                 if (it.exists()) {
-                    val image = it.child("image").value
                     Toast.makeText(requireContext(), "Result Found", Toast.LENGTH_LONG).show()
-                    binding.homeProfile.load(image)
+
                 } else {
                     Toast.makeText(requireContext(), "Result Not Found", Toast.LENGTH_LONG).show()
                 }
