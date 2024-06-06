@@ -46,7 +46,8 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
                 _favoriteBadge.postValue(count)
             } catch (e: Exception) {
                 Log.e("HomeViewModel", "Error fetching favorite product count", e)
-                _favoriteBadge.postValue(0)
+
+              //  _favoriteBadge.postValue(0)
             }
         }
     }

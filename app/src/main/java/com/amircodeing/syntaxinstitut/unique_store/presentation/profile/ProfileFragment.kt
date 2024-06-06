@@ -19,16 +19,17 @@ import com.amircodeing.syntaxinstitut.unique_store.databinding.FragmentProfileBi
 import com.amircodeing.syntaxinstitut.unique_store.utils.ChangeButtonNavVisibility
 
 class ProfileFragment : Fragment() {
-    private lateinit var binding : FragmentProfileBinding
+    private lateinit var binding: FragmentProfileBinding
     private var imageUri: Uri? = null
-    private val viewModel: ProfileViewModel  by viewModels()
+    private val viewModel: ProfileViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-        binding =FragmentProfileBinding.inflate(inflater, container, false)
+        binding = FragmentProfileBinding.inflate(inflater, container, false)
+        viewModel.getProfile()
         viewModel.setViewOnProfileInput(binding.root)
         selectImageProfile()
         activity?.let { ChangeButtonNavVisibility.inVisibilityNavButton(it) }
@@ -37,6 +38,12 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel.user.observe(viewLifecycleOwner) { user ->
+            viewModel.setProfileDataToInputs(binding.root, user)
+            Toast.makeText(context, user.fullName, Toast.LENGTH_LONG).show()
+        }
+
         binding.customButtonSkipped.setOnClickListener {
             Navigation.findNavController(binding.root).navigate(R.id.homeFragment)
         }
@@ -47,6 +54,7 @@ class ProfileFragment : Fragment() {
                     Navigation.findNavController(binding.root).navigate(R.id.homeFragment)
                     "save  been profile successfully"
                 }
+
                 SessionState.FAILED -> "Your action failed!"
                 else -> throw NotImplementedError()
             }
@@ -68,7 +76,7 @@ class ProfileFragment : Fragment() {
             if (viewModel.checkEmptyFieldInProfile(user, requireContext())) {
                 viewModel.setProfileWithImage(user, imageUri)
             }
-           // viewModel.setProfile(user)
+            // viewModel.setProfile(user)
         }
     }
 

@@ -1,11 +1,18 @@
 package com.amircodeing.syntaxinstitut.unique_store.presentation.checkout
 
+import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.viewModels
+import androidx.navigation.Navigation
 import com.amircodeing.syntaxinstitut.unique_store.R
 import com.amircodeing.syntaxinstitut.unique_store.databinding.FragmentCheckOutBinding
 import com.amircodeing.syntaxinstitut.unique_store.utils.ChangeButtonNavVisibility
@@ -63,6 +70,29 @@ class CheckOutFragment : Fragment() {
 
 
             }
+
+            binding.paymentPaypalButtom.setOnClickListener {
+                // Create and show the first dialog
+                val dialog = Dialog(requireContext())
+                dialog.setContentView(R.layout.loading_success_payment)
+                dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                dialog.show()
+                // Handler to delay the display of the second dialog
+                Handler(Looper.getMainLooper()).postDelayed({
+                    dialog.dismiss() // Dismiss the first dialog after 5 seconds
+                    val dialog2 = Dialog(requireContext())
+                    dialog2.setContentView(R.layout.success_payment)
+                    dialog2.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                    val backToHomeTextView: TextView = dialog2.findViewById(R.id.back_to_home)
+                    backToHomeTextView.setOnClickListener {
+                        dialog2.dismiss() // Dismiss the second dialog
+                        Navigation.findNavController(requireView()).navigate(R.id.homeFragment)
+                    }
+                    dialog2.show()
+                }, 5000) // Delay in milliseconds
+            }
+
+
         }
     }
 }

@@ -29,6 +29,7 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
         Repository(ApiService, AppDatabase.getAppDatabase(application), FirebaseService())
     private val _sessionState = MutableLiveData<SessionState>()
     val sessionState: LiveData<SessionState> = _sessionState
+    val user = repository.userProfile
 
 
     /**
@@ -53,6 +54,41 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
             setInputHint(hint)
         }
     }
+    fun setProfileDataToInputs(signInView: View , user :User) {
+        viewModelScope.launch {
+            user.let {
+                signInView.findViewById<CustomInputField>(R.id.signUp_fullName).apply {
+                    setLabelText("Full Name")
+                 setInputText(user.fullName)
+                }
+                signInView.findViewById<CustomInputField>(R.id.signUpTel).apply {
+                    setLabelText("Mobile")
+                  setInputText(user.tel)
+                }
+                signInView.findViewById<CustomInputField>(R.id.signUp_street_ET).apply {
+                    setLabelText("Street")
+                    user.address?.let { it1 -> setInputText(it1.street) }
+                }
+                signInView.findViewById<CustomInputField>(R.id.signUp_number_ET).apply {
+                    setLabelText("Nr")
+                    user.address?.let { it1 -> setInputText(it1.number) }
+                }
+                signInView.findViewById<CustomInputField>(R.id.signUp_zip_ET).apply {
+                    setLabelText("Zip")
+                    user.address?.let { it1 -> setInputText(it1.zip) }
+                }
+                signInView.findViewById<CustomInputField>(R.id.signUp_city_ET).apply {
+                    setLabelText("City")
+                    user.address?.let { it1 -> setInputText(it1.city) }
+                }
+                signInView.findViewById<CustomInputField>(R.id.signUp_country_ET).apply {
+                    setLabelText("Country")
+                    user.address?.let { it1 -> setInputText(it1.country) }
+                }
+            }
+        }
+    }
+
 
     fun checkEmptyFieldInProfile(user: User, context: Context): Boolean {
         val emptyFields = mutableListOf<String>()
@@ -113,16 +149,16 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
             }
         }
     }
-}
 
-/*
-    fun setProfile(user: User) {
+    fun getProfile() {
         viewModelScope.launch {
-            val isSuccess = repository.setProfile(user)
-            _sessionState.value = if (isSuccess) SessionState.IS_PROFILE_SAVED else SessionState.FAILED
+              repository.userProfile
+
         }
     }
-*/
+}
+
+
 
 
 

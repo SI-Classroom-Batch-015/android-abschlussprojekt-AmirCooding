@@ -6,6 +6,7 @@ import android.os.Handler
 import android.util.Log
 import android.view.ViewTreeObserver
 import androidx.activity.viewModels
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
@@ -50,6 +51,7 @@ class MainActivity : AppCompatActivity() {
         viewModel.showCountFavorites.observe(this) { badgeCount ->
             badgeCount?.let {
                 badgeSetup(R.id.favoriteFragment, it)
+                budgeClear(it)
             }
         }
 
@@ -58,8 +60,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun badgeSetup(id: Int, alerts: Int) {
         val badge = binding.buttonNav.getOrCreateBadge(id)
-        badge.isVisible = true
-        badge.number = alerts
+        if (alerts > 0) {
+            badge.isVisible = true
+            badge.number = alerts
+
+        }
     }
 
     private fun badgeSetupFloatActionButton(alerts: Int) {
@@ -78,9 +83,12 @@ class MainActivity : AppCompatActivity() {
     private fun budgeClear(id: Int) {
         val badgeDrawable = binding.buttonNav.getBadge(id)
         if (badgeDrawable != null) {
-            badgeDrawable.isVisible = false
+            badgeDrawable.isVisible = true
             badgeDrawable.clearNumber()
+            badgeDrawable.backgroundColor =
+                ContextCompat.getColor(binding.root.context, R.color.primaryDark)
 
+            binding.buttonNav.removeBadge(id)
         }
     }
 }

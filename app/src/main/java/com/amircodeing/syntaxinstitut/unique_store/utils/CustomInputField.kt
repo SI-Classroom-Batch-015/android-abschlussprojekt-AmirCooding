@@ -2,6 +2,7 @@ package com.amircodeing.syntaxinstitut.unique_store.utils
 
 
 import android.content.Context
+import android.text.Editable
 import android.text.InputType.TYPE_CLASS_NUMBER
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -46,6 +47,9 @@ class CustomInputField @JvmOverloads constructor(
         labelTextView.text = text
     }
 
+    fun setInputText(text: String) {
+        inputEditText.text = Editable.Factory.getInstance().newEditable(text)
+    }
     fun setInputHint(hint: String) {
         inputEditText.hint = hint
         if(labelTextView.text == "Mobile" || labelTextView.text =="Nr" || labelTextView.text =="Zip") {

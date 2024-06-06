@@ -11,4 +11,6 @@
     <color name="divider">#d3d3d3</color>
     <color name="button_second_color">#D1CDCD</color>
     <color name="paypal_background">#FCBB32</color>
+    <color name="success_payment_green1">#40B744</color>
+    <color name="success_payment_green2">#9AE29D</color>
 </resources>
