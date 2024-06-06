@@ -20,8 +20,9 @@ class CheckOutFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding =  FragmentCheckOutBinding.inflate(inflater, container, false)
-
+        binding = FragmentCheckOutBinding.inflate(inflater, container, false)
+        viewModel.getUserInfo()
+        viewModel.getCartItems()
         CustomToolbar.setToolbar(
             ToolbarComponents(
                 view = binding.root,
@@ -32,29 +33,39 @@ class CheckOutFragment : Fragment() {
             )
         )
         activity?.let { ChangeButtonNavVisibility.inVisibilityNavButton(it) }
-        return  binding.root
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        with(binding){
-           viewModel.userInfo.observe(viewLifecycleOwner){
-               info ->
-               for(item in info){
-                   paymentFullNameTV.text = item.fullName
-                   paymentStreetTV.text = item.address?.street
-                   paymentNumberTV.text = item.address?.number
-                   paymentZipTV.text = item.address?.zip
-                   paymentCityTV.text = item.address?.city
-                   paymentCountryTV.text = item.address?.country
-                   subTotalPaymentTV.text =String.format("%.2f €", item.cart?.subTotal)
-                   totalPricePaymentTV.text =String.format("%.2f €", item.cart?.totalCost)
-                 binding.recyclerView.adapter = item.cart?.let { CheckOutAdapter(it.items) }
-               }
-           }
+
+
+        with(binding) {
+            val adapter = CheckOutAdapter()
+            viewModel.items.observe(viewLifecycleOwner) { cart ->
+                binding.subTotalPaymentTV.text =
+                    String.format("%.2f €", viewModel.items.value?.subTotal)
+                binding.shippingPrice.text =
+                    String.format("%.2f €", viewModel.items.value?.shippingPrice)
+                binding.totalPricePaymentTV.text =
+                    String.format("%.2f €", viewModel.items.value?.totalCost)
+                binding.recyclerView.adapter = adapter
+                adapter.submitList(cart.items)
+
+            }
+            viewModel.user.observe(viewLifecycleOwner) { info ->
+                paymentFullNameTV.text = info.fullName
+                paymentStreetTV.text = info.address?.street
+                paymentNumberTV.text = info.address?.number
+                paymentZipTV.text = info.address?.zip
+                paymentCityTV.text = info.address?.city
+                paymentCountryTV.text = info.address?.country
+
+
+            }
         }
     }
-
-
-
 }
+
+
+

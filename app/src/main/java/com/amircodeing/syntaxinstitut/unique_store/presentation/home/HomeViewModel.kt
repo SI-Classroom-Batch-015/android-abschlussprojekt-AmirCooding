@@ -20,7 +20,6 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
     val products = repository.products
     val category = repository.category
-    val userProfile = repository.userProfile
 
     private val _favoriteBadge = MutableLiveData<Int>()
     val showCountFavorites: LiveData<Int> get() = _favoriteBadge

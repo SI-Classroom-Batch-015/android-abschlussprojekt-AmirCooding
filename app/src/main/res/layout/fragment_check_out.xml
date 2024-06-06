@@ -418,10 +418,11 @@
                                 android:layout_weight="1" />
 
                         <TextView
+                                android:id="@+id/shipping_price"
                                 android:layout_width="wrap_content"
                                 android:textSize="16sp"
                                 android:textColor="@color/primaryDark"
-                                android:text="5.99 €"
+                                android:text="0.00 €"
                                 android:layout_height="wrap_content" />
                     </LinearLayout>
 

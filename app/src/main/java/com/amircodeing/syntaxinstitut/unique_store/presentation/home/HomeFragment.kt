@@ -43,9 +43,9 @@ class HomeFragment : Fragment() {
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        activity?.let { ChangeButtonNavVisibility.visibilityNavButton(it) }
         super.onViewCreated(view, savedInstanceState)
         callImageProfile()
-        binding.homeProfile.load(viewModel.userProfile.value?.image)
         binding.homeProfile.setOnClickListener {
             val navController = Navigation.findNavController(binding.root)
             navController.navigate(R.id.profileFragment)
@@ -93,7 +93,7 @@ class HomeFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        activity?.let { ChangeButtonNavVisibility.visibilityNavButton(it) }
+     //   activity?.let { ChangeButtonNavVisibility.visibilityNavButton(it) }
     }
 
 }

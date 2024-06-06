@@ -65,9 +65,6 @@ class Repository(
     val showCart: LiveData<Cart> get() = _showCart
 
 
-    private val _userInformation: LiveData<List<User>> = database.appDao.getAllUser()
-    val userInformation: LiveData<List<User>> get() = _userInformation
-
     private val _userProfile = MutableLiveData<User>()
     val userProfile: LiveData<User> get() = _userProfile
     val isLoggedIn = firebaseService.isLoggedIn
