@@ -46,10 +46,17 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
         val adapter = CartAdapter(viewModel)
         binding.cartRV.adapter = adapter
         viewModel.showCart.observe(viewLifecycleOwner) { cart ->
-            adapter.submitList(cart.items)
-            binding.totalPrice.text = String.format("%.2f", cart.totalCost)
-            binding.transferPriceTV.text = String.format("%.2f", cart.shippingPrice)
-            binding.subtotalPriceCartTV.text = String.format("%.2f", cart.subTotal)
+            if (cart != null) {
+                adapter.submitList(cart.items)
+                binding.totalPrice.text = String.format("%.2f", cart.totalCost)
+                binding.transferPriceTV.text = String.format("%.2f", cart.shippingPrice)
+                binding.subtotalPriceCartTV.text = String.format("%.2f", cart.subTotal)
+            } else {
+                adapter.submitList(emptyList())
+                binding.totalPrice.text = "0.00"
+                binding.transferPriceTV.text = "0.00"
+                binding.subtotalPriceCartTV.text = "0.00"
+            }
         }
 
 

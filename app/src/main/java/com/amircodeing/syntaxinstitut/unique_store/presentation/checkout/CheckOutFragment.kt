@@ -85,7 +85,9 @@ class CheckOutFragment : Fragment() {
                     dialog2.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
                     val backToHomeTextView: TextView = dialog2.findViewById(R.id.back_to_home)
                     backToHomeTextView.setOnClickListener {
-                        dialog2.dismiss() // Dismiss the second dialog
+                        // Dismiss the second dialog
+                        dialog2.dismiss()
+                        viewModel.deleteAllCart()
                         Navigation.findNavController(requireView()).navigate(R.id.homeFragment)
                     }
                     dialog2.show()

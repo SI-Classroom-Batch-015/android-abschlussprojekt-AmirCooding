@@ -27,6 +27,11 @@ class CheckOutViewModel (application: Application) : AndroidViewModel(applicatio
             repository.getUserProfile()
         }
     }
+    fun deleteAllCart(){
+        viewModelScope.launch {
+            repository.deleteAllItemsFromCart()
+        }
+    }
 
     fun getCartItems(){
         viewModelScope.launch {

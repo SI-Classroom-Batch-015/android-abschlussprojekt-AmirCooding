@@ -133,6 +133,16 @@ class FirestoreService(private val uid: String) {
         }
     }
 
+    // Delete each document in the "Carts" collection
+    suspend fun deleteAllProductsFromCart(uid: String) {
+        val cartCollection = database.collection("Profiles")
+            .document(uid)
+            .collection("Carts")
+        val snapshot = cartCollection.get().await()
+        snapshot.documents.forEach { document ->
+            document.reference.delete().await()
+        }
+    }
 
     suspend fun getAllProductsFromCart(uid: String): Cart? {
         val result = database.collection("Profiles")

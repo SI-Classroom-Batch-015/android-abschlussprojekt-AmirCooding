@@ -319,24 +319,22 @@ class Repository(
         }
     }
 
-//TODO remove product frome Faivorite
-    /*     fun removeProductFromFavorite(product: Product) {
-        try {
-            database.appDao.removeProductFromFavorites(product)
-            Log.i(TAG, "success remove List of Favorite")
-        } catch (e: Exception) {
-            Log.e(TAG, "Error remove List of Favorite $e")
-        }
-    } */
-
     fun updateProduct(id: Int, isLiked: Boolean) {
         database.appDao.productUpdate(id, isLiked)
     }
 
+    suspend fun deleteAllItemsFromCart() {
+        try {
+            firestoreService?.deleteAllProductsFromCart(firebaseService.userId.toString())
+            Log.i(TAG, "success delete Products From Firebase to cart")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error delete  Products From Firebase to cart $e")
+        }
+    }
+    }
 
 
 
-}
 
 
 
