@@ -2,25 +2,17 @@ package com.amircodeing.syntaxinstitut.unique_store.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.util.Log
 import android.view.ViewTreeObserver
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.activityViewModels
-import androidx.navigation.Navigation
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.amircodeing.syntaxinstitut.unique_store.R
 import com.amircodeing.syntaxinstitut.unique_store.databinding.ActivityMainBinding
-import com.amircodeing.syntaxinstitut.unique_store.presentation.favorite.FavoriteFragment
 import com.amircodeing.syntaxinstitut.unique_store.presentation.home.HomeViewModel
 import com.google.android.material.badge.BadgeDrawable
-import com.google.android.material.badge.BadgeDrawable.BadgeGravity
 import com.google.android.material.badge.BadgeUtils
 import com.google.android.material.badge.ExperimentalBadgeUtils
-import kotlinx.coroutines.delay
 
 
 class MainActivity : AppCompatActivity() {
@@ -45,12 +37,12 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.cartBadge.observe(this) { badgeCount ->
             badgeCount?.let {
-                badgeSetupFloatActionButton(it)
+                setupBadgeFAB(it)
             }
         }
         viewModel.showCountFavorites.observe(this) { badgeCount ->
             badgeCount?.let {
-                badgeSetup(R.id.favoriteFragment, it)
+                setupBadgeFavorite(it)
                 budgeClear(it)
             }
         }
@@ -58,8 +50,8 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun badgeSetup(id: Int, alerts: Int) {
-        val badge = binding.buttonNav.getOrCreateBadge(id)
+    private fun setupBadgeFavorite(alerts: Int) {
+        val badge = binding.buttonNav.getOrCreateBadge(R.id.favoriteFragment)
         if (alerts > 0) {
             badge.isVisible = true
             badge.number = alerts
@@ -67,12 +59,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun badgeSetupFloatActionButton(alerts: Int) {
+    private val badgeDrawable by lazy { BadgeDrawable.create(this@MainActivity) }
+    private fun setupBadgeFAB(alerts: Int) {
         binding.floatActionButton.viewTreeObserver.addOnGlobalLayoutListener(@ExperimentalBadgeUtils object :
             ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
                 binding.floatActionButton.viewTreeObserver.removeOnGlobalLayoutListener(this)
-                val badgeDrawable = BadgeDrawable.create(this@MainActivity)
                 badgeDrawable.number = alerts
                 badgeDrawable.isVisible = true
                 BadgeUtils.attachBadgeDrawable(badgeDrawable, binding.floatActionButton, null)

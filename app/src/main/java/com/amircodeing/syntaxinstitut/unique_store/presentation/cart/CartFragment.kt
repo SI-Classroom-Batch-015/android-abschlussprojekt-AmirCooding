@@ -58,11 +58,17 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
                 binding.subtotalPriceCartTV.text = "0.00"
             }
         }
-
-
         binding.customButtonMyCart.setOnClickListener {
-            val navController = Navigation.findNavController(binding.root)
-            navController.navigate(R.id.checkOutFragment)
+            viewModel.showCart.value?.let { cart ->
+                if (cart.items.isEmpty()) {
+                    Toast.makeText(context, "Cart is Empty", Toast.LENGTH_SHORT).show()
+                } else {
+                    val navController = Navigation.findNavController(binding.root)
+                    navController.navigate(R.id.checkOutFragment)
+                }
+            } ?: run {
+                Toast.makeText(context, "Unable to retrieve cart information", Toast.LENGTH_SHORT).show()
+            }
         }
 
     }
