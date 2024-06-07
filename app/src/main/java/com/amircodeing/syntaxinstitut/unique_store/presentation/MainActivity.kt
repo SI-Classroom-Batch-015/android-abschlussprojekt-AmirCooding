@@ -1,9 +1,11 @@
 package com.amircodeing.syntaxinstitut.unique_store.presentation
 
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.ViewTreeObserver
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -17,11 +19,12 @@ import com.google.android.material.badge.ExperimentalBadgeUtils
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+
     private val viewModel: HomeViewModel by viewModels()
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        viewModel.updateFavoriteProductCount()
         viewModel.updateCartProductCount()
         binding = ActivityMainBinding.inflate(layoutInflater, null, false)
         setContentView(binding.root)
@@ -40,24 +43,15 @@ class MainActivity : AppCompatActivity() {
                 setupBadgeFAB(it)
             }
         }
-        viewModel.showCountFavorites.observe(this) { badgeCount ->
-            badgeCount?.let {
-                setupBadgeFavorite(it)
-                budgeClear(it)
-            }
+        viewModel.showCountFavoritesLiveData.observe(this) { numberProductInFavorites ->
+            binding.buttonNav.getOrCreateBadge(R.id.favoriteFragment).number = numberProductInFavorites
         }
-
+        viewModel.showCountCartLiveData.observe(this) { numberProductInCarts ->
+            setupBadgeFAB(numberProductInCarts)
+        }
 
     }
 
-    private fun setupBadgeFavorite(alerts: Int) {
-        val badge = binding.buttonNav.getOrCreateBadge(R.id.favoriteFragment)
-        if (alerts > 0) {
-            badge.isVisible = true
-            badge.number = alerts
-
-        }
-    }
 
     private val badgeDrawable by lazy { BadgeDrawable.create(this@MainActivity) }
     private fun setupBadgeFAB(alerts: Int) {
@@ -70,17 +64,5 @@ class MainActivity : AppCompatActivity() {
                 BadgeUtils.attachBadgeDrawable(badgeDrawable, binding.floatActionButton, null)
             }
         })
-    }
-
-    private fun budgeClear(id: Int) {
-        val badgeDrawable = binding.buttonNav.getBadge(id)
-        if (badgeDrawable != null) {
-            badgeDrawable.isVisible = true
-            badgeDrawable.clearNumber()
-            badgeDrawable.backgroundColor =
-                ContextCompat.getColor(binding.root.context, R.color.primaryDark)
-
-            binding.buttonNav.removeBadge(id)
-        }
     }
 }

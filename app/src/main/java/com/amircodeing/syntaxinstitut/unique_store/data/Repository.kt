@@ -16,10 +16,11 @@ import com.amircodeing.syntaxinstitut.unique_store.data.remote.apiservice.ApiSer
 import com.amircodeing.syntaxinstitut.unique_store.data.remote.firebaseService.FireStorageService
 import com.amircodeing.syntaxinstitut.unique_store.data.remote.firebaseService.FirebaseService
 import com.amircodeing.syntaxinstitut.unique_store.data.remote.firebaseService.FirestoreService
-import com.amircodeing.syntaxinstitut.unique_store.data.remote.firebaseService.StorageService
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 
 const val TAG = "Repository"
@@ -260,14 +261,26 @@ class Repository(
     }
 
 
-        suspend fun getFavoriteProductCount(): Int {
-            return try {
-                firestoreService!!.getFavoriteProductCount(firebaseService.userId.toString())
-            } catch (e: Exception) {
-                Log.e(Repository::class.simpleName, "Could not get count Favorites", e)
-                0
-            }
+    suspend fun getFavoriteProductCount(): Int {
+        return try {
+            firestoreService?.getFavoriteProductCount(firebaseService.userId.toString()) ?: 0
+        } catch (e: Exception) {
+            Log.e(Repository::class.simpleName, "Could not get count Favorites", e)
+            0
         }
+    }
+
+    val cartProductCountFlow: Flow<Int> = flow {
+        while (true) {
+            emit(countProductCart()) // Adjust the delay as needed (e.g., 10 seconds)
+        }
+    }
+
+    val favoriteProductCountFlow: Flow<Int> = flow {
+        while (true) {
+            emit(getFavoriteProductCount()) // Adjust the delay as needed (e.g., 10 seconds)
+        }
+    }
 
 
 
@@ -278,7 +291,7 @@ class Repository(
             Log.e(Repository::class.simpleName, "Could not save Favorite")
         }
     }
-    suspend fun getAllCountProductCart(): Int {
+    suspend fun countProductCart(): Int {
         return try {
             val uid = firebaseService.userId
             if (uid != null) {

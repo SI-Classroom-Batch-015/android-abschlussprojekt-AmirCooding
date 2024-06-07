@@ -51,11 +51,11 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
                 binding.totalPrice.text = String.format("%.2f", cart.totalCost)
                 binding.transferPriceTV.text = String.format("%.2f", cart.shippingPrice)
                 binding.subtotalPriceCartTV.text = String.format("%.2f", cart.subTotal)
+                binding.emptyCart.visibility = View.INVISIBLE
+                binding.constraintLayout.visibility= View.VISIBLE
             } else {
-                adapter.submitList(emptyList())
-                binding.totalPrice.text = "0.00"
-                binding.transferPriceTV.text = "0.00"
-                binding.subtotalPriceCartTV.text = "0.00"
+                binding.emptyCart.visibility = View.VISIBLE
+                binding.constraintLayout.visibility= View.INVISIBLE
             }
         }
         binding.customButtonMyCart.setOnClickListener {

@@ -5,14 +5,14 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.amircodeing.syntaxinstitut.unique_store.data.Repository
 import com.amircodeing.syntaxinstitut.unique_store.data.local.database.AppDatabase
-import com.amircodeing.syntaxinstitut.unique_store.data.model.Cart
 import com.amircodeing.syntaxinstitut.unique_store.data.model.Product
 import com.amircodeing.syntaxinstitut.unique_store.data.remote.apiservice.ApiService
 import com.amircodeing.syntaxinstitut.unique_store.data.remote.firebaseService.FirebaseService
-import com.amircodeing.syntaxinstitut.unique_store.presentation.favorite.FavoriteViewModel
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
 class HomeViewModel(application: Application) : AndroidViewModel(application) {
@@ -21,33 +21,25 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     val products = repository.products
     val category = repository.category
 
-    private val _favoriteBadge = MutableLiveData<Int>()
-    val showCountFavorites: LiveData<Int> get() = _favoriteBadge
-
     private val _cartBadge = MutableLiveData<Int>()
     val cartBadge: LiveData<Int> get() = _cartBadge
 
+
+    val showCountFavoritesLiveData: LiveData<Int> = repository.favoriteProductCountFlow
+        .distinctUntilChanged()
+        .asLiveData()
+
+    val showCountCartLiveData: LiveData<Int> = repository.cartProductCountFlow
+        .distinctUntilChanged()
+        .asLiveData()
     fun updateCartProductCount() {
         viewModelScope.launch {
             try {
-                val count = repository.getAllCountProductCart()
+                val count = repository.countProductCart()
                 _cartBadge.postValue(count)
             } catch (e: Exception) {
                 Log.e("HomeViewModel", "Error fetching favorite product count", e)
                 _cartBadge.postValue(0)
-            }
-        }
-    }
-
-    fun updateFavoriteProductCount() {
-        viewModelScope.launch {
-            try {
-                val count = repository.getFavoriteProductCount()
-                _favoriteBadge.postValue(count)
-            } catch (e: Exception) {
-                Log.e("HomeViewModel", "Error fetching favorite product count", e)
-
-              //  _favoriteBadge.postValue(0)
             }
         }
     }
