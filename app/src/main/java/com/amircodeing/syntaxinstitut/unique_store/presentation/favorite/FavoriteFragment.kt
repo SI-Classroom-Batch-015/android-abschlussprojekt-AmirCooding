@@ -45,9 +45,20 @@ class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         viewModel.showFavorites.observe(viewLifecycleOwner){
                 favorites ->
+            if (favorites.isNotEmpty()){
             binding.favoriteListRV.adapter = FavoriteAdapter(favorites , viewModel )
+                binding.favoriteListRV.visibility = View.VISIBLE
+              binding.emptyCart.visibility = View.GONE
+
+            }else{
+                binding.favoriteListRV.visibility = View.GONE
+             binding.emptyCart.visibility = View.VISIBLE
+
+            }
+
         }
 
 
