@@ -13,10 +13,21 @@ class SettingViewModel(application: Application) : AndroidViewModel(application)
 
     val isLogin: Boolean
         get() = repository.isLoggedIn
+
+    val settingElements = repository.settingElements
     fun signOut() {
         if(isLogin){
         repository.signOut()
         }
     }
+
+    init {
+        settingElements()
+    }
+     fun settingElements() {
+            repository.loadStting()
+
+    }
+
 
 }

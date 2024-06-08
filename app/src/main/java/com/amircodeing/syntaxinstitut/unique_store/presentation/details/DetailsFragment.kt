@@ -27,7 +27,6 @@ const val TAG = " SignUpFragment"
 class DetailsFragment : Fragment(R.layout.fragment_details) {
     private lateinit var binding: FragmentDetailsBinding
     private val viewModel: HomeViewModel by activityViewModels()
-    private val favorite: FavoriteViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

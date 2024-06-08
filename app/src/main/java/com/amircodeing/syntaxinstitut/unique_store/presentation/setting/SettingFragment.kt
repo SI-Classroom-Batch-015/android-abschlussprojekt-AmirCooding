@@ -26,6 +26,7 @@ class SettingFragment : Fragment(R.layout.fragment_setting) {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentSettingBinding.inflate(inflater, container, false)
+
         CustomToolbar.setToolbar(
             ToolbarComponents(
                 view = binding.root, title = "Setting", visibility = false,
@@ -39,26 +40,19 @@ class SettingFragment : Fragment(R.layout.fragment_setting) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+      val adapter = SettingAdapter()
+        binding.recyclerView2.adapter = adapter
+      viewModle.settingElements.observe(viewLifecycleOwner){
+          info ->
+          adapter.submitList(info)
+      }
 
-        binding.logOutB.setOnClickListener {
+
+        binding.customButtonSignout.setOnClickListener {
             viewModle.signOut()
             Toast.makeText(context, "Sign Out Successful", Toast.LENGTH_LONG).show()
             Navigation.findNavController(binding.root).navigate(R.id.signInFragment)
 
         }
-        val user = Constants.currentUser
-        if (user != null) {
-            with(binding) {
-                addImageProfileIV.load(user.image)
-                fullName.text = user.fullName
-                telTV.text = user.tel
-                streetTV.text = user.address?.street
-                numberTV.text = user.address?.number
-                zipTV.text = user.address?.zip
-                cityTV.text = user.address?.city
-                countryTV.text = user.address?.country
-            }
-        }
-
     }
 }

@@ -11,6 +11,7 @@ import com.amircodeing.syntaxinstitut.unique_store.data.model.Auth
 import com.amircodeing.syntaxinstitut.unique_store.data.model.Cart
 import com.amircodeing.syntaxinstitut.unique_store.data.model.Category
 import com.amircodeing.syntaxinstitut.unique_store.data.model.Product
+import com.amircodeing.syntaxinstitut.unique_store.data.model.Setting
 import com.amircodeing.syntaxinstitut.unique_store.data.model.User
 import com.amircodeing.syntaxinstitut.unique_store.data.remote.apiservice.ApiService
 import com.amircodeing.syntaxinstitut.unique_store.data.remote.firebaseService.FireStorageService
@@ -80,6 +81,9 @@ class Repository(
     private val _category = MutableLiveData<List<Category>>()
     val category: LiveData<List<Category>> get() = _category
 
+    private val _settingElements = MutableLiveData<List<Setting>>()
+    val settingElements: LiveData<List<Setting>> get() = _settingElements
+
     /**
      *  @see transfer Data from Home-Screen to Details-Screen
      *
@@ -120,9 +124,17 @@ class Repository(
         }
     }
 
-    suspend fun loadCategory() {
+   fun loadCategory() {
         try {
             _category.postValue(dataSource.getCategories())
+            Log.i(TAG, "success loading category")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error loading category $e")
+        }
+    }
+     fun loadStting() {
+        try {
+            _settingElements.postValue(dataSource.getSettingElements())
             Log.i(TAG, "success loading category")
         } catch (e: Exception) {
             Log.e(TAG, "Error loading category $e")
@@ -261,7 +273,7 @@ class Repository(
     }
 
 
-    suspend fun getFavoriteProductCount(): Int {
+    private suspend fun getFavoriteProductCount(): Int {
         return try {
             firestoreService?.getFavoriteProductCount(firebaseService.userId.toString()) ?: 0
         } catch (e: Exception) {
@@ -272,13 +284,13 @@ class Repository(
 
     val cartProductCountFlow: Flow<Int> = flow {
         while (true) {
-            emit(countProductCart()) // Adjust the delay as needed (e.g., 10 seconds)
+            emit(countProductCart())
         }
     }
 
     val favoriteProductCountFlow: Flow<Int> = flow {
         while (true) {
-            emit(getFavoriteProductCount()) // Adjust the delay as needed (e.g., 10 seconds)
+            emit(getFavoriteProductCount())
         }
     }
 

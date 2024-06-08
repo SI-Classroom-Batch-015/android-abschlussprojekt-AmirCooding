@@ -7,6 +7,9 @@ import android.view.ViewTreeObserver
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.asLiveData
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.amircodeing.syntaxinstitut.unique_store.R
@@ -15,13 +18,13 @@ import com.amircodeing.syntaxinstitut.unique_store.presentation.home.HomeViewMod
 import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.badge.BadgeUtils
 import com.google.android.material.badge.ExperimentalBadgeUtils
+import kotlinx.coroutines.flow.distinctUntilChanged
 
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-
     private val viewModel: HomeViewModel by viewModels()
-    @RequiresApi(Build.VERSION_CODES.O)
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -36,22 +39,16 @@ class MainActivity : AppCompatActivity() {
         binding.floatActionButton.setOnClickListener {
             navController.navigate(R.id.cartFragment)
         }
-
-
-        viewModel.cartBadge.observe(this) { badgeCount ->
-            badgeCount?.let {
-                setupBadgeFAB(it)
-            }
-        }
+/*         //set Badge for Favorite
         viewModel.showCountFavoritesLiveData.observe(this) { numberProductInFavorites ->
-            binding.buttonNav.getOrCreateBadge(R.id.favoriteFragment).number = numberProductInFavorites
+            binding.buttonNav.getOrCreateBadge(R.id.favoriteFragment).number =
+                numberProductInFavorites
         }
+        // set badge for Cart
         viewModel.showCountCartLiveData.observe(this) { numberProductInCarts ->
             setupBadgeFAB(numberProductInCarts)
-        }
-
+        } */
     }
-
 
     private val badgeDrawable by lazy { BadgeDrawable.create(this@MainActivity) }
     private fun setupBadgeFAB(alerts: Int) {
