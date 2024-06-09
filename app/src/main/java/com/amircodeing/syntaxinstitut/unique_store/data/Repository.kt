@@ -213,7 +213,7 @@ class Repository(
 
     suspend fun getUserProfile() {
         try {
-            _userProfile.value = firestoreService?.getProfile(firebaseService.userId.toString())
+          _userProfile.postValue(firestoreService?.getProfile(firebaseService.userId.toString()))
         } catch (e: Exception) {
             Log.e(Repository::class.simpleName, "Could not get profile")
         }

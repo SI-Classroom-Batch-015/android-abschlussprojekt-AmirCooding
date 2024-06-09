@@ -6,12 +6,14 @@ import android.net.Uri
 import android.provider.ContactsContract
 import android.util.Log
 import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import coil.load
 import com.amircodeing.syntaxinstitut.unique_store.R
 import com.amircodeing.syntaxinstitut.unique_store.data.Repository
 import com.amircodeing.syntaxinstitut.unique_store.data.local.database.AppDatabase
@@ -30,6 +32,10 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
     private val _sessionState = MutableLiveData<SessionState>()
     val sessionState: LiveData<SessionState> = _sessionState
     val user = repository.userProfile
+
+init {
+    getProfile()
+}
 
 
     /**
@@ -57,6 +63,9 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
     fun setProfileDataToInputs(signInView: View , user :User) {
         viewModelScope.launch {
             user.let {
+                signInView.findViewById<ImageView>(R.id.add_image_profile_IV).apply {
+                    load(user.image)
+                }
                 signInView.findViewById<CustomInputField>(R.id.signUp_fullName).apply {
                     setLabelText("Full Name")
                  setInputText(user.fullName)
@@ -152,8 +161,7 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
 
     fun getProfile() {
         viewModelScope.launch {
-              repository.userProfile
-
+         repository.getUserProfile()
         }
     }
 }

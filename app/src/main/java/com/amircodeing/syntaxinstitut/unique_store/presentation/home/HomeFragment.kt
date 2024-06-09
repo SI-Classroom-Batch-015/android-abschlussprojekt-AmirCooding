@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
@@ -34,18 +35,18 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
-        //TODO return null
+        activity?.let { ChangeButtonNavVisibility.visibilityNavButton(it) }
         viewModel.loadCategory()
-
         return binding.root
     }
 
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        activity?.let { ChangeButtonNavVisibility.visibilityNavButton(it) }
         super.onViewCreated(view, savedInstanceState)
-        callImageProfile()
+        binding.homeProfile.apply {
+            load(viewModel.user.value?.image)
+        }
         binding.homeProfile.setOnClickListener {
             val navController = Navigation.findNavController(binding.root)
             navController.navigate(R.id.profileFragment)

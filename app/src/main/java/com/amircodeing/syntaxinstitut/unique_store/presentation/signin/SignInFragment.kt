@@ -66,8 +66,6 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
         }
         binding.signInButtonGoogle.setOnClickListener {
             signInGoogle()
-            //  viewModel.signInUserWithGoogleAccount(binding.root, requireContext(), this)
-
         }
 
         binding.customButtonSignIn.setOnClickListener {
@@ -108,7 +106,7 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
 
     }
 
-
+//TODO move  ot ViewModel
     private fun signInGoogle(){
         val signInIntent = googleSignInClient.signInIntent
         launcher.launch(signInIntent)
@@ -120,7 +118,6 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
             handleResults(task)
         }
-
     }
 
     private fun handleResults(task: Task<GoogleSignInAccount>) {

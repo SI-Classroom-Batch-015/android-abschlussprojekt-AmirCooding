@@ -11,12 +11,14 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
+import coil.load
 import com.amircodeing.syntaxinstitut.unique_store.R
 import com.amircodeing.syntaxinstitut.unique_store.data.model.Address
 import com.amircodeing.syntaxinstitut.unique_store.data.model.User
 import com.amircodeing.syntaxinstitut.unique_store.data.remote.firebaseService.SessionState
 import com.amircodeing.syntaxinstitut.unique_store.databinding.FragmentProfileBinding
 import com.amircodeing.syntaxinstitut.unique_store.utils.ChangeButtonNavVisibility
+import com.google.firebase.auth.FirebaseAuth
 
 class ProfileFragment : Fragment() {
     private lateinit var binding: FragmentProfileBinding
@@ -38,11 +40,16 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        viewModel.user.observe(viewLifecycleOwner) { user ->
-            viewModel.setProfileDataToInputs(binding.root, user)
-            Toast.makeText(context, user.fullName, Toast.LENGTH_LONG).show()
+            Toast.makeText(context, "one create view", Toast.LENGTH_LONG).show()
+         viewModel.user.observe(viewLifecycleOwner){user ->
+        if (user != null) {
+            viewModel.setProfileDataToInputs(binding.root , user)
+        } else {
+            Toast.makeText(context,"there is nothing to show", Toast.LENGTH_LONG).show()
         }
+         }
+           /*  viewModel.setProfileDataToInputs(binding.root, user) */
+
 
         binding.customButtonSkipped.setOnClickListener {
             Navigation.findNavController(binding.root).navigate(R.id.homeFragment)
