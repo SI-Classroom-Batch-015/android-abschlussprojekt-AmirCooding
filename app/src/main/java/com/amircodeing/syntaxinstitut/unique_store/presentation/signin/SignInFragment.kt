@@ -31,12 +31,14 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.database.FirebaseDatabase
+
 const val TAG = "Sign In Fragment"
+
 class SignInFragment : Fragment(R.layout.fragment_sign_in) {
     private lateinit var binding: FragmentSignInBinding
     private val viewModel: SignInViewModel by viewModels()
     private lateinit var googleSignInClient: GoogleSignInClient
-    private lateinit var auth : FirebaseAuth
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,7 +52,7 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .build()
-        googleSignInClient = GoogleSignIn.getClient(requireContext(),gso)
+        googleSignInClient = GoogleSignIn.getClient(requireContext(), gso)
         viewModel.setupUserNameInputField(binding.root)
         viewModel.setupPasswordInputField(binding.root)
         return binding.root
@@ -73,29 +75,36 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
                 binding.signInUserName.getText().trim(),
                 hashPassword(binding.signInPassword.getText().trim())
             )
-           binding.signInProgressbar.visibility = View.VISIBLE
+            binding.signInProgressbar.visibility = View.VISIBLE
             binding.signInProgressbar2.visibility = View.VISIBLE
-            if(viewModel.checkEmptyFieldInAuth(auth,requireContext())){
+            if (viewModel.checkEmptyFieldInAuth(auth, requireContext())) {
                 viewModel.signIn(auth)
-            viewModel.sessionState.observe(viewLifecycleOwner) { state ->
-                val message = when (state) {
-                    SessionState.LOGGED_IN -> {
-                        viewModel.isLoggedIn
-                        val  user = viewModel.userProfile.value
-                                Toast.makeText(context, user.toString(), Toast.LENGTH_SHORT).show()
+                viewModel.sessionState.observe(viewLifecycleOwner) { state ->
+                    val message = when (state) {
+                        SessionState.LOGGED_IN -> {
+                            viewModel.isLoggedIn
+                            val user = viewModel.userProfile.value
+                            if (user != null){
+                                Navigation.findNavController(binding.root)
+                                    .navigate(R.id.homeFragment)
 
-                        Navigation.findNavController(binding.root).navigate(R.id.homeFragment)
-                        "Login  been successfully"
+                            }else{
+                                Navigation.findNavController(binding.root)
+                                    .navigate(R.id.profileFragment)
+                            }
+                            "Login  been successfully"
+                        }
+
+                        SessionState.FAILED -> {
+                            binding.signInProgressbar.visibility = View.GONE
+                            binding.signInProgressbar2.visibility = View.GONE
+                            "Your action failed!"
+                        }
+
+                        else -> throw NotImplementedError()
                     }
-                    SessionState.FAILED -> {
-                        binding.signInProgressbar.visibility = View.GONE
-                        binding.signInProgressbar2.visibility = View.GONE
-                        "Your action failed!"
-                    }
-                    else -> throw NotImplementedError()
+                    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
                 }
-                Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-            }
             }
 
 
@@ -106,27 +115,27 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
 
     }
 
-//TODO move  ot ViewModel
-    private fun signInGoogle(){
+    //TODO move  ot ViewModel
+    private fun signInGoogle() {
         val signInIntent = googleSignInClient.signInIntent
         launcher.launch(signInIntent)
     }
 
-    private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
-            result ->
-        if(result.resultCode == Activity.RESULT_OK){
-            val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
-            handleResults(task)
+    private val launcher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+                handleResults(task)
+            }
         }
-    }
 
     private fun handleResults(task: Task<GoogleSignInAccount>) {
-        if(task.isSuccessful){
-            val account : GoogleSignInAccount? = task.result
-            if(account!= null){
+        if (task.isSuccessful) {
+            val account: GoogleSignInAccount? = task.result
+            if (account != null) {
                 updateUI(account)
             }
-        }else{
+        } else {
 
             Toast.makeText(context, "${task.exception}", Toast.LENGTH_LONG).show()
 
@@ -135,16 +144,15 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
 
     private fun updateUI(account: GoogleSignInAccount) {
 
-        val credential =  GoogleAuthProvider.getCredential(account.idToken , null)
-        auth.signInWithCredential(credential).addOnCompleteListener{ task ->
-            if(task.isSuccessful){
+        val credential = GoogleAuthProvider.getCredential(account.idToken, null)
+        auth.signInWithCredential(credential).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
                 Navigation.findNavController(binding.root).navigate(R.id.homeFragment)
-            }else{
+            } else {
                 Toast.makeText(context, "${task.exception}", Toast.LENGTH_LONG).show()
             }
         }
     }
-
 
 
 }

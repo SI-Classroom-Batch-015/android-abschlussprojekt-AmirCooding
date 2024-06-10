@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
         binding.floatActionButton.setOnClickListener {
             navController.navigate(R.id.cartFragment)
         }
-/*         //set Badge for Favorite
+         //set Badge for Favorite
         viewModel.showCountFavoritesLiveData.observe(this) { numberProductInFavorites ->
             binding.buttonNav.getOrCreateBadge(R.id.favoriteFragment).number =
                 numberProductInFavorites
@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         // set badge for Cart
         viewModel.showCountCartLiveData.observe(this) { numberProductInCarts ->
             setupBadgeFAB(numberProductInCarts)
-        } */
+        }
     }
 
     private val badgeDrawable by lazy { BadgeDrawable.create(this@MainActivity) }

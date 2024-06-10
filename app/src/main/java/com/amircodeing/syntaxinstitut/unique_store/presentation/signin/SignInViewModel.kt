@@ -82,15 +82,5 @@ class SignInViewModel (application: Application) : AndroidViewModel(application)
         }
     }
 
-/* fun addUserTODB(user: User){
-    try {viewModelScope.launch {
-        repository.addUserTORoomDB(user)
-    }
-    }catch (e : Exception){
-        Log.e(com.amircodeing.syntaxinstitut.unique_store.presentation.profile.TAG,"PROFILE VIEWMODEL-------->$e")
-    }
-} */
-
-
 }
 
