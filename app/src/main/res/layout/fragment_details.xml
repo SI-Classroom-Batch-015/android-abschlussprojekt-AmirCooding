@@ -362,7 +362,7 @@ android:layout_marginStart="50dp"
                             android:backgroundTint="@color/button_second_color"
                             android:text="to favorite"
                             android:textStyle="normal"
-                            android:drawableLeft="@drawable/icon_heart_dark_empty"
+                            android:drawableLeft="@drawable/icon_heart_fill"
                             android:textColor="@color/primaryDark"
                             android:layout_height="match_parent" />
 

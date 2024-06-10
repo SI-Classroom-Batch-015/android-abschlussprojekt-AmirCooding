@@ -39,14 +39,15 @@ class MainActivity : AppCompatActivity() {
         binding.floatActionButton.setOnClickListener {
             navController.navigate(R.id.cartFragment)
         }
-         //set Badge for Favorite
-        viewModel.showCountFavoritesLiveData.observe(this) { numberProductInFavorites ->
-            binding.buttonNav.getOrCreateBadge(R.id.favoriteFragment).number =
-                numberProductInFavorites
-        }
-        // set badge for Cart
-        viewModel.showCountCartLiveData.observe(this) { numberProductInCarts ->
-            setupBadgeFAB(numberProductInCarts)
+        try {
+            viewModel.showCountFavoritesLiveData.observe(this) { numberProductInFavorites ->
+                binding.buttonNav.getOrCreateBadge(R.id.favoriteFragment).number = numberProductInFavorites
+            }
+            viewModel.showCountCartLiveData.observe(this) { numberProductInCarts ->
+                setupBadgeFAB(numberProductInCarts)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 

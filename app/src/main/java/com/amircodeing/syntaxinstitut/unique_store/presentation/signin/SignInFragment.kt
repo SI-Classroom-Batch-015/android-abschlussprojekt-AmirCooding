@@ -73,7 +73,7 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
         binding.customButtonSignIn.setOnClickListener {
             val auth = Auth(
                 binding.signInUserName.getText().trim(),
-                hashPassword(binding.signInPassword.getText().trim())
+                binding.signInPassword.getText().trim()
             )
             binding.signInProgressbar.visibility = View.VISIBLE
             binding.signInProgressbar2.visibility = View.VISIBLE
@@ -84,13 +84,12 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
                         SessionState.LOGGED_IN -> {
                             viewModel.isLoggedIn
                             val user = viewModel.userProfile.value
-                            if (user != null){
-                                Navigation.findNavController(binding.root)
-                                    .navigate(R.id.homeFragment)
-
-                            }else{
+                            if ( user?.fullName.isNullOrEmpty()){
                                 Navigation.findNavController(binding.root)
                                     .navigate(R.id.profileFragment)
+                            }else{
+                                Navigation.findNavController(binding.root)
+                                    .navigate(R.id.homeFragment)
                             }
                             "Login  been successfully"
                         }

@@ -36,6 +36,7 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
                 icon = null
             )
         )
+        binding.emptyCart.visibility = View.VISIBLE
         activity?.let { ChangeButtonNavVisibility.inVisibilityNavButton(it) }
 
         return binding.root
@@ -51,11 +52,11 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
                 binding.totalPrice.text = String.format("%.2f", cart.totalCost)
                 binding.transferPriceTV.text = String.format("%.2f", cart.shippingPrice)
                 binding.subtotalPriceCartTV.text = String.format("%.2f", cart.subTotal)
-                binding.emptyCart.visibility = View.INVISIBLE
+                binding.emptyCart.visibility = View.GONE
                 binding.constraintLayout.visibility= View.VISIBLE
             } else {
-                binding.emptyCart.visibility = View.VISIBLE
-                binding.constraintLayout.visibility= View.INVISIBLE
+
+                binding.constraintLayout.visibility= View.GONE
             }
         }
         binding.customButtonMyCart.setOnClickListener {

@@ -61,67 +61,28 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                 val (previousPriceTextView: TextView, previousPrice) = upvCalculate(product)
                 previousPriceTextView.text = String.format("UPV %.2f €", previousPrice)
 
+                addToFavoriteB.setOnClickListener {
+                    viewModel.addFavorite(product)
+                    /*        addToFavoriteB.setCompoundDrawablesWithIntrinsicBounds (
+                    R.drawable.icon_heart_fill, 0, 0, 0)
+                addToFavoriteB.text = "added to favorite"
+
+
+                addToFavoriteB.setCompoundDrawablesWithIntrinsicBounds(
+                    R.drawable.icon_heart_dark_empty, 0, 0, 0
+                )
+                addToFavoriteB.text = "added to favorite" */
+                }
+
+
             }
-
-
-
             addToCartB.setOnClickListener {
-                for(i in cartsItemsId())
-                Log.e(TAG , " Item---------------------> $i)")
-          /*           Toast.makeText(context, "Attempting to add product to cart", Toast.LENGTH_SHORT)
-                        .show()
-                    if (product != null) {
-                        viewModel.addProductToCart(product)
-                        Toast.makeText(context, "Adding product to cart", Toast.LENGTH_SHORT)
-                            .show()
-                    } */
-                }
-/*
-            Toast.makeText(
-                context,
-                "Product is already in the cart",
-                Toast.LENGTH_SHORT
-            ).show()
-*/
-
-            addToFavoriteB.setOnClickListener {
                 if (product != null) {
-                    val currentFavoriteIds = viewModel.getIdCurrentsFavorite()
-                    val isFavorite = currentFavoriteIds.contains(product.id)
-
-                    if (isFavorite) {
-                        // Product is already a favorite
-                        addToFavoriteB.setCompoundDrawablesWithIntrinsicBounds(
-                            R.drawable.icon_heart_fill, 0, 0, 0)
-                        addToFavoriteB.text = "already in favorite"
-                    } else {
-                        // Add product to favorites
-                        viewModel.addFavorite(product)
-                        viewModel.updateProduct(product.id, true)
-                        addToFavoriteB.setCompoundDrawablesWithIntrinsicBounds(
-                            R.drawable.icon_heart_fill, 0, 0, 0)
-                        addToFavoriteB.text = "added to favorite"
-                    }
+                    viewModel.addProductToCart(product)
                 }
             }
-
-
         }
     }
-
-    private fun cartsItemsId() : List<Int> {
-        val itemsId = mutableListOf<Int>()
-        viewModel.carts.observe(viewLifecycleOwner) {
-            for (item in it.items) {
-                itemsId.add(item.id)
-                Log.e(TAG , " Item---------------------> $itemsId")
-                Toast.makeText(context, item.id.toString(), Toast.LENGTH_SHORT).show()
-            }
-        }
-        return itemsId
-    }
-
-
 
     private fun FragmentDetailsBinding.upvCalculate(
         product: Product
