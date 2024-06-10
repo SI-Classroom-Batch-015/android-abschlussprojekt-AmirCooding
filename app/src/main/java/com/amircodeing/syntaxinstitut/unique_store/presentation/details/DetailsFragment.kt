@@ -9,14 +9,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import coil.load
 import com.amircodeing.syntaxinstitut.unique_store.R
 import com.amircodeing.syntaxinstitut.unique_store.data.model.Cart
 import com.amircodeing.syntaxinstitut.unique_store.data.model.Product
 import com.amircodeing.syntaxinstitut.unique_store.databinding.FragmentDetailsBinding
-import com.amircodeing.syntaxinstitut.unique_store.presentation.favorite.FavoriteViewModel
 import com.amircodeing.syntaxinstitut.unique_store.presentation.home.HomeViewModel
 import com.amircodeing.syntaxinstitut.unique_store.utils.ChangeButtonNavVisibility
 import com.amircodeing.syntaxinstitut.unique_store.utils.Constants
@@ -61,25 +59,39 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                 val (previousPriceTextView: TextView, previousPrice) = upvCalculate(product)
                 previousPriceTextView.text = String.format("UPV %.2f €", previousPrice)
 
-                addToFavoriteB.setOnClickListener {
-                    viewModel.addFavorite(product)
-                    /*        addToFavoriteB.setCompoundDrawablesWithIntrinsicBounds (
-                    R.drawable.icon_heart_fill, 0, 0, 0)
-                addToFavoriteB.text = "added to favorite"
-
-
-                addToFavoriteB.setCompoundDrawablesWithIntrinsicBounds(
-                    R.drawable.icon_heart_dark_empty, 0, 0, 0
-                )
-                addToFavoriteB.text = "added to favorite" */
-                }
-
-
             }
+
             addToCartB.setOnClickListener {
                 if (product != null) {
                     viewModel.addProductToCart(product)
+
+                    addToCartB.visibility = View.INVISIBLE
                 }
+            }
+
+            addToFavoriteB.setOnClickListener {
+                if (product != null) {
+                    viewModel.addFavorite(product)
+                    product.isLiked
+                    if (product.isLiked== true) {
+                        viewModel.updateProduct(product.id, !product.isLiked!!)
+                        // Set the drawable to the empty heart icon
+                        addToFavoriteB.setCompoundDrawablesWithIntrinsicBounds(
+                            R.drawable.icon_heart_dark_empty, 0, 0, 0)
+                        addToFavoriteB.text = "to favorite"
+                    } else {
+                        viewModel.updateProduct(product.id, !product.isLiked!!)
+                        // Set the drawable to the filled heart icon
+                        addToFavoriteB.setCompoundDrawablesWithIntrinsicBounds(
+                            R.drawable.icon_heart_fill, 0, 0, 0)
+                        addToFavoriteB.text = "added to favorite"
+                    }
+                }
+                // Toggle the state
+                if (product != null) {
+                    product.isLiked = !product.isLiked!!
+                }
+
             }
         }
     }

@@ -12,16 +12,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
+
 import com.amircodeing.syntaxinstitut.unique_store.R
 import com.amircodeing.syntaxinstitut.unique_store.data.model.Auth
-import com.amircodeing.syntaxinstitut.unique_store.data.model.User
-import com.amircodeing.syntaxinstitut.unique_store.data.model.hashPassword
-import com.amircodeing.syntaxinstitut.unique_store.data.remote.firebaseService.FirebaseService
 import com.amircodeing.syntaxinstitut.unique_store.data.remote.firebaseService.SessionState
 import com.amircodeing.syntaxinstitut.unique_store.databinding.FragmentSignInBinding
-import com.amircodeing.syntaxinstitut.unique_store.presentation.MainActivity
-import com.amircodeing.syntaxinstitut.unique_store.presentation.home.HomeFragment
+
 import com.amircodeing.syntaxinstitut.unique_store.utils.ChangeButtonNavVisibility
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
