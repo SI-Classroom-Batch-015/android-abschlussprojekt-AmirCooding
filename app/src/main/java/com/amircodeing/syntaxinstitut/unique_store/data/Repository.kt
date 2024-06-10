@@ -53,7 +53,8 @@ class Repository(
     private val _categoryElectronic: LiveData<List<Product>> = database.appDao.getListElectronics()
     val categoryElectronic: LiveData<List<Product>> get() = _categoryElectronic
 
-
+    private val _favoriteProductsId = MutableLiveData<List<Int>>()
+    val favoriteProductsId: LiveData<List<Int>> get() = _favoriteProductsId
     private val _categoryMens: LiveData<List<Product>> = database.appDao.getListMenClothing()
     val categoryMens: LiveData<List<Product>> get() = _categoryMens
 
@@ -247,7 +248,14 @@ class Repository(
         }
     }
 
+    suspend fun getFavoriteProductsId() {
+        try {
 
+            _favoriteProductsId.postValue(firestoreService?.getFavoriteProductIds(firebaseService.userId.toString()))
+        } catch (e: Exception) {
+            Log.e(Repository::class.simpleName, "Could not get favorite product IDs", e)
+        }
+    }
 
 
     suspend fun getAllFromFavorite(): List<Product> {

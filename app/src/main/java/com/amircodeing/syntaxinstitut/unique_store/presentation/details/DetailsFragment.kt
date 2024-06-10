@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import coil.load
 import com.amircodeing.syntaxinstitut.unique_store.R
@@ -36,7 +37,8 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        // Refresh the favorite IDs
+        viewModel.getFavoriteProductsId()
         setToolbar(
             ToolbarComponents(
                 view = binding.root,
@@ -65,33 +67,29 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                 if (product != null) {
                     viewModel.addProductToCart(product)
 
-                    addToCartB.visibility = View.INVISIBLE
                 }
             }
 
             addToFavoriteB.setOnClickListener {
                 if (product != null) {
-                    viewModel.addFavorite(product)
-                    product.isLiked
-                    if (product.isLiked== true) {
-                        viewModel.updateProduct(product.id, !product.isLiked!!)
-                        // Set the drawable to the empty heart icon
-                        addToFavoriteB.setCompoundDrawablesWithIntrinsicBounds(
-                            R.drawable.icon_heart_dark_empty, 0, 0, 0)
-                        addToFavoriteB.text = "to favorite"
-                    } else {
-                        viewModel.updateProduct(product.id, !product.isLiked!!)
-                        // Set the drawable to the filled heart icon
-                        addToFavoriteB.setCompoundDrawablesWithIntrinsicBounds(
-                            R.drawable.icon_heart_fill, 0, 0, 0)
-                        addToFavoriteB.text = "added to favorite"
+
+                    viewModel.favoriteProductsId.observe(viewLifecycleOwner) { productsId ->
+                        if (productsId.contains(product.id)) {
+                            Toast.makeText(
+                                context,
+                                "The desired product is already in your cart",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            viewModel.addFavorite(product)
+                            Toast.makeText(
+                                context,
+                                "The product has been added to your cart",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
                     }
                 }
-                // Toggle the state
-                if (product != null) {
-                    product.isLiked = !product.isLiked!!
-                }
-
             }
         }
     }

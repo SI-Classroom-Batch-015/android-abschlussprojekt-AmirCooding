@@ -28,7 +28,8 @@ class FavoriteAdapter(
             itemNameTV.text = product.title
             // set max 50 Char for Description and And it ends with three dots
             val description = product.description ?: ""
-            val truncatedDescription = if (description.length > 70) description.substring(0, 70) +"..."  else ""
+            val truncatedDescription =
+                if (description.length > 70) description.substring(0, 70) + "..." else ""
             itemDescriptionTV.text = truncatedDescription
             val previousPriceTextView: TextView = itemUpvPriceTV
             previousPriceTextView.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
@@ -45,11 +46,14 @@ class FavoriteAdapter(
         }
 
 
-
-
     }
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteAdapter.ItemViewHolder {
-        val binding = ItemToFavoriteBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): FavoriteAdapter.ItemViewHolder {
+        val binding =
+            ItemToFavoriteBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ItemViewHolder(binding)
     }
 

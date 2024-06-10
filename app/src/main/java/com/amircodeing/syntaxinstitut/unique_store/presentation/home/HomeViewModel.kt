@@ -31,7 +31,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _cartBadge = MutableLiveData<Int>()
     val cartBadge: LiveData<Int> get() = _cartBadge
-
+    val favoriteProductsId: LiveData<List<Int>> get() = repository.favoriteProductsId
 
     val showCountFavoritesLiveData: LiveData<Int> = repository.favoriteProductCountFlow
         .distinctUntilChanged()
@@ -56,9 +56,16 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         getProfile()
     }
 
-     fun addFavorite(product: Product) {
+    fun getFavoriteProductsId() {
+        viewModelScope.launch {
+            repository.getFavoriteProductsId()
+        }
+    }
+
+    fun addFavorite(product: Product) {
         viewModelScope.launch {
             repository.addToFavorite(product)
+            getFavoriteProductsId()
         }
     }
     fun addProductToCart(product: Product) {

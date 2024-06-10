@@ -29,7 +29,20 @@ class FirestoreService(private val uid: String) {
         favoritesRef.add(product).await()
         return favoritesRef.get().await().toObjects(Product::class.java)
     }
-
+    suspend fun getFavoriteProductIds(uid: String): List<Int> {
+        return try {
+            val result = database.collection("Profiles")
+                .document(uid)
+                .collection("Favorites")
+                .get()
+                .await()
+            result.documents.mapNotNull { document ->
+                document.getLong("id")?.toInt()
+            }
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
     suspend fun removeFromFavorite(uid: String, product: Product): List<Product> {
         val favoritesRef = database.collection("Profiles").document(uid).collection("Favorites")
         val query = favoritesRef.whereEqualTo("id", product.id)
