@@ -55,18 +55,6 @@ class ProfileFragment : Fragment() {
             Navigation.findNavController(binding.root).navigate(R.id.homeFragment)
         }
 
-        viewModel.sessionState.observe(viewLifecycleOwner) { state ->
-            val message = when (state) {
-                SessionState.IS_PROFILE_SAVED -> {
-                    Navigation.findNavController(binding.root).navigate(R.id.homeFragment)
-                    "save  been profile successfully"
-                }
-
-                SessionState.FAILED -> "Your action failed!"
-                else -> throw NotImplementedError()
-            }
-            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-        }
 
         binding.saveProfile.setOnClickListener {
             val user = User(
@@ -82,6 +70,24 @@ class ProfileFragment : Fragment() {
             )
             if (viewModel.checkEmptyFieldInProfile(user, requireContext())) {
                 viewModel.setProfileWithImage(user, imageUri)
+                binding.profileProgressbar.visibility = View.VISIBLE
+                binding.profileProgressbar2.visibility = View.VISIBLE
+            }
+
+            viewModel.sessionState.observe(viewLifecycleOwner) { state ->
+
+                val message = when (state) {
+                    SessionState.IS_PROFILE_SAVED -> {
+                        Navigation.findNavController(binding.root).navigate(R.id.homeFragment)
+                        binding.profileProgressbar.visibility = View.GONE
+                        binding.profileProgressbar2.visibility = View.GONE
+                        "save  been profile successfully"
+                    }
+
+                    SessionState.FAILED -> "Your action failed!"
+                    else -> throw NotImplementedError()
+                }
+                Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
             }
             // viewModel.setProfile(user)
         }
