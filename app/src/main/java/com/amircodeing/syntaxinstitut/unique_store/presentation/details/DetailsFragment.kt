@@ -1,5 +1,6 @@
 package com.amircodeing.syntaxinstitut.unique_store.presentation.details
 
+import android.content.Intent
 import android.graphics.Paint
 import android.net.Uri
 import android.os.Bundle
@@ -74,23 +75,32 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                 if (product != null) {
 
                     viewModel.favoriteProductsId.observe(viewLifecycleOwner) { productsId ->
-                        if (productsId.contains(product.id)) {
-                            Toast.makeText(
-                                context,
-                                "The desired product is already in your cart",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        } else {
+                        if (!productsId.contains(product.id)) {
                             viewModel.addFavorite(product)
                             Toast.makeText(
                                 context,
                                 "The product has been added to your cart",
                                 Toast.LENGTH_SHORT
                             ).show()
+                        } else {
+                            Toast.makeText(
+                                context,
+                                "The desired product is already in your cart",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                     }
                 }
             }
+            shareB.setOnClickListener {
+                val shareIntent = Intent(Intent.ACTION_SEND)
+                shareIntent.type = "text/plain"
+                val shareMessage =
+                    "Check out this product:\n ${product?.title}\n\n\nPrice: ${product?.price} €"
+                shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage)
+                startActivity(Intent.createChooser(shareIntent, "Share Product Details"))
+            }
+
         }
     }
 

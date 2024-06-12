@@ -250,7 +250,6 @@ class Repository(
 
     suspend fun getFavoriteProductsId() {
         try {
-
             _favoriteProductsId.postValue(firestoreService?.getFavoriteProductIds(firebaseService.userId.toString()))
         } catch (e: Exception) {
             Log.e(Repository::class.simpleName, "Could not get favorite product IDs", e)
