@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import com.amircodeing.syntaxinstitut.unique_store.R
@@ -64,15 +65,19 @@ class CheckOutFragment : Fragment() {
 
             }
             viewModel.user.observe(viewLifecycleOwner) { info ->
-                paymentFullNameTV.text = info.fullName
-                paymentStreetTV.text = info.address?.street
-                paymentNumberTV.text = info.address?.number
-                paymentZipTV.text = info.address?.zip
-                paymentCityTV.text = info.address?.city
-                paymentCountryTV.text = info.address?.country
-
-
+                if (info?.address == null || info.fullName.isEmpty()) {
+                    Toast.makeText(requireContext(), "Please complete your Profile", Toast.LENGTH_LONG).show()
+                    Navigation.findNavController(requireView()).navigate(R.id.profileFragment)
+                } else {
+                    paymentFullNameTV.text = info.fullName
+                    paymentStreetTV.text = info.address.street
+                    paymentNumberTV.text = info.address.number
+                    paymentZipTV.text = info.address.zip
+                    paymentCityTV.text = info.address.city
+                    paymentCountryTV.text = info.address.country
+                }
             }
+
 
             binding.paymentPaypalButtom.setOnClickListener {
                 // Create and show the first dialog
@@ -92,6 +97,7 @@ class CheckOutFragment : Fragment() {
                         dialog2.dismiss()
                         (activity as? MainActivity)?.setupBadgeFAB()
                         viewModel.deleteAllCart()
+
                         Navigation.findNavController(requireView()).navigate(R.id.homeFragment)
                     }
                     dialog2.show()
