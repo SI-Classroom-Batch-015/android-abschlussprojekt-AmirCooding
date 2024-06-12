@@ -52,6 +52,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+
     init {
         getProfile()
     }
@@ -84,6 +85,8 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
             repository.loadProduct()
         }
     }
+
+
 
 
     fun loadCategory() {

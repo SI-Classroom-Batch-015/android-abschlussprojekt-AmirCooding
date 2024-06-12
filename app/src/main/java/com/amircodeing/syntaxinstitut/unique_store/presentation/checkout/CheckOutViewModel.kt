@@ -4,12 +4,14 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.amircodeing.syntaxinstitut.unique_store.data.Repository
 import com.amircodeing.syntaxinstitut.unique_store.data.local.database.AppDatabase
 import com.amircodeing.syntaxinstitut.unique_store.data.model.User
 import com.amircodeing.syntaxinstitut.unique_store.data.remote.apiservice.ApiService
 import com.amircodeing.syntaxinstitut.unique_store.data.remote.firebaseService.FirebaseService
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
 class CheckOutViewModel (application: Application) : AndroidViewModel(application) {
@@ -18,6 +20,9 @@ class CheckOutViewModel (application: Application) : AndroidViewModel(applicatio
      val user = repository.userProfile
     val items = repository.showCart
 
+    val showCountCartLiveData: LiveData<Int> = repository.cartProductCountFlow
+        .distinctUntilChanged()
+        .asLiveData()
     init {
         getUserInfo()
         getCartItems()
