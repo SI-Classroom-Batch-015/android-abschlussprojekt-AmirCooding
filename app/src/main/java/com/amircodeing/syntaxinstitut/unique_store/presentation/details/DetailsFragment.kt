@@ -67,7 +67,11 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
             addToCartB.setOnClickListener {
                 if (product != null) {
                     viewModel.addProductToCart(product)
-
+                    Toast.makeText(
+                        context,
+                        "The product has been added to your cart",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
 
@@ -79,13 +83,13 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                             viewModel.addFavorite(product)
                             Toast.makeText(
                                 context,
-                                "The product has been added to your cart",
+                                "The product has been added to your Favorite",
                                 Toast.LENGTH_SHORT
                             ).show()
                         } else {
                             Toast.makeText(
                                 context,
-                                "The desired product is already in your cart",
+                                "The desired product is already in your Favorite",
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
