@@ -2,9 +2,7 @@ package com.amircodeing.syntaxinstitut.unique_store.presentation.details
 
 import android.content.Intent
 import android.graphics.Paint
-import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,14 +12,12 @@ import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import coil.load
 import com.amircodeing.syntaxinstitut.unique_store.R
-import com.amircodeing.syntaxinstitut.unique_store.data.model.Cart
 import com.amircodeing.syntaxinstitut.unique_store.data.model.Product
 import com.amircodeing.syntaxinstitut.unique_store.databinding.FragmentDetailsBinding
 import com.amircodeing.syntaxinstitut.unique_store.presentation.home.HomeViewModel
-import com.amircodeing.syntaxinstitut.unique_store.utils.ChangeButtonNavVisibility
-import com.amircodeing.syntaxinstitut.unique_store.utils.Constants
-import com.amircodeing.syntaxinstitut.unique_store.utils.CustomToolbar.Companion.setToolbar
+import com.amircodeing.syntaxinstitut.unique_store.utils.BottomNavController
 import com.amircodeing.syntaxinstitut.unique_store.utils.ToolbarComponents
+import com.amircodeing.syntaxinstitut.unique_store.utils.setToolbar
 
 const val TAG = " SignUpFragment"
 
@@ -49,7 +45,7 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                 icon = null
             )
         )
-        activity?.let { ChangeButtonNavVisibility.inVisibilityNavButton(it) }
+        activity?.let { BottomNavController.inVisibilityNavButton(it) }
         val product = viewModel.getProduct().value
         with(binding) {
             if (product != null) {

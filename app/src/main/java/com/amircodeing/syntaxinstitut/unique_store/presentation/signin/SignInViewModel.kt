@@ -5,7 +5,6 @@ import android.content.Context
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -14,15 +13,11 @@ import com.amircodeing.syntaxinstitut.unique_store.R
 import com.amircodeing.syntaxinstitut.unique_store.data.Repository
 import com.amircodeing.syntaxinstitut.unique_store.data.local.database.AppDatabase
 import com.amircodeing.syntaxinstitut.unique_store.data.model.Auth
-import com.amircodeing.syntaxinstitut.unique_store.data.model.User
 import com.amircodeing.syntaxinstitut.unique_store.data.remote.apiservice.ApiService
 import com.amircodeing.syntaxinstitut.unique_store.data.remote.firebaseService.FirebaseService
 import com.amircodeing.syntaxinstitut.unique_store.data.remote.firebaseService.SessionState
-import com.amircodeing.syntaxinstitut.unique_store.utils.Constants
-import com.amircodeing.syntaxinstitut.unique_store.utils.CustomInputField
-import com.google.firebase.database.*
+import com.amircodeing.syntaxinstitut.unique_store.utils.CustomizeInput
 import kotlinx.coroutines.launch
-import org.mindrot.jbcrypt.BCrypt
 
 class SignInViewModel (application: Application) : AndroidViewModel(application) {
     private val repository = Repository(ApiService, AppDatabase.getAppDatabase(application) , FirebaseService())
@@ -40,7 +35,7 @@ class SignInViewModel (application: Application) : AndroidViewModel(application)
         }
     }
     fun setupPasswordInputField(signInView: View) {
-        signInView.findViewById<CustomInputField>(R.id.signInPassword).apply {
+        signInView.findViewById<CustomizeInput>(R.id.signInPassword).apply {
             setLabelText("Password")
             setInputHint("*********")
             setPasswordMode(true)
@@ -48,7 +43,7 @@ class SignInViewModel (application: Application) : AndroidViewModel(application)
     }
 
     fun setupUserNameInputField(signInView: View) {
-        signInView.findViewById<CustomInputField>(R.id.signIn_userName).apply {
+        signInView.findViewById<CustomizeInput>(R.id.signIn_userName).apply {
             setLabelText("Email Address")
             setInputHint("example@gmail.com")
         }

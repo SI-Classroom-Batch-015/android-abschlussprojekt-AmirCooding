@@ -44,7 +44,7 @@
             android:layout_marginTop="52dp"
             android:layout_marginEnd="8dp">
 
-        <com.amircodeing.syntaxinstitut.unique_store.utils.CustomInputField
+        <com.amircodeing.syntaxinstitut.unique_store.utils.CustomizeInput
                 android:layout_width="match_parent"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
@@ -53,7 +53,7 @@
 
 
 
-        <com.amircodeing.syntaxinstitut.unique_store.utils.CustomInputField
+        <com.amircodeing.syntaxinstitut.unique_store.utils.CustomizeInput
                 android:layout_width="match_parent"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"

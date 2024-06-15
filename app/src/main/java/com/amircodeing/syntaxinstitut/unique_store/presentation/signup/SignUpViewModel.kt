@@ -2,7 +2,6 @@ package com.amircodeing.syntaxinstitut.unique_store.presentation.signup
 
 import android.app.Application
 import android.content.Context
-import android.net.Uri
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
@@ -13,11 +12,10 @@ import com.amircodeing.syntaxinstitut.unique_store.R
 import com.amircodeing.syntaxinstitut.unique_store.data.Repository
 import com.amircodeing.syntaxinstitut.unique_store.data.local.database.AppDatabase
 import com.amircodeing.syntaxinstitut.unique_store.data.model.Auth
-import com.amircodeing.syntaxinstitut.unique_store.data.model.User
 import com.amircodeing.syntaxinstitut.unique_store.data.remote.apiservice.ApiService
 import com.amircodeing.syntaxinstitut.unique_store.data.remote.firebaseService.FirebaseService
 import com.amircodeing.syntaxinstitut.unique_store.data.remote.firebaseService.SessionState
-import com.amircodeing.syntaxinstitut.unique_store.utils.CustomInputField
+import com.amircodeing.syntaxinstitut.unique_store.utils.CustomizeInput
 import kotlinx.coroutines.launch
 
 class SignUpViewModel(application: Application) : AndroidViewModel(application) {
@@ -28,7 +26,7 @@ class SignUpViewModel(application: Application) : AndroidViewModel(application) 
 
 
     private fun setupEmailSignUpField(signInView: View) {
-        signInView.findViewById<CustomInputField>(R.id.signUp_userName).apply {
+        signInView.findViewById<CustomizeInput>(R.id.signUp_userName).apply {
             setLabelText("Email Address")
             setInputHint("example@gmail.com")
         }
@@ -36,7 +34,7 @@ class SignUpViewModel(application: Application) : AndroidViewModel(application) 
 
 
     private fun setupPasswordInputField(signInView: View) {
-        signInView.findViewById<CustomInputField>(R.id.signUpPassword).apply {
+        signInView.findViewById<CustomizeInput>(R.id.signUpPassword).apply {
             setLabelText("Password")
             setInputHint("*********")
             setPasswordMode(true)

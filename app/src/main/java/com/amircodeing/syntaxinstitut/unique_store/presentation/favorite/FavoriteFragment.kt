@@ -1,25 +1,16 @@
 package com.amircodeing.syntaxinstitut.unique_store.presentation.favorite
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import com.amircodeing.syntaxinstitut.unique_store.R
-import com.amircodeing.syntaxinstitut.unique_store.data.model.Product
 import com.amircodeing.syntaxinstitut.unique_store.databinding.FragmentFavoriteBinding
-import com.amircodeing.syntaxinstitut.unique_store.presentation.home.CategoryAdapter
-import com.amircodeing.syntaxinstitut.unique_store.utils.ChangeButtonNavVisibility
-import com.amircodeing.syntaxinstitut.unique_store.utils.CustomToolbar
+import com.amircodeing.syntaxinstitut.unique_store.utils.BottomNavController
 import com.amircodeing.syntaxinstitut.unique_store.utils.ToolbarComponents
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.amircodeing.syntaxinstitut.unique_store.utils.setToolbar
 
 class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
 
@@ -33,7 +24,7 @@ class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
     ): View? {
         binding = FragmentFavoriteBinding .inflate(inflater, container, false)
         viewModel.getAllFavorite()
-        CustomToolbar.setToolbar(ToolbarComponents(view = binding.root, title = "Favorite", visibility = false,
+        setToolbar(ToolbarComponents(view = binding.root, title = "Favorite", visibility = false,
             backButtonVisibility = true,
             path = R.id.toolbar_favorite,
             icon = null
@@ -66,7 +57,7 @@ class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
 
     override fun onResume() {
         super.onResume()
-        activity?.let { ChangeButtonNavVisibility.visibilityNavButton(it) }
+        activity?.let { BottomNavController.visibilityNavButton(it) }
     }
 
 

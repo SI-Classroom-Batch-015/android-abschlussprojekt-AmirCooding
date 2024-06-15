@@ -1,9 +1,7 @@
 package com.amircodeing.syntaxinstitut.unique_store.presentation.signin
 
 import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +16,7 @@ import com.amircodeing.syntaxinstitut.unique_store.data.model.Auth
 import com.amircodeing.syntaxinstitut.unique_store.data.remote.firebaseService.SessionState
 import com.amircodeing.syntaxinstitut.unique_store.databinding.FragmentSignInBinding
 
-import com.amircodeing.syntaxinstitut.unique_store.utils.ChangeButtonNavVisibility
+import com.amircodeing.syntaxinstitut.unique_store.utils.BottomNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -26,7 +24,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.database.FirebaseDatabase
 
 const val TAG = "Sign In Fragment"
 
@@ -42,7 +39,7 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
     ): View? {
         binding = FragmentSignInBinding.inflate(inflater, container, false)
         viewModel.getProfile()
-        activity?.let { ChangeButtonNavVisibility.inVisibilityNavButton(it) }
+        activity?.let { BottomNavController.inVisibilityNavButton(it) }
         auth = FirebaseAuth.getInstance()
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))

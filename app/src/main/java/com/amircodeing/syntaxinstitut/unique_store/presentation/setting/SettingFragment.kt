@@ -8,15 +8,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
-import coil.load
 import com.amircodeing.syntaxinstitut.unique_store.R
 import com.amircodeing.syntaxinstitut.unique_store.databinding.FragmentSettingBinding
-import com.amircodeing.syntaxinstitut.unique_store.utils.Constants
-import com.amircodeing.syntaxinstitut.unique_store.utils.CustomToolbar
 import com.amircodeing.syntaxinstitut.unique_store.utils.ToolbarComponents
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.amircodeing.syntaxinstitut.unique_store.utils.setToolbar
+
 const val  TAG = "SettingFragment"
 class SettingFragment : Fragment(R.layout.fragment_setting) {
     private lateinit var binding: FragmentSettingBinding
@@ -27,7 +23,7 @@ class SettingFragment : Fragment(R.layout.fragment_setting) {
     ): View? {
         binding = FragmentSettingBinding.inflate(inflater, container, false)
 
-        CustomToolbar.setToolbar(
+     setToolbar(
             ToolbarComponents(
                 view = binding.root, title = "Setting", visibility = false,
                 backButtonVisibility = true,

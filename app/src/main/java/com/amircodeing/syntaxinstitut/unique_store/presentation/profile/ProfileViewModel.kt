@@ -3,7 +3,6 @@ package com.amircodeing.syntaxinstitut.unique_store.presentation.profile
 import android.app.Application
 import android.content.Context
 import android.net.Uri
-import android.provider.ContactsContract
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
@@ -11,7 +10,6 @@ import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import coil.load
 import com.amircodeing.syntaxinstitut.unique_store.R
@@ -21,7 +19,7 @@ import com.amircodeing.syntaxinstitut.unique_store.data.model.User
 import com.amircodeing.syntaxinstitut.unique_store.data.remote.apiservice.ApiService
 import com.amircodeing.syntaxinstitut.unique_store.data.remote.firebaseService.FirebaseService
 import com.amircodeing.syntaxinstitut.unique_store.data.remote.firebaseService.SessionState
-import com.amircodeing.syntaxinstitut.unique_store.utils.CustomInputField
+import com.amircodeing.syntaxinstitut.unique_store.utils.CustomizeInput
 import kotlinx.coroutines.launch
 
 const val TAG = "ProfileViewModel"
@@ -55,7 +53,7 @@ init {
      */
 
     private fun setupInputField(signInView: View, fieldId: Int, label: String, hint: String) {
-        signInView.findViewById<CustomInputField>(fieldId).apply {
+        signInView.findViewById<CustomizeInput>(fieldId).apply {
             setLabelText(label)
             setInputHint(hint)
         }
@@ -66,31 +64,31 @@ init {
                 signInView.findViewById<ImageView>(R.id.add_image_profile_IV).apply {
                     load(user.image)
                 }
-                signInView.findViewById<CustomInputField>(R.id.signUp_fullName).apply {
+                signInView.findViewById<CustomizeInput>(R.id.signUp_fullName).apply {
                     setLabelText("Full Name")
                  setInputText(user.fullName)
                 }
-                signInView.findViewById<CustomInputField>(R.id.signUpTel).apply {
+                signInView.findViewById<CustomizeInput>(R.id.signUpTel).apply {
                     setLabelText("Mobile")
                   setInputText(user.tel)
                 }
-                signInView.findViewById<CustomInputField>(R.id.signUp_street_ET).apply {
+                signInView.findViewById<CustomizeInput>(R.id.signUp_street_ET).apply {
                     setLabelText("Street")
                     user.address?.let { it1 -> setInputText(it1.street) }
                 }
-                signInView.findViewById<CustomInputField>(R.id.signUp_number_ET).apply {
+                signInView.findViewById<CustomizeInput>(R.id.signUp_number_ET).apply {
                     setLabelText("Nr")
                     user.address?.let { it1 -> setInputText(it1.number) }
                 }
-                signInView.findViewById<CustomInputField>(R.id.signUp_zip_ET).apply {
+                signInView.findViewById<CustomizeInput>(R.id.signUp_zip_ET).apply {
                     setLabelText("Zip")
                     user.address?.let { it1 -> setInputText(it1.zip) }
                 }
-                signInView.findViewById<CustomInputField>(R.id.signUp_city_ET).apply {
+                signInView.findViewById<CustomizeInput>(R.id.signUp_city_ET).apply {
                     setLabelText("City")
                     user.address?.let { it1 -> setInputText(it1.city) }
                 }
-                signInView.findViewById<CustomInputField>(R.id.signUp_country_ET).apply {
+                signInView.findViewById<CustomizeInput>(R.id.signUp_country_ET).apply {
                     setLabelText("Country")
                     user.address?.let { it1 -> setInputText(it1.country) }
                 }

@@ -10,10 +10,9 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import com.amircodeing.syntaxinstitut.unique_store.R
 import com.amircodeing.syntaxinstitut.unique_store.data.model.Auth
-import com.amircodeing.syntaxinstitut.unique_store.data.model.hashPassword
 import com.amircodeing.syntaxinstitut.unique_store.data.remote.firebaseService.SessionState
 import com.amircodeing.syntaxinstitut.unique_store.databinding.FragmentSignUpBinding
-import com.amircodeing.syntaxinstitut.unique_store.utils.ChangeButtonNavVisibility
+import com.amircodeing.syntaxinstitut.unique_store.utils.BottomNavController
 
 const val TAG = " SignUpFragment"
 
@@ -27,7 +26,7 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
     ): View {
         binding = FragmentSignUpBinding.inflate(inflater, container, false)
         viewModel.setViewOnAuthInput(binding.root)
-        activity?.let { ChangeButtonNavVisibility.inVisibilityNavButton(it) }
+        activity?.let { BottomNavController.inVisibilityNavButton(it) }
         return binding.root
     }
 

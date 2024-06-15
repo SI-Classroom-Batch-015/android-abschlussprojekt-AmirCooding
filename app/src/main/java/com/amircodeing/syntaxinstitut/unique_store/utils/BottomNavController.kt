@@ -6,10 +6,9 @@ import android.widget.ImageView
 import com.amircodeing.syntaxinstitut.unique_store.R
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
-class ChangeButtonNavVisibility {
+class BottomNavController {
     companion object{
 
         fun inVisibilityNavButton(activity: Activity) {

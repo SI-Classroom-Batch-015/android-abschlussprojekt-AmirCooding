@@ -10,15 +10,12 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
-import coil.load
 import com.amircodeing.syntaxinstitut.unique_store.R
 import com.amircodeing.syntaxinstitut.unique_store.data.model.Address
 import com.amircodeing.syntaxinstitut.unique_store.data.model.User
 import com.amircodeing.syntaxinstitut.unique_store.data.remote.firebaseService.SessionState
 import com.amircodeing.syntaxinstitut.unique_store.databinding.FragmentProfileBinding
-import com.amircodeing.syntaxinstitut.unique_store.utils.ChangeButtonNavVisibility
-import com.google.firebase.auth.FirebaseAuth
+import com.amircodeing.syntaxinstitut.unique_store.utils.BottomNavController
 
 class ProfileFragment : Fragment() {
     private lateinit var binding: FragmentProfileBinding
@@ -34,7 +31,7 @@ class ProfileFragment : Fragment() {
         viewModel.getProfile()
         viewModel.setViewOnProfileInput(binding.root)
         selectImageProfile()
-        activity?.let { ChangeButtonNavVisibility.inVisibilityNavButton(it) }
+        activity?.let { BottomNavController.inVisibilityNavButton(it) }
         return binding.root
     }
 

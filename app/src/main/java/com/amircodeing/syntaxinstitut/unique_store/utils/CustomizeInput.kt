@@ -18,7 +18,7 @@ import com.google.android.material.textfield.TextInputEditText
  *  @param JvmOverloads annotation generates multiple constructors in the Java bytecode,
  *  making it easier to instantiate the class from Java code with default parameter values.
  */
-class CustomInputField @JvmOverloads constructor(
+class CustomizeInput @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr) {
 

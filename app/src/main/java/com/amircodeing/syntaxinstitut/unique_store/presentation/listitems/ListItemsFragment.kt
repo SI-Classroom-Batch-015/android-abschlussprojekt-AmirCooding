@@ -14,11 +14,10 @@ import androidx.lifecycle.Observer
 import com.amircodeing.syntaxinstitut.unique_store.R
 import com.amircodeing.syntaxinstitut.unique_store.data.model.Product
 import com.amircodeing.syntaxinstitut.unique_store.databinding.FragmentListItemsBinding
-import com.amircodeing.syntaxinstitut.unique_store.presentation.home.CategoryAdapter
 import com.amircodeing.syntaxinstitut.unique_store.presentation.home.HomeViewModel
-import com.amircodeing.syntaxinstitut.unique_store.utils.ChangeButtonNavVisibility
-import com.amircodeing.syntaxinstitut.unique_store.utils.CustomToolbar
+import com.amircodeing.syntaxinstitut.unique_store.utils.BottomNavController
 import com.amircodeing.syntaxinstitut.unique_store.utils.ToolbarComponents
+import com.amircodeing.syntaxinstitut.unique_store.utils.setToolbar
 
 class ListItemsFragment : Fragment(R.layout.fragment_list_items) {
     private lateinit var binding: FragmentListItemsBinding
@@ -32,7 +31,7 @@ class ListItemsFragment : Fragment(R.layout.fragment_list_items) {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentListItemsBinding.inflate(inflater, container, false)
-        CustomToolbar.setToolbar(
+        setToolbar(
             ToolbarComponents(
                 view = binding.root,
                 title = "Category",
@@ -111,7 +110,7 @@ class ListItemsFragment : Fragment(R.layout.fragment_list_items) {
         viewModel.selectedCategory.value?.let { category ->
             updateUIForCategory(category)
         }
-        activity?.let { ChangeButtonNavVisibility.visibilityNavButton(it) }
+        activity?.let { BottomNavController.visibilityNavButton(it) }
     }
 /**
  * updates the UI to reflect the selected category by highlighting the respective TextView.
