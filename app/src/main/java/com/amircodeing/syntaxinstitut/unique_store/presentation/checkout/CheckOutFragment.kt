@@ -64,7 +64,11 @@ class CheckOutFragment : Fragment() {
             }
             viewModel.user.observe(viewLifecycleOwner) { info ->
                 if (info?.address == null || info.fullName.isEmpty()) {
-                    Toast.makeText(requireContext(), "Please complete your Profile", Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        requireContext(),
+                        "Please complete your Profile",
+                        Toast.LENGTH_LONG
+                    ).show()
                     Navigation.findNavController(requireView()).navigate(R.id.profileFragment)
                 } else {
                     paymentFullNameTV.text = info.fullName
@@ -78,6 +82,7 @@ class CheckOutFragment : Fragment() {
 
 
             binding.paymentPaypalButtom.setOnClickListener {
+                viewModel.deleteAllCart()
                 // Create and show the first dialog
                 val dialog = Dialog(requireContext())
                 dialog.setContentView(R.layout.loading_success_payment)
@@ -93,15 +98,12 @@ class CheckOutFragment : Fragment() {
                     backToHomeTextView.setOnClickListener {
                         // Dismiss the second dialog
                         dialog2.dismiss()
-                        (activity as? MainActivity)?.setupBadgeFAB()
-                        viewModel.deleteAllCart()
 
                         Navigation.findNavController(requireView()).navigate(R.id.homeFragment)
                     }
                     dialog2.show()
                 }, 5000) // Delay in milliseconds
-                }
-
+            }
 
 
         }

@@ -19,7 +19,7 @@ const val TAG = "Main Activity"
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val viewModel: HomeViewModel by viewModels()
-
+    val badgeDrawable by lazy { BadgeDrawable.create(this) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -34,12 +34,15 @@ class MainActivity : AppCompatActivity() {
             navController.navigate(R.id.cartFragment)
         }
         viewModel.showCountFavoritesLiveData.observe(this) { numberProductInFavorites ->
-            setupBadgeFavorite(numberProductInFavorites)
+            setFavoritesBadge(numberProductInFavorites)
+        }
+        viewModel.showCountCartLiveData.observe(this) { numberProductInCarts ->
+            setCartsBadgeFAB(numberProductInCarts)
         }
 
     }
 
-    fun setupBadgeFavorite(count : Int ) {
+    private fun setFavoritesBadge(count: Int) {
         Log.d(TAG, "Number of products in favorites: $count")
         val badge = binding.buttonNav.getOrCreateBadge(R.id.favoriteFragment)
         badge.number = count
@@ -47,29 +50,19 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    fun setupBadgeFAB() {
-        val badgeDrawable by lazy { BadgeDrawable.create(this@MainActivity) }
-        viewModel.showCountCartLiveData.observe(this) { numberProductInCarts ->
-            Log.d(TAG, "Number of products in cart: $numberProductInCarts")
-            binding.floatActionButton.viewTreeObserver.addOnGlobalLayoutListener(@ExperimentalBadgeUtils object :
-                ViewTreeObserver.OnGlobalLayoutListener {
-                override fun onGlobalLayout() {
-                    try {
-                        binding.floatActionButton.viewTreeObserver.removeOnGlobalLayoutListener(this)
-                        badgeDrawable.number = numberProductInCarts
-                        badgeDrawable.isVisible = numberProductInCarts > 0
-                        BadgeUtils.attachBadgeDrawable(
-                            badgeDrawable,
-                            binding.floatActionButton,
-                            null
-                        )
-                        Log.d(TAG, "Badge set up with $numberProductInCarts alerts")
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                        Log.e(TAG, "Exception in setupBadgeFAB: ${e.message}")
-                    }
-                }
-            })
-        }
+     fun setCartsBadgeFAB(count : Int) {
+        binding.floatActionButton.viewTreeObserver.addOnGlobalLayoutListener(@ExperimentalBadgeUtils object :
+            ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                    binding.floatActionButton.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    badgeDrawable.number = count
+                    badgeDrawable.isVisible = count > 0
+                    BadgeUtils.attachBadgeDrawable(
+                        badgeDrawable,
+                        binding.floatActionButton,
+                        null
+                    )
+            }
+        })
     }
 }

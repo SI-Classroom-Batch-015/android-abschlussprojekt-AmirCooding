@@ -60,8 +60,6 @@ class HomeFragment : Fragment() {
             navController.navigate(R.id.listItemsFragment)
         }
 
-        // Call callBadges() here
-        (activity as? MainActivity)?.setupBadgeFAB()
     }
 
 
