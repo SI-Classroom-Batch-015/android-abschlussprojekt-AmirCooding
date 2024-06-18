@@ -36,7 +36,7 @@ class ListItemsFragment : Fragment(R.layout.fragment_list_items) {
                 view = binding.root,
                 title = "Category",
                 visibility = false,
-                backButtonVisibility = true,
+                backButtonVisibility = false,
                 path = R.id.toolbar_list,
                 icon = null
             )
