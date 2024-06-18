@@ -33,23 +33,17 @@ class MainActivity : AppCompatActivity() {
         binding.floatActionButton.setOnClickListener {
             navController.navigate(R.id.cartFragment)
         }
+        viewModel.showCountFavoritesLiveData.observe(this) { numberProductInFavorites ->
+            setupBadgeFavorite(numberProductInFavorites)
+        }
 
-        // Call badges method here
-        /*   callBadges() */
     }
 
-    fun setupBadgeFavorite() {
-        try {
-            viewModel.showCountFavoritesLiveData.observe(this) { numberProductInFavorites ->
-                Log.d(TAG, "Number of products in favorites: $numberProductInFavorites")
-                val badge = binding.buttonNav.getOrCreateBadge(R.id.favoriteFragment)
-                badge.number = numberProductInFavorites
-                badge.isVisible = numberProductInFavorites > 0
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-            Log.e(TAG, "Exception in setupBadgeFavorite: ${e.message}")
-        }
+    fun setupBadgeFavorite(count : Int ) {
+        Log.d(TAG, "Number of products in favorites: $count")
+        val badge = binding.buttonNav.getOrCreateBadge(R.id.favoriteFragment)
+        badge.number = count
+        badge.isVisible = count > 0
     }
 
 

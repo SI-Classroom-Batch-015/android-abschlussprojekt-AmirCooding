@@ -61,7 +61,6 @@ class HomeFragment : Fragment() {
         }
 
         // Call callBadges() here
-        (activity as? MainActivity)?.setupBadgeFavorite()
         (activity as? MainActivity)?.setupBadgeFAB()
     }
 
