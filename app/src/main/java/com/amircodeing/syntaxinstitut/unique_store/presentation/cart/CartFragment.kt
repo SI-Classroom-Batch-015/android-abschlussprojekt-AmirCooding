@@ -10,8 +10,9 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import com.amircodeing.syntaxinstitut.unique_store.R
 import com.amircodeing.syntaxinstitut.unique_store.databinding.FragmentCartBinding
-import com.amircodeing.syntaxinstitut.unique_store.utils.BottomNavController
+
 import com.amircodeing.syntaxinstitut.unique_store.utils.ToolbarComponents
+import com.amircodeing.syntaxinstitut.unique_store.utils.inVisibilityNavButton
 import com.amircodeing.syntaxinstitut.unique_store.utils.setToolbar
 
 class CartFragment : Fragment(R.layout.fragment_cart) {
@@ -25,18 +26,17 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentCartBinding.inflate(inflater, container, false)
-    setToolbar(
-            ToolbarComponents(
-                view = binding.root,
-                title = "Cart",
-                visibility = false,
-                backButtonVisibility = false,
-                path = R.id.toolbar_cart,
-                icon = null
-            )
+        val toolbarComponents  = ToolbarComponents(
+            view = binding.root,
+            screensTitle = "Cart",
+            iconsVisibility = false,
+            navigateUp = false,
+            rootPath = R.id.toolbar_cart,
+            iconPath = null
         )
+    setToolbar(toolbarComponents)
         binding.emptyCart.visibility = View.VISIBLE
-        activity?.let { BottomNavController.inVisibilityNavButton(it) }
+        activity?.let {inVisibilityNavButton(it) }
 
         return binding.root
     }

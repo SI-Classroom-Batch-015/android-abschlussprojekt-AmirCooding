@@ -8,9 +8,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.amircodeing.syntaxinstitut.unique_store.R
 import com.amircodeing.syntaxinstitut.unique_store.databinding.FragmentFavoriteBinding
-import com.amircodeing.syntaxinstitut.unique_store.utils.BottomNavController
 import com.amircodeing.syntaxinstitut.unique_store.utils.ToolbarComponents
 import com.amircodeing.syntaxinstitut.unique_store.utils.setToolbar
+import com.amircodeing.syntaxinstitut.unique_store.utils.visibilityNavButton
 
 class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
 
@@ -24,10 +24,10 @@ class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
     ): View? {
         binding = FragmentFavoriteBinding .inflate(inflater, container, false)
         viewModel.getAllFavorite()
-        setToolbar(ToolbarComponents(view = binding.root, title = "Favorite", visibility = false,
-            backButtonVisibility = true,
-            path = R.id.toolbar_favorite,
-            icon = null
+        setToolbar(ToolbarComponents(view = binding.root, screensTitle = "Favorite", iconsVisibility = false,
+            navigateUp = true,
+            rootPath = R.id.toolbar_favorite,
+            iconPath = null
         ))
         return  binding.root
     }
@@ -57,7 +57,7 @@ class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
 
     override fun onResume() {
         super.onResume()
-        activity?.let { BottomNavController.visibilityNavButton(it) }
+        activity?.let { visibilityNavButton(it) }
     }
 
 

@@ -15,9 +15,9 @@ import com.amircodeing.syntaxinstitut.unique_store.R
 import com.amircodeing.syntaxinstitut.unique_store.data.model.Product
 import com.amircodeing.syntaxinstitut.unique_store.databinding.FragmentListItemsBinding
 import com.amircodeing.syntaxinstitut.unique_store.presentation.home.HomeViewModel
-import com.amircodeing.syntaxinstitut.unique_store.utils.BottomNavController
 import com.amircodeing.syntaxinstitut.unique_store.utils.ToolbarComponents
 import com.amircodeing.syntaxinstitut.unique_store.utils.setToolbar
+import com.amircodeing.syntaxinstitut.unique_store.utils.visibilityNavButton
 
 class ListItemsFragment : Fragment(R.layout.fragment_list_items) {
     private lateinit var binding: FragmentListItemsBinding
@@ -34,11 +34,11 @@ class ListItemsFragment : Fragment(R.layout.fragment_list_items) {
         setToolbar(
             ToolbarComponents(
                 view = binding.root,
-                title = "Category",
-                visibility = false,
-                backButtonVisibility = false,
-                path = R.id.toolbar_list,
-                icon = null
+                screensTitle = "Category",
+                iconsVisibility = false,
+                navigateUp = false,
+                rootPath = R.id.toolbar_list,
+                iconPath = null
             )
         )
         return binding.root
@@ -110,7 +110,7 @@ class ListItemsFragment : Fragment(R.layout.fragment_list_items) {
         viewModel.selectedCategory.value?.let { category ->
             updateUIForCategory(category)
         }
-        activity?.let { BottomNavController.visibilityNavButton(it) }
+        activity?.let { visibilityNavButton(it) }
     }
 /**
  * updates the UI to reflect the selected category by highlighting the respective TextView.

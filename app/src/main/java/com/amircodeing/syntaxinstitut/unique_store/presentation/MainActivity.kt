@@ -1,8 +1,11 @@
 package com.amircodeing.syntaxinstitut.unique_store.presentation
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.AttributeSet
 import android.util.Log
+import android.view.View
 import android.view.ViewTreeObserver
 import androidx.activity.viewModels
 import androidx.navigation.fragment.NavHostFragment
@@ -33,16 +36,10 @@ class MainActivity : AppCompatActivity() {
         binding.floatActionButton.setOnClickListener {
             navController.navigate(R.id.cartFragment)
         }
-        viewModel.showCountFavoritesLiveData.observe(this) { numberProductInFavorites ->
-            setFavoritesBadge(numberProductInFavorites)
-        }
-        viewModel.showCountCartLiveData.observe(this) { numberProductInCarts ->
-            setCartsBadgeFAB(numberProductInCarts)
-        }
 
     }
 
-    private fun setFavoritesBadge(count: Int) {
+     fun setFavoritesBadge(count: Int) {
         Log.d(TAG, "Number of products in favorites: $count")
         val badge = binding.buttonNav.getOrCreateBadge(R.id.favoriteFragment)
         badge.number = count
@@ -50,19 +47,21 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-     fun setCartsBadgeFAB(count : Int) {
-        binding.floatActionButton.viewTreeObserver.addOnGlobalLayoutListener(@ExperimentalBadgeUtils object :
-            ViewTreeObserver.OnGlobalLayoutListener {
-            override fun onGlobalLayout() {
-                    binding.floatActionButton.viewTreeObserver.removeOnGlobalLayoutListener(this)
-                    badgeDrawable.number = count
-                    badgeDrawable.isVisible = count > 0
-                    BadgeUtils.attachBadgeDrawable(
-                        badgeDrawable,
-                        binding.floatActionButton,
-                        null
-                    )
-            }
-        })
+     fun setCartsBadgeFAB() {
+         viewModel.showCountCartLiveData.observe(this) { numberProductInCarts ->
+             binding.floatActionButton.viewTreeObserver.addOnGlobalLayoutListener(@ExperimentalBadgeUtils object :
+                 ViewTreeObserver.OnGlobalLayoutListener {
+                 override fun onGlobalLayout() {
+                     binding.floatActionButton.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                     badgeDrawable.number = numberProductInCarts
+                     badgeDrawable.isVisible = numberProductInCarts > 0
+                     BadgeUtils.attachBadgeDrawable(
+                         badgeDrawable,
+                         binding.floatActionButton,
+                         null
+                     )
+                 }
+             })
+         }
     }
 }

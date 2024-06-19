@@ -25,10 +25,10 @@ class SettingFragment : Fragment(R.layout.fragment_setting) {
 
      setToolbar(
             ToolbarComponents(
-                view = binding.root, title = "Setting", visibility = false,
-                backButtonVisibility = true,
-                path = R.id.toolbar_setting,
-                icon = null
+                view = binding.root, screensTitle = "Setting", iconsVisibility = false,
+                navigateUp = true,
+                rootPath = R.id.toolbar_setting,
+                iconPath = null
             )
         )
         return binding.root

@@ -15,8 +15,8 @@ import com.amircodeing.syntaxinstitut.unique_store.R
 import com.amircodeing.syntaxinstitut.unique_store.data.model.Product
 import com.amircodeing.syntaxinstitut.unique_store.databinding.FragmentDetailsBinding
 import com.amircodeing.syntaxinstitut.unique_store.presentation.home.HomeViewModel
-import com.amircodeing.syntaxinstitut.unique_store.utils.BottomNavController
 import com.amircodeing.syntaxinstitut.unique_store.utils.ToolbarComponents
+import com.amircodeing.syntaxinstitut.unique_store.utils.inVisibilityNavButton
 import com.amircodeing.syntaxinstitut.unique_store.utils.setToolbar
 
 const val TAG = " SignUpFragment"
@@ -36,16 +36,15 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
         super.onViewCreated(view, savedInstanceState)
         // Refresh the favorite IDs
         viewModel.getFavoriteProductsId()
-        setToolbar(
-            ToolbarComponents(
-                view = binding.root,
-                title = "Details",
-                visibility = false,
-                backButtonVisibility = false, path = R.id.toolbar_details,
-                icon = null
-            )
+        val toolbarComponents =  ToolbarComponents(
+            view = binding.root,
+            screensTitle = "Details",
+            iconsVisibility = false,
+            navigateUp = false, rootPath = R.id.toolbar_details,
+            iconPath = null
         )
-        activity?.let { BottomNavController.inVisibilityNavButton(it) }
+        setToolbar(toolbarComponents)
+        activity?.let { inVisibilityNavButton(it) }
         val product = viewModel.getProduct().value
         with(binding) {
             if (product != null) {

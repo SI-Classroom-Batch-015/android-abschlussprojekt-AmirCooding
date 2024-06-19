@@ -15,7 +15,7 @@ import com.amircodeing.syntaxinstitut.unique_store.data.model.Address
 import com.amircodeing.syntaxinstitut.unique_store.data.model.User
 import com.amircodeing.syntaxinstitut.unique_store.data.remote.firebaseService.SessionState
 import com.amircodeing.syntaxinstitut.unique_store.databinding.FragmentProfileBinding
-import com.amircodeing.syntaxinstitut.unique_store.utils.BottomNavController
+import com.amircodeing.syntaxinstitut.unique_store.utils.inVisibilityNavButton
 
 class ProfileFragment : Fragment() {
     private lateinit var binding: FragmentProfileBinding
@@ -31,7 +31,7 @@ class ProfileFragment : Fragment() {
         viewModel.getProfile()
         viewModel.setViewOnProfileInput(binding.root)
         selectImageProfile()
-        activity?.let { BottomNavController.inVisibilityNavButton(it) }
+        activity?.let { inVisibilityNavButton(it) }
         return binding.root
     }
 

@@ -16,9 +16,8 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import com.amircodeing.syntaxinstitut.unique_store.R
 import com.amircodeing.syntaxinstitut.unique_store.databinding.FragmentCheckOutBinding
-import com.amircodeing.syntaxinstitut.unique_store.presentation.MainActivity
-import com.amircodeing.syntaxinstitut.unique_store.utils.BottomNavController
 import com.amircodeing.syntaxinstitut.unique_store.utils.ToolbarComponents
+import com.amircodeing.syntaxinstitut.unique_store.utils.inVisibilityNavButton
 import com.amircodeing.syntaxinstitut.unique_store.utils.setToolbar
 
 class CheckOutFragment : Fragment() {
@@ -35,13 +34,13 @@ class CheckOutFragment : Fragment() {
         setToolbar(
             ToolbarComponents(
                 view = binding.root,
-                title = "Check Out",
-                visibility = false,
-                backButtonVisibility = false, path = R.id.toolbar_checkOut,
-                icon = null
+                screensTitle = "Check Out",
+                iconsVisibility = false,
+                navigateUp = false, rootPath = R.id.toolbar_checkOut,
+                iconPath = null
             )
         )
-        activity?.let { BottomNavController.inVisibilityNavButton(it) }
+        activity?.let { inVisibilityNavButton(it) }
         return binding.root
     }
 

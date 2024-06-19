@@ -12,7 +12,7 @@ import com.amircodeing.syntaxinstitut.unique_store.R
 import com.amircodeing.syntaxinstitut.unique_store.data.model.Auth
 import com.amircodeing.syntaxinstitut.unique_store.data.remote.firebaseService.SessionState
 import com.amircodeing.syntaxinstitut.unique_store.databinding.FragmentSignUpBinding
-import com.amircodeing.syntaxinstitut.unique_store.utils.BottomNavController
+import com.amircodeing.syntaxinstitut.unique_store.utils.inVisibilityNavButton
 
 const val TAG = " SignUpFragment"
 
@@ -26,7 +26,7 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
     ): View {
         binding = FragmentSignUpBinding.inflate(inflater, container, false)
         viewModel.setViewOnAuthInput(binding.root)
-        activity?.let { BottomNavController.inVisibilityNavButton(it) }
+        activity?.let { inVisibilityNavButton(it) }
         return binding.root
     }
 

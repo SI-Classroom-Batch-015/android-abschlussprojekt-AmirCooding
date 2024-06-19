@@ -10,8 +10,8 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import com.amircodeing.syntaxinstitut.unique_store.R
 import com.amircodeing.syntaxinstitut.unique_store.databinding.FragmentRecoveryPasswordBinding
-import com.amircodeing.syntaxinstitut.unique_store.utils.BottomNavController
 import com.amircodeing.syntaxinstitut.unique_store.utils.ToolbarComponents
+import com.amircodeing.syntaxinstitut.unique_store.utils.inVisibilityNavButton
 import com.amircodeing.syntaxinstitut.unique_store.utils.setToolbar
 import com.google.firebase.auth.FirebaseAuth
 
@@ -29,14 +29,14 @@ class RecoveryPasswordFragment : Fragment() {
        setToolbar(
             ToolbarComponents(
                 view = binding.root,
-                title = "New Password",
-                visibility = false,
-                backButtonVisibility = false, path = R.id.toolbar_recovery_password,
-                icon = null
+                screensTitle = "New Password",
+                iconsVisibility = false,
+                navigateUp = false, rootPath = R.id.toolbar_recovery_password,
+                iconPath = null
             )
         )
         viewModel.setupEmailInputField(binding.root)
-        activity?.let { BottomNavController.inVisibilityNavButton(it) }
+        activity?.let { inVisibilityNavButton(it) }
         return binding.root
     }
 

@@ -15,8 +15,8 @@ import com.amircodeing.syntaxinstitut.unique_store.R
 import com.amircodeing.syntaxinstitut.unique_store.data.model.Auth
 import com.amircodeing.syntaxinstitut.unique_store.data.remote.firebaseService.SessionState
 import com.amircodeing.syntaxinstitut.unique_store.databinding.FragmentSignInBinding
+import com.amircodeing.syntaxinstitut.unique_store.utils.inVisibilityNavButton
 
-import com.amircodeing.syntaxinstitut.unique_store.utils.BottomNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -39,7 +39,7 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
     ): View? {
         binding = FragmentSignInBinding.inflate(inflater, container, false)
         viewModel.getProfile()
-        activity?.let { BottomNavController.inVisibilityNavButton(it) }
+        activity?.let {inVisibilityNavButton(it) }
         auth = FirebaseAuth.getInstance()
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))

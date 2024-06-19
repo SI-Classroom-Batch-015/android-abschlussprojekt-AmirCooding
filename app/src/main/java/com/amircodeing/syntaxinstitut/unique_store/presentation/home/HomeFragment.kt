@@ -13,7 +13,7 @@ import coil.load
 import com.amircodeing.syntaxinstitut.unique_store.R
 import com.amircodeing.syntaxinstitut.unique_store.databinding.FragmentHomeBinding
 import com.amircodeing.syntaxinstitut.unique_store.presentation.MainActivity
-import com.amircodeing.syntaxinstitut.unique_store.utils.BottomNavController
+import com.amircodeing.syntaxinstitut.unique_store.utils.visibilityNavButton
 import com.google.firebase.database.DatabaseReference
 
 class HomeFragment : Fragment() {
@@ -27,7 +27,7 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
-        activity?.let { BottomNavController.visibilityNavButton(it) }
+        activity?.let {visibilityNavButton(it) }
         viewModel.loadCategory()
         return binding.root
     }
@@ -59,6 +59,11 @@ class HomeFragment : Fragment() {
             val navController = Navigation.findNavController(binding.root)
             navController.navigate(R.id.listItemsFragment)
         }
+        viewModel.showCountFavoritesLiveData.observe(viewLifecycleOwner) { numberProductInFavorites ->
+            (activity as MainActivity).setFavoritesBadge(numberProductInFavorites)
+        }
+
+        (activity as MainActivity).setCartsBadgeFAB()
 
     }
 
